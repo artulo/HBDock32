@@ -1,0 +1,593 @@
+ El volumen de la unidad C no tiene etiqueta.
+ El n£mero de serie del volumen es: 28E3-C8A0
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32
+
+04/07/2026  21:53    <DIR>          .
+03/07/2026  22:23    <DIR>          ..
+03/07/2026  22:23                66 .gitattributes
+03/07/2026  22:23               482 .gitignore
+04/07/2026  21:49    <DIR>          include
+03/07/2026  22:23            35,802 LICENSE
+04/07/2026  21:53                 0 lis
+04/07/2026  21:53               655 list
+03/07/2026  22:23                37 README.md
+04/07/2026  21:27    <DIR>          src
+               6 archivos         37,042 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git
+
+04/07/2026  21:53    <DIR>          ..
+04/07/2026  20:47                41 AUTO_MERGE
+03/07/2026  22:23                15 COMMIT_EDITMSG
+03/07/2026  22:25               332 config
+03/07/2026  22:23                25 description
+04/07/2026  20:37                94 FETCH_HEAD
+03/07/2026  22:23                21 HEAD
+03/07/2026  22:23    <DIR>          hooks
+04/07/2026  20:47             1,385 index
+03/07/2026  22:23    <DIR>          info
+03/07/2026  22:23    <DIR>          logs
+04/07/2026  20:46    <DIR>          objects
+04/07/2026  20:35                41 ORIG_HEAD
+04/07/2026  20:47    <DIR>          refs
+               8 archivos          1,954 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\hooks
+
+03/07/2026  22:23    <DIR>          .
+03/07/2026  22:23               478 applypatch-msg.sample
+03/07/2026  22:23               896 commit-msg.sample
+03/07/2026  22:23             4,726 fsmonitor-watchman.sample
+03/07/2026  22:23               189 post-update.sample
+03/07/2026  22:23               424 pre-applypatch.sample
+03/07/2026  22:23             1,649 pre-commit.sample
+03/07/2026  22:23               416 pre-merge-commit.sample
+03/07/2026  22:23             1,374 pre-push.sample
+03/07/2026  22:23             4,898 pre-rebase.sample
+03/07/2026  22:23               544 pre-receive.sample
+03/07/2026  22:23             1,492 prepare-commit-msg.sample
+03/07/2026  22:23             2,783 push-to-checkout.sample
+03/07/2026  22:23             2,308 sendemail-validate.sample
+03/07/2026  22:23             3,650 update.sample
+              14 archivos         25,827 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\info
+
+03/07/2026  22:23    <DIR>          .
+03/07/2026  22:23               240 exclude
+               1 archivos            240 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\logs
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46               476 HEAD
+04/07/2026  20:47    <DIR>          refs
+               1 archivos            476 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\logs\refs
+
+04/07/2026  20:47    <DIR>          .
+03/07/2026  22:23    <DIR>          ..
+03/07/2026  22:23    <DIR>          heads
+03/07/2026  22:25    <DIR>          remotes
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\logs\refs\heads
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:47    <DIR>          ..
+03/07/2026  22:23               166 main
+               1 archivos            166 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\logs\refs\remotes
+
+03/07/2026  22:25    <DIR>          .
+04/07/2026  20:47    <DIR>          ..
+03/07/2026  22:25    <DIR>          origin
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\logs\refs\remotes\origin
+
+03/07/2026  22:25    <DIR>          .
+03/07/2026  22:25    <DIR>          ..
+04/07/2026  20:37             2,309 HEAD
+03/07/2026  22:25               148 main
+               2 archivos          2,457 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:35    <DIR>          08
+04/07/2026  20:35    <DIR>          09
+04/07/2026  20:35    <DIR>          13
+03/07/2026  22:23    <DIR>          1e
+03/07/2026  22:23    <DIR>          22
+04/07/2026  20:46    <DIR>          27
+04/07/2026  20:35    <DIR>          43
+04/07/2026  20:35    <DIR>          4a
+04/07/2026  20:35    <DIR>          50
+04/07/2026  20:46    <DIR>          58
+04/07/2026  20:35    <DIR>          5f
+04/07/2026  20:46    <DIR>          69
+04/07/2026  20:46    <DIR>          75
+04/07/2026  20:35    <DIR>          77
+04/07/2026  20:35    <DIR>          78
+04/07/2026  20:35    <DIR>          79
+04/07/2026  20:46    <DIR>          7a
+04/07/2026  20:35    <DIR>          83
+04/07/2026  20:35    <DIR>          8a
+04/07/2026  20:35    <DIR>          98
+04/07/2026  20:35    <DIR>          9f
+04/07/2026  20:35    <DIR>          a1
+04/07/2026  20:46    <DIR>          a3
+04/07/2026  20:46    <DIR>          a5
+04/07/2026  20:35    <DIR>          a9
+04/07/2026  20:35    <DIR>          ae
+04/07/2026  20:35    <DIR>          af
+04/07/2026  20:46    <DIR>          b1
+04/07/2026  20:35    <DIR>          b2
+04/07/2026  20:35    <DIR>          b5
+03/07/2026  22:23    <DIR>          b7
+04/07/2026  20:46    <DIR>          b8
+04/07/2026  20:35    <DIR>          c6
+04/07/2026  20:46    <DIR>          d0
+04/07/2026  20:35    <DIR>          d6
+04/07/2026  20:46    <DIR>          de
+03/07/2026  22:23    <DIR>          df
+04/07/2026  20:35    <DIR>          e3
+04/07/2026  20:35    <DIR>          e5
+04/07/2026  20:35    <DIR>          e6
+04/07/2026  20:35    <DIR>          e8
+04/07/2026  20:35    <DIR>          f3
+03/07/2026  22:23    <DIR>          info
+03/07/2026  22:23    <DIR>          pack
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\08
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               124 5f876acc8c53fa51d987441f9f5c4ea54e9712
+               1 archivos            124 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\09
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35                58 b2aca9fcb4c618a4186b4695000157faa33cc3
+               1 archivos             58 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\13
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35                60 68c0bbebc2a2b8b67fa43e8def6cd2c60a6907
+               1 archivos             60 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\1e
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23               129 3ef39af2d5b332c2b4bf08b5788f749de47c25
+               1 archivos            129 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\22
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23                50 77b2713ab0ee14a78b5fae37e730282074828d
+               1 archivos             50 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\27
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               143 d3ac2a57835e4e3aee4eb0851a86b08ef0d73d
+               1 archivos            143 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\43
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35                62 4331f2f397996ae6faa7c580740f583552d563
+               1 archivos             62 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\4a
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               272 35f8981494b8b2df2c8a6ac40b67fff12ce14a
+               1 archivos            272 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\50
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               173 b78df9153abc7c0786ecefd803522d2ed71415
+               1 archivos            173 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\58
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               478 e999866c14deeb172f5b6d960b168640fc302b
+               1 archivos            478 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\5f
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               101 07f833ab5a1f804590853851c9e5e90cb24de2
+               1 archivos            101 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\69
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46                55 60c93c67f2de7a07db1cf3ffa937ac9638e2ef
+               1 archivos             55 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\75
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:47               215 74a12a81ce60a5807054d1b0471fcab7058767
+               1 archivos            215 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\77
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               208 8d1b94b27e2bb4d17f9cba71d1f94d10ae3f38
+               1 archivos            208 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\78
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               437 aef75de557c64b59f5d24cf9f08a8db5c54485
+               1 archivos            437 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\79
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               404 81e231ab32f4f97a98a949c72d8beef75d0b81
+               1 archivos            404 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\7a
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46                57 4d9064e3c229050e84b9aa7942c3bdab6e3321
+               1 archivos             57 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\83
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               677 1e126bb2cd9596330d4aab8822a56346f04dad
+04/07/2026  20:35               166 8e77aba780d2ce9d99684e3e6527cbe81dac0a
+               2 archivos            843 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\8a
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35                84 6da4520dbb1aca0ef8c6edc7c7c1241791b5c3
+               1 archivos             84 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\98
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               354 57a1bebbff3beae09752fc6f903c3d729aa3f5
+               1 archivos            354 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\9f
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               230 2d20e489740c71497fef7f9e27a65fc66f966d
+               1 archivos            230 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\a1
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               293 6e1c4a476f45e5c80f46b418aaa3bab838d167
+               1 archivos            293 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\a3
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46                59 4458bca5788fa866cb14ddfa064fe5ec612b31
+               1 archivos             59 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\a5
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               318 7e4b35ed9b0e280104766809443e2731f27d41
+               1 archivos            318 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\a9
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               502 2d0633357e2f84034d4c471356cf3918be9d0e
+               1 archivos            502 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\ae
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               774 66db13f1dfa913b1e8d8383915649987691386
+               1 archivos            774 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\af
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               247 7c3f0cf72e9168676453c5e868e116256822f9
+               1 archivos            247 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\b1
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               208 42a9151bc598764399e3b7b0149784af3f18fc
+               1 archivos            208 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\b2
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               773 7d03cbb901651804e657d1a5d51cfdfae9dbe6
+               1 archivos            773 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\b5
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               168 fc00a01084c855a991c6189c48affb52cb8188
+               1 archivos            168 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\b7
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23               154 4a8d8561ea5d3bcd235b3f04f77ce0a367948a
+               1 archivos            154 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\b8
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               203 216cf3583e08da760df66d7feeae48b05cc294
+04/07/2026  20:46               207 a2a2f9977aed02c72960129623372ba0cd098b
+               2 archivos            410 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\c6
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23               297 127b38c1aa25968a88db3940604d41529e4cf5
+04/07/2026  20:35               676 130f53467560d5a083d5657e3a178cf2a9710d
+               2 archivos            973 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\d0
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               173 05b2e18e74e80140b40a6b58e587d036ac23c8
+               1 archivos            173 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\d6
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               250 5ed52f1d9853d43c0a554286025398e781954c
+               1 archivos            250 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\de
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               616 e861e2727c3f89dbc8b97ee5ebf64576351f66
+               1 archivos            616 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\df
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23                76 e0770424b2a19faf507a501ebfc23be8f54e7b
+               1 archivos             76 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\e3
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               216 2b9edcf03d82c61ce405771cf191ba936bea11
+               1 archivos            216 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\e5
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35               828 abaedf9b63b79454c1977d884b49a618ce703b
+               1 archivos            828 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\e6
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+03/07/2026  22:23            14,218 2ec04cdeece724caeeeeaeb6ae1f6af1bb6b9a
+04/07/2026  20:46               936 7346b94d460cbc90c517d67670b7fa08fba38b
+               2 archivos         15,154 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\e8
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:35                91 bdf48dbd7029da58b43184c05f2339b6169f64
+               1 archivos             91 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\f3
+
+04/07/2026  20:35    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+04/07/2026  20:46               273 267cc82b2959634f81a1fd4b6769e0d3b6170b
+               1 archivos            273 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\info
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\objects\pack
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:46    <DIR>          ..
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\refs
+
+04/07/2026  20:47    <DIR>          .
+04/07/2026  20:46    <DIR>          heads
+03/07/2026  22:25    <DIR>          remotes
+03/07/2026  22:23    <DIR>          tags
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\refs\heads
+
+04/07/2026  20:46    <DIR>          .
+04/07/2026  20:47    <DIR>          ..
+03/07/2026  22:23                41 main
+               1 archivos             41 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\refs\remotes
+
+03/07/2026  22:25    <DIR>          .
+04/07/2026  20:47    <DIR>          ..
+04/07/2026  20:37    <DIR>          origin
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\refs\remotes\origin
+
+04/07/2026  20:37    <DIR>          .
+03/07/2026  22:25    <DIR>          ..
+04/07/2026  20:37                30 HEAD
+03/07/2026  22:25                41 main
+               2 archivos             71 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\.git\refs\tags
+
+03/07/2026  22:23    <DIR>          .
+04/07/2026  20:47    <DIR>          ..
+               0 archivos              0 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\include
+
+04/07/2026  21:49    <DIR>          .
+04/07/2026  21:53    <DIR>          ..
+04/07/2026  20:47             1,566 hbdock.h
+04/07/2026  21:48               337 hbdockconfig.h
+04/07/2026  21:04               487 hbdockcontainer.h
+04/07/2026  21:02               246 hbdockdefs.h
+04/07/2026  21:17               566 hbdockdrag.h
+04/07/2026  21:32               351 hbdockgeometry.h
+04/07/2026  21:27               551 hbdockhost.h
+04/07/2026  21:00               403 hbdocklayout.h
+04/07/2026  20:53               786 hbdockmanager.h
+04/07/2026  21:49               575 hbdockmessage.h
+04/07/2026  21:21               254 hbdockmouse.h
+04/07/2026  21:12               291 hbdockpaint.h
+04/07/2026  20:47               533 hbdockpanel.h
+04/07/2026  21:46               660 hbdockregistry.h
+04/07/2026  21:31               343 hbdockserialize.h
+04/07/2026  21:10               656 hbdocksplitter.h
+04/07/2026  21:29               336 hbdockstate.h
+04/07/2026  21:19               486 hbdocktracker.h
+04/07/2026  20:47             2,565 hbdocktypes.h
+04/07/2026  21:14               320 hbdockutil.h
+04/07/2026  21:07               207 hbdockversion.h
+04/07/2026  21:09               299 hbdockversionapi.h
+04/07/2026  21:03               407 hbdockwindow.h
+04/07/2026  20:47             1,337 hbwindow.h
+              24 archivos         14,562 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src
+
+04/07/2026  21:27    <DIR>          .
+04/07/2026  21:53    <DIR>          ..
+04/07/2026  21:06    <DIR>          container
+04/07/2026  21:50    <DIR>          core
+04/07/2026  21:20    <DIR>          dock
+04/07/2026  20:47               756 hbdock.c
+04/07/2026  21:28    <DIR>          host
+04/07/2026  20:47    <DIR>          layout
+04/07/2026  21:13    <DIR>          window
+               1 archivos            756 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\container
+
+04/07/2026  21:06    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  21:06             2,062 hbdockcontainer.c
+               1 archivos          2,062 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\core
+
+04/07/2026  21:50    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  21:33               770 hbdockgeometry.c
+04/07/2026  21:50               222 hbdockmessage.c
+04/07/2026  21:24               295 hbdockmouse.c
+04/07/2026  21:47             2,432 hbdockregistry.c
+04/07/2026  21:32               709 hbdockserialize.c
+04/07/2026  21:30               271 hbdockstate.c
+04/07/2026  21:15               468 hbdockutil.c
+04/07/2026  21:08               339 hbdockversion.c
+               8 archivos          5,506 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\dock
+
+04/07/2026  21:20    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  21:19               949 hbdockdrag.c
+04/07/2026  20:55             2,850 hbdockmanager.c
+04/07/2026  21:01             1,178 hbdockpanel.c
+04/07/2026  21:11             1,236 hbdocksplitter.c
+04/07/2026  21:20             1,281 hbdocktracker.c
+               5 archivos          7,494 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\host
+
+04/07/2026  21:28    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  21:28               932 hbdockhost.c
+               1 archivos            932 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\layout
+
+04/07/2026  20:47    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  20:57             3,339 hbdocklayout.c
+               1 archivos          3,339 bytes
+
+ Directorio de c:\Users\artur\Documents\GitHub\HBDock32\src\window
+
+04/07/2026  21:13    <DIR>          .
+04/07/2026  21:27    <DIR>          ..
+04/07/2026  21:13               607 hbdockpaint.c
+04/07/2026  21:04             2,035 hbdockwindow.c
+04/07/2026  20:47             2,835 hbwindow.c
+               3 archivos          5,477 bytes
+
+     Total de archivos en la lista:
+             126 archivos        135,495 bytes
+             193 dirs  102,815,690,752 bytes libres

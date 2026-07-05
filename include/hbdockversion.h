@@ -1,0 +1,10 @@
+#ifndef HBDOCKVERSION_H
+#define HBDOCKVERSION_H
+
+#define HBDOCK_VERSION_MAJOR     0
+#define HBDOCK_VERSION_MINOR     1
+#define HBDOCK_VERSION_PATCH     0
+
+#define HBDOCK_VERSION_TEXT "0.1.0"
+
+#endif
