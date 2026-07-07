@@ -9,11 +9,13 @@ int hbDockTreeHeight(
    if( pRoot == NULL )
       return 0;
 
-   h1 = hbDockTreeHeight(
-      pRoot->First );
+   h1 =
+      hbDockTreeHeight(
+         pRoot->First );
 
-   h2 = hbDockTreeHeight(
-      pRoot->Second );
+   h2 =
+      hbDockTreeHeight(
+         pRoot->Second );
 
    if( h1 > h2 )
       return h1 + 1;

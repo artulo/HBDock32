@@ -5,18 +5,43 @@
 void hbDockManagerLayout(
    HB_DOCK_MANAGER * pManager )
 {
-   RECT rc;
+   HB_DOCK_PANEL * p;
 
    if( pManager == NULL )
       return;
 
-   GetClientRect(
-      pManager->hWnd,
-      &rc );
+   if( pManager->hWnd != NULL )
+      GetClientRect(
+         pManager->hWnd,
+         &pManager->ClientRect );
 
+   /* 1) Calcula los rects de cada panel recorriendo
+    *    el arbol de docking (splits / leaves).
+    */
    hbDockLayoutEnginePerform(
       &pManager->LayoutEngine,
-      &rc );
+      &pManager->ClientRect );
+
+   /* 2) Aplica esos rects a las ventanas reales
+    *    de cada panel registrado en el manager.
+    */
+   p = pManager->FirstPanel;
+
+   while( p != NULL )
+   {
+      if( p->Visible && !p->Floating && p->hWnd != NULL )
+      {
+         MoveWindow(
+            p->hWnd,
+            p->Rect.left,
+            p->Rect.top,
+            p->Rect.right  - p->Rect.left,
+            p->Rect.bottom - p->Rect.top,
+            TRUE );
+      }
+
+      p = p->Next;
+   }
 }
 
 void hbDockManagerResize(
@@ -24,19 +49,16 @@ void hbDockManagerResize(
    int cx,
    int cy )
 {
-   RECT rc;
-
    if( pManager == NULL )
       return;
 
    SetRect(
-      &rc,
+      &pManager->ClientRect,
       0,
       0,
       cx,
       cy );
 
-   hbDockLayoutEnginePerform(
-      &pManager->LayoutEngine,
-      &rc );
+   hbDockManagerLayout(
+      pManager );
 }

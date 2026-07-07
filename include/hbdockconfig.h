@@ -10,5 +10,6 @@
 #define HBDOCK_SPLITTER_WIDTH     4
 #define HBDOCK_TITLE_HEIGHT      24
 #define HBDOCK_BORDER_SIZE        1
+#define HBDOCK_AUTOHIDE_STRIP    24
 
 #endif

@@ -7,10 +7,13 @@
 extern "C" {
 #endif
 
-int hbDockTreeCountLeaves(
+int hbDockTreeNodeCount(
    HB_DOCK_NODE * pRoot );
 
-int hbDockTreeCountSplits(
+int hbDockTreeLeafCount(
+   HB_DOCK_NODE * pRoot );
+
+int hbDockTreeSplitCount(
    HB_DOCK_NODE * pRoot );
 
 #ifdef __cplusplus

@@ -1,25 +1,38 @@
 #include "hbdocktreewalk.h"
 
-void hbDockTreeWalk(
+static void hbDockTreeWalkNode(
    HB_DOCK_NODE * pNode,
-   HB_DOCK_TREE_PROC pProc,
-   void * pCargo )
+   HB_DOCK_NODE_PROC pProc,
+   void * Cargo )
 {
    if( pNode == NULL )
       return;
 
-   if( pProc != NULL )
-      pProc(
-         pNode,
-         pCargo );
+   pProc(
+      pNode,
+      Cargo );
 
-   hbDockTreeWalk(
+   hbDockTreeWalkNode(
       pNode->First,
       pProc,
-      pCargo );
+      Cargo );
 
-   hbDockTreeWalk(
+   hbDockTreeWalkNode(
       pNode->Second,
       pProc,
-      pCargo );
+      Cargo );
+}
+
+void hbDockTreeWalk(
+   HB_DOCK_NODE * pRoot,
+   HB_DOCK_NODE_PROC pProc,
+   void * Cargo )
+{
+   if( pProc == NULL )
+      return;
+
+   hbDockTreeWalkNode(
+      pRoot,
+      pProc,
+      Cargo );
 }

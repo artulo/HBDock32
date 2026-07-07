@@ -7,16 +7,14 @@
 extern "C" {
 #endif
 
-typedef void (*HB_DOCK_TREE_PROC)
-(
+typedef int ( * HB_DOCK_NODE_PROC )(
    HB_DOCK_NODE * pNode,
-   void * pCargo
-);
+   void * Cargo );
 
 void hbDockTreeWalk(
-   HB_DOCK_NODE * pNode,
-   HB_DOCK_TREE_PROC pProc,
-   void * pCargo );
+   HB_DOCK_NODE * pRoot,
+   HB_DOCK_NODE_PROC pProc,
+   void * Cargo );
 
 #ifdef __cplusplus
 }

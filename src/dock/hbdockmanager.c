@@ -2,6 +2,8 @@
 #include <string.h>
 
 #include "hbdockmanager.h"
+#include "hbdockfloating.h"
+#include "hbdockautohide.h"
 
 HB_DOCK_MANAGER * hbDockManagerNew(
     HWND hWnd )
@@ -16,11 +18,27 @@ HB_DOCK_MANAGER * hbDockManagerNew(
         return NULL;
 
     p->hParent = hWnd;
+    p->hWnd    = hWnd;
 
     if( hWnd != NULL )
         GetClientRect(
             hWnd,
             &p->ClientRect );
+
+    hbDockLayoutEngineInit(
+        &p->LayoutEngine );
+
+    hbDockFocusInit(
+        &p->Focus );
+
+    hbDockDragTrackerInit(
+        &p->DragTracker );
+
+    hbDockArrayInit(
+        &p->FloatWindows );
+
+    hbDockArrayInit(
+        &p->AutoHidePanels );
 
     return p;
 }
@@ -28,8 +46,58 @@ HB_DOCK_MANAGER * hbDockManagerNew(
 void hbDockManagerDelete(
     HB_DOCK_MANAGER * p )
 {
-    if( p != NULL )
-        free( p );
+    int i;
+
+    if( p == NULL )
+        return;
+
+    for( i = 0; i < p->FloatWindows.Count; ++i )
+    {
+        HB_DOCK_FLOATING * pFloating =
+            ( HB_DOCK_FLOATING * ) hbDockArrayGet(
+                &p->FloatWindows,
+                i );
+
+        if( pFloating != NULL )
+        {
+            hbDockFloatingDestroy(
+                pFloating );
+
+            free( pFloating );
+        }
+    }
+
+    for( i = 0; i < p->AutoHidePanels.Count; ++i )
+    {
+        void * pAutoHide = hbDockArrayGet(
+            &p->AutoHidePanels,
+            i );
+
+        if( pAutoHide != NULL )
+            free( pAutoHide );
+    }
+
+    hbDockArrayRelease(
+        &p->FloatWindows );
+
+    hbDockArrayRelease(
+        &p->AutoHidePanels );
+
+    if( p->LayoutEngine.Root != NULL )
+        hbDockNodeDelete(
+            p->LayoutEngine.Root );
+
+    free( p );
+}
+
+void hbDockManagerSetInstance(
+    HB_DOCK_MANAGER * pManager,
+    HINSTANCE hInstance )
+{
+    if( pManager == NULL )
+        return;
+
+    pManager->hInstance = hInstance;
 }
 
 void hbDockManagerAddPanel(
@@ -111,38 +179,6 @@ void hbDockManagerRemovePanel(
         }
 
         pPrev = p;
-        p = p->Next;
-    }
-}
-
-void hbDockManagerLayout(
-    HB_DOCK_MANAGER * pManager )
-{
-    HB_DOCK_PANEL * p;
-
-    if( pManager == NULL )
-        return;
-
-    if( pManager->hParent != NULL )
-        GetClientRect(
-            pManager->hParent,
-            &pManager->ClientRect );
-
-    p = pManager->FirstPanel;
-
-    while( p != NULL )
-    {
-        if( p->Visible && p->hWnd != NULL )
-        {
-            MoveWindow(
-                p->hWnd,
-                p->Rect.left,
-                p->Rect.top,
-                p->Rect.right - p->Rect.left,
-                p->Rect.bottom - p->Rect.top,
-                TRUE );
-        }
-
         p = p->Next;
     }
 }

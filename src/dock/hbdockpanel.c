@@ -3,6 +3,8 @@
 
 #include "hbdockpanel.h"
 #include "hbdocklayout.h"
+#include "hbdockdocksite.h"
+#include "hbdockpaneloptions.h"
 
 HB_DOCK_PANEL * hbDockPanelNew( void )
 {
@@ -16,9 +18,23 @@ HB_DOCK_PANEL * hbDockPanelNew( void )
         return NULL;
 
     pPanel->DockSide  = HB_DOCK_LEFT;
+    pPanel->DockSite  = HB_DOCKSITE_NONE;
     pPanel->Visible   = 1;
+    pPanel->Enabled   = 1;
     pPanel->MinWidth  = 120;
     pPanel->MinHeight = 120;
+
+    pPanel->PreferredSize = 200;
+
+    pPanel->BkColor   = GetSysColor( COLOR_BTNFACE );
+    pPanel->TextColor = GetSysColor( COLOR_BTNTEXT );
+
+    pPanel->Options =
+        HB_DOCK_OPTION_CLOSEBUTTON |
+        HB_DOCK_OPTION_PINBUTTON   |
+        HB_DOCK_OPTION_FLOATABLE   |
+        HB_DOCK_OPTION_DOCKABLE    |
+        HB_DOCK_OPTION_VISIBLE;
 
     SetRect(
         &pPanel->Rect,
@@ -27,8 +43,12 @@ HB_DOCK_PANEL * hbDockPanelNew( void )
         pPanel->MinWidth,
         pPanel->MinHeight );
 
-    pPanel->Name[ 0 ] = '\0';
+    pPanel->Name[ 0 ]    = '\0';
+    pPanel->Caption[ 0 ] = '\0';
+    pPanel->Hint[ 0 ]    = '\0';
+
     pPanel->Cargo     = NULL;
+    pPanel->UserData  = NULL;
     pPanel->Next      = NULL;
 
     return pPanel;
@@ -39,25 +59,4 @@ void hbDockPanelDelete(
 {
     if( pPanel != NULL )
         free( pPanel );
-}
-
-void hbDockPanelSetName(
-    HB_DOCK_PANEL * pPanel,
-    const char * pszName )
-{
-    if( pPanel == NULL )
-        return;
-
-    if( pszName == NULL )
-    {
-        pPanel->Name[ 0 ] = '\0';
-        return;
-    }
-
-    strncpy(
-        pPanel->Name,
-        pszName,
-        sizeof( pPanel->Name ) - 1 );
-
-    pPanel->Name[ sizeof( pPanel->Name ) - 1 ] = '\0';
 }
