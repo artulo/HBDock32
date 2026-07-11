@@ -2,23 +2,29 @@
 
 #include "hbdockautohidetimer.h"
 
-#define HB_AUTOHIDE_TIMER 100
-
 UINT_PTR hbDockAutoHideStartTimer(
    HB_DOCK_AUTOHIDE_PANE * pPane,
-   UINT Interval )
+   UINT_PTR nId,
+   UINT nElapse )
 {
+   if( pPane == NULL )
+      return 0;
+
    return SetTimer(
       pPane->hWnd,
-      HB_AUTOHIDE_TIMER,
-      Interval,
+      nId,
+      nElapse,
       NULL );
 }
 
 void hbDockAutoHideStopTimer(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE_PANE * pPane,
+   UINT_PTR nId )
 {
+   if( pPane == NULL )
+      return;
+
    KillTimer(
       pPane->hWnd,
-      HB_AUTOHIDE_TIMER );
+      nId );
 }

@@ -1,5 +1,5 @@
-#ifndef HBDOCKAUTOHIDETIMER_H
-#define HBDOCKAUTOHIDETIMER_H
+#ifndef HBDOCKAUTOHIDEGEOMETRY_H
+#define HBDOCKAUTOHIDEGEOMETRY_H
 
 #include <windows.h>
 
@@ -9,14 +9,14 @@
 extern "C" {
 #endif
 
-UINT_PTR hbDockAutoHideStartTimer(
+BOOL hbDockAutoHideGetWindowRect(
    HB_DOCK_AUTOHIDE_PANE * pPane,
-   UINT_PTR nId,
-   UINT nElapse );
+   RECT * pRect );
 
-void hbDockAutoHideStopTimer(
+BOOL hbDockAutoHideSetWindowRect(
    HB_DOCK_AUTOHIDE_PANE * pPane,
-   UINT_PTR nId );
+   const RECT * pRect,
+   BOOL bRepaint );
 
 #ifdef __cplusplus
 }
