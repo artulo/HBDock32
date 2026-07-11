@@ -1,24 +1,24 @@
-#include "hbdockautohideactivate.h"
+#include "hbdockautohidehover.h"
 
-void hbDockAutoHideActivate(
+void hbDockAutoHideBeginHover(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Active = 1;
+      pPane->Hover = 1;
 }
 
-void hbDockAutoHideDeactivate(
+void hbDockAutoHideEndHover(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Active = 0;
+      pPane->Hover = 0;
 }
 
-int hbDockAutoHideIsActive(
+int hbDockAutoHideIsHover(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
       return 0;
 
-   return pPane->Active;
+   return pPane->Hover;
 }

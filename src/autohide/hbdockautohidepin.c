@@ -1,24 +1,24 @@
-#include "hbdockautohideactivate.h"
+#include "hbdockautohidepin.h"
 
-void hbDockAutoHideActivate(
+void hbDockAutoHidePin(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Active = 1;
+      pPane->Pinned = 1;
 }
 
-void hbDockAutoHideDeactivate(
+void hbDockAutoHideUnpin(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Active = 0;
+      pPane->Pinned = 0;
 }
 
-int hbDockAutoHideIsActive(
+int hbDockAutoHideIsPinned(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
       return 0;
 
-   return pPane->Active;
+   return pPane->Pinned;
 }
