@@ -1,27 +1,18 @@
-#include <windows.h>
-
 #include "hbdockautohideanimation.h"
 
-void hbDockAutoHideSlideIn(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+void hbDockAutoHideSetAnimation(
+   HB_DOCK_AUTOHIDE_PANE * pPane,
+   int bEnable )
 {
-   if( pPane == NULL )
-      return;
-
-   AnimateWindow(
-      pPane->hWnd,
-      120,
-      AW_SLIDE | AW_ACTIVATE );
+   if( pPane != NULL )
+      pPane->Animation = bEnable;
 }
 
-void hbDockAutoHideSlideOut(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+int hbDockAutoHideAnimationEnabled(
+   const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
-      return;
+      return 0;
 
-   AnimateWindow(
-      pPane->hWnd,
-      120,
-      AW_SLIDE | AW_HIDE );
+   return pPane->Animation;
 }

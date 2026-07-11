@@ -1,5 +1,5 @@
-#ifndef HBDOCKAUTOHIDEANIMATION_H
-#define HBDOCKAUTOHIDEANIMATION_H
+#ifndef HBDOCKAUTOHIDESLIDESIZE_H
+#define HBDOCKAUTOHIDESLIDESIZE_H
 
 #include "hbdockautohidepane.h"
 
@@ -7,11 +7,11 @@
 extern "C" {
 #endif
 
-void hbDockAutoHideSetAnimation(
+void hbDockAutoHideSetSlideSize(
    HB_DOCK_AUTOHIDE_PANE * pPane,
-   int bEnable );
+   int nSize );
 
-int hbDockAutoHideAnimationEnabled(
+int hbDockAutoHideGetSlideSize(
    const HB_DOCK_AUTOHIDE_PANE * pPane );
 
 #ifdef __cplusplus

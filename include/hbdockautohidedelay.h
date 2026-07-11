@@ -1,5 +1,5 @@
-#ifndef HBDOCKAUTOHIDEANIMATION_H
-#define HBDOCKAUTOHIDEANIMATION_H
+#ifndef HBDOCKAUTOHIDEDELAY_H
+#define HBDOCKAUTOHIDEDELAY_H
 
 #include "hbdockautohidepane.h"
 
@@ -7,11 +7,11 @@
 extern "C" {
 #endif
 
-void hbDockAutoHideSetAnimation(
+void hbDockAutoHideSetDelay(
    HB_DOCK_AUTOHIDE_PANE * pPane,
-   int bEnable );
+   UINT nDelay );
 
-int hbDockAutoHideAnimationEnabled(
+UINT hbDockAutoHideGetDelay(
    const HB_DOCK_AUTOHIDE_PANE * pPane );
 
 #ifdef __cplusplus
