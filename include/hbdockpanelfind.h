@@ -1,22 +1,16 @@
 #ifndef HBDOCKPANELFIND_H
 #define HBDOCKPANELFIND_H
 
-#include "hbdocktree.h"
+#include "hbdockpanelregistry.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+HB_DOCK_PANEL *
+hbDockPanelFindName(
+      HB_DOCK_PANEL_REGISTRY * pRegistry,
+      LPCTSTR pszName );
 
-HB_DOCK_PANEL * hbDockPanelFindById(
-   HB_DOCK_NODE * pRoot,
-   unsigned int Id );
-
-HB_DOCK_PANEL * hbDockPanelFindByName(
-   HB_DOCK_NODE * pRoot,
-   const char * pszName );
-
-#ifdef __cplusplus
-}
-#endif
+HB_DOCK_PANEL *
+hbDockPanelFindHWND(
+      HB_DOCK_PANEL_REGISTRY * pRegistry,
+      HWND hWnd );
 
 #endif
