@@ -32,6 +32,9 @@ BOOL hbDockManagerCreate(
 	
 	hbDockPanelRegistryInit(
 		&pManager->Registry );	
+	
+	hbDockEventDispatcherInit(
+		pManager );
 		
     return TRUE;
 }

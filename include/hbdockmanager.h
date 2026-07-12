@@ -43,6 +43,8 @@ typedef struct _HB_DOCK_MANAGER
 
     HB_DOCK_PANEL_REGISTRY Registry;
 
+    HB_DOCK_EVENT_DISPATCHER Dispatcher;
+
     HB_DOCK_GUIDE_MANAGER GuideManager;
 
     HB_DOCK_PREVIEW_OVERLAY Preview;
