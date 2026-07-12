@@ -12,12 +12,36 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+/*
 typedef struct _HB_DOCK_MANAGER
 {
     HWND hMainWnd;
 
     HB_DOCK_LAYOUT_TREE LayoutTree;
+
+    HB_DOCK_GUIDE_MANAGER GuideManager;
+
+    HB_DOCK_PREVIEW_OVERLAY Preview;
+
+    HB_DOCK_DIAMOND Diamond;
+
+    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER AnimationManager;
+
+    HWND hCapturedWindow;
+
+    BOOL Dragging;
+
+    BOOL UpdatingLayout;
+
+} HB_DOCK_MANAGER;
+*/
+typedef struct _HB_DOCK_MANAGER
+{
+    HWND hMainWnd;
+
+    HB_DOCK_LAYOUT_TREE LayoutTree;
+
+    HB_DOCK_PANEL_REGISTRY Registry;
 
     HB_DOCK_GUIDE_MANAGER GuideManager;
 

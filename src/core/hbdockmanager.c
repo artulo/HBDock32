@@ -29,7 +29,10 @@ BOOL hbDockManagerCreate(
 
     hbDockAutoHideAnimationManagerInit(
         &pManager->AnimationManager);
-
+	
+	hbDockPanelRegistryInit(
+		&pManager->Registry );	
+		
     return TRUE;
 }
 
@@ -50,4 +53,7 @@ void hbDockManagerDestroy(
 
     hbDockLayoutTreeDone(
         &pManager->LayoutTree);
+	
+	hbDockPanelRegistryDone(
+		&pManager->Registry );
 }
