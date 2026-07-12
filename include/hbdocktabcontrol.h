@@ -2,42 +2,36 @@
 #define HBDOCKTABCONTROL_H
 
 #include <windows.h>
-
 #include "hbdocktabgroup.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define HBDOCK_TAB_HEIGHT      24
-#define HBDOCK_TAB_MARGIN       4
-#define HBDOCK_MAX_TAB_RECTS   64
-
 typedef struct _HB_DOCK_TAB_CONTROL
 {
-   HB_DOCK_TAB_GROUP * Group;
+    HWND hWnd;
 
-   RECT Rect;
+    HB_DOCK_TAB_GROUP * pGroup;
 
-   RECT TabRects[ HBDOCK_MAX_TAB_RECTS ];
+    int Height;
+
+    int FirstVisible;
+
+    int HotIndex;
+
+    int PressedIndex;
+
+    HFONT hFont;
 
 } HB_DOCK_TAB_CONTROL;
 
-void hbDockTabControlInit(
-   HB_DOCK_TAB_CONTROL * pControl,
-   HB_DOCK_TAB_GROUP * pGroup );
+BOOL hbDockTabControlCreate(
+    HB_DOCK_TAB_CONTROL * pControl,
+    HWND hParent );
 
-void hbDockTabControlLayout(
-   HB_DOCK_TAB_CONTROL * pControl,
-   const RECT * pRect );
-
-void hbDockTabControlDraw(
-   HDC hDC,
-   HB_DOCK_TAB_CONTROL * pControl );
-
-int hbDockTabControlHitTest(
-   HB_DOCK_TAB_CONTROL * pControl,
-   POINT pt );
+void hbDockTabControlDestroy(
+    HB_DOCK_TAB_CONTROL * pControl );
 
 #ifdef __cplusplus
 }

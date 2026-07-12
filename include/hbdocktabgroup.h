@@ -3,42 +3,41 @@
 
 #include <windows.h>
 
-#include "hbdockpanel.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define HB_DOCK_MAX_TABS 64
+typedef struct _HB_DOCK_TAB
+{
+   HWND hDock;
+
+   TCHAR Caption[128];
+
+   LPARAM UserData;
+
+} HB_DOCK_TAB;
 
 typedef struct _HB_DOCK_TAB_GROUP
 {
-   HB_DOCK_PANEL * Panels[ HB_DOCK_MAX_TABS ];
+   HWND hWnd;
 
-   int Count;
-   int Active;
+   HWND hActiveDock;
 
-   RECT TabRect;
+   HB_DOCK_TAB * Tabs;
+
+   UINT Count;
+
+   UINT Capacity;
+
+   UINT ActiveIndex;
 
 } HB_DOCK_TAB_GROUP;
 
-void hbDockTabGroupInit(
-   HB_DOCK_TAB_GROUP * pGroup );
+BOOL hbDockTabGroupInit(
+      HB_DOCK_TAB_GROUP * pGroup );
 
-int hbDockTabGroupAdd(
-   HB_DOCK_TAB_GROUP * pGroup,
-   HB_DOCK_PANEL * pPanel );
-
-int hbDockTabGroupRemove(
-   HB_DOCK_TAB_GROUP * pGroup,
-   HB_DOCK_PANEL * pPanel );
-
-HB_DOCK_PANEL * hbDockTabGroupGetActive(
-   HB_DOCK_TAB_GROUP * pGroup );
-
-void hbDockTabGroupSetActive(
-   HB_DOCK_TAB_GROUP * pGroup,
-   int Index );
+void hbDockTabGroupDone(
+      HB_DOCK_TAB_GROUP * pGroup );
 
 #ifdef __cplusplus
 }

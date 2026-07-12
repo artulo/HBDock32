@@ -3,38 +3,27 @@
 
 #include <windows.h>
 
+#include "hbdocklayouttree.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define HB_DOCK_SPLITTER_SIZE 4
-
 typedef struct _HB_DOCK_SPLITTER
 {
+   HB_DOCK_LAYOUT_NODE * pNode;
+
    RECT Rect;
 
-   int Visible;
+   BOOL Tracking;
 
-   int Vertical;
-
-   int Tracking;
+   int Size;
 
 } HB_DOCK_SPLITTER;
 
-void hbDockSplitterInit(
-   HB_DOCK_SPLITTER * pSplitter );
-
-void hbDockSplitterSetRect(
-   HB_DOCK_SPLITTER * pSplitter,
-   const RECT * pRect );
-
-void hbDockSplitterDraw(
-   HDC hDC,
-   const HB_DOCK_SPLITTER * pSplitter );
-
-int hbDockSplitterHitTest(
-   const HB_DOCK_SPLITTER * pSplitter,
-   POINT pt );
+BOOL hbDockSplitterBuild(
+      HB_DOCK_LAYOUT_NODE * pNode,
+      HB_DOCK_SPLITTER * pSplitter );
 
 #ifdef __cplusplus
 }
