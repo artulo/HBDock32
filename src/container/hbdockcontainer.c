@@ -1,112 +1,27 @@
-#include <windows.h>
+#include <string.h>
 
 #include "hbdockcontainer.h"
-#include "hbdocklayout.h"
 
-#define HB_DOCK_CONTAINER_CLASS "HBDockContainer"
-
-static LRESULT CALLBACK hbDockContainerProc(
-   HWND hWnd,
-   UINT msg,
-   WPARAM wParam,
-   LPARAM lParam )
+BOOL hbDockContainerCreate(
+      HB_DOCK_CONTAINER * pContainer,
+      HWND hParent )
 {
-   HB_DOCK_MANAGER *pManager;
-
-   pManager = ( HB_DOCK_MANAGER * )
-      GetWindowLongPtr(
-         hWnd,
-         GWLP_USERDATA );
-
-   switch( msg )
-   {
-      case WM_CREATE:
-      {
-         CREATESTRUCT *cs;
-
-         cs = ( CREATESTRUCT * ) lParam;
-
-         SetWindowLongPtr(
-            hWnd,
-            GWLP_USERDATA,
-            ( LONG_PTR ) cs->lpCreateParams );
-
-         return 0;
-      }
-
-      case WM_SIZE:
-
-         if( pManager != NULL )
-            hbDockPerformLayout( pManager );
-
-         return 0;
-
-      case WM_ERASEBKGND:
-         return 1;
-
-      case WM_PAINT:
-      {
-         PAINTSTRUCT ps;
-
-         BeginPaint(
-            hWnd,
-            &ps );
-
-         EndPaint(
-            hWnd,
-            &ps );
-
-         return 0;
-      }
-   }
-
-   return DefWindowProc(
-      hWnd,
-      msg,
-      wParam,
-      lParam );
-}
-
-BOOL hbDockContainerRegisterClass(
-   HINSTANCE hInstance )
-{
-   WNDCLASS wc;
-
    ZeroMemory(
-      &wc,
-      sizeof( wc ) );
+      pContainer,
+      sizeof(*pContainer));
 
-   wc.style         = CS_HREDRAW | CS_VREDRAW;
-   wc.lpfnWndProc   = hbDockContainerProc;
-   wc.hInstance     = hInstance;
-   wc.hCursor       = LoadCursor(
-                         NULL,
-                         IDC_ARROW );
-   wc.hbrBackground = ( HBRUSH ) ( COLOR_BTNFACE + 1 );
-   wc.lpszClassName = HB_DOCK_CONTAINER_CLASS;
+   pContainer->Type =
+      HB_CONTAINER_EMPTY;
 
-   return RegisterClass( &wc ) != 0;
+   pContainer->Ratio = 0.5f;
+
+   return hbDockTabGroupInit(
+      &pContainer->TabGroup);
 }
 
-HWND hbDockContainerCreate(
-   HWND hParent,
-   HINSTANCE hInstance,
-   HB_DOCK_MANAGER *pManager )
+void hbDockContainerDestroy(
+      HB_DOCK_CONTAINER * pContainer )
 {
-   return CreateWindowEx(
-      0,
-      HB_DOCK_CONTAINER_CLASS,
-      "",
-      WS_CHILD |
-      WS_VISIBLE |
-      WS_CLIPSIBLINGS |
-      WS_CLIPCHILDREN,
-      0,
-      0,
-      0,
-      0,
-      hParent,
-      NULL,
-      hInstance,
-      pManager );
+   hbDockTabGroupDone(
+      &pContainer->TabGroup);
 }

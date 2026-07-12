@@ -23,8 +23,8 @@ typedef struct _HB_DOCK_LAYOUT_NODE
 
    float Ratio;
 
-   HWND hDockWindow;
-
+   //HWND hDockWindow;
+   HB_DOCK_CONTAINER * pContainer;	
    struct _HB_DOCK_LAYOUT_NODE * Parent;
    struct _HB_DOCK_LAYOUT_NODE * First;
    struct _HB_DOCK_LAYOUT_NODE * Second;
