@@ -5,6 +5,7 @@
 
 #include "hbdockconfig.h"
 
+typedef unsigned int HB_DOCK_ID;
 typedef struct _HB_DOCK_PANEL HB_DOCK_PANEL;
 
 struct _HB_DOCK_PANEL
@@ -68,6 +69,20 @@ struct _HB_DOCK_PANEL
 };
 
 HB_DOCK_PANEL * hbDockPanelNew( void );
+
+typedef struct
+{
+    HB_DOCK_ID Id;
+
+    HWND hWnd;
+
+    TCHAR Name[64];
+
+    TCHAR Caption[128];
+
+    HB_DOCK_STATE State;
+
+} HB_DOCK_PANEL;
 
 void hbDockPanelDelete(
     HB_DOCK_PANEL * pPanel );

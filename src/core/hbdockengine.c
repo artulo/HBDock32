@@ -57,6 +57,13 @@ BOOL hbDockEngineProcessMessage(
                 pManager );
 
             return TRUE;
+		
+		case WM_TIMER:
+
+			hbDockKernelProcess(
+				pManager );
+
+			break;
 
         case WM_MOUSEMOVE:
 

@@ -1,20 +1,11 @@
 #ifndef HBDOCKDOCKOPERATION_H
 #define HBDOCKDOCKOPERATION_H
 
-#include "hbdocktree.h"
-#include "hbdockdocksite.h"
+#include "hbdockmanager.h"
+#include "hbdockcommand.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-HB_DOCK_NODE * hbDockInsertPanel(
-   HB_DOCK_NODE * pTarget,
-   HB_DOCK_PANEL * pPanel,
-   HB_DOCK_SITE Site );
-
-#ifdef __cplusplus
-}
-#endif
+BOOL hbDockExecuteDock(
+      HB_DOCK_MANAGER * pManager,
+      const HB_DOCK_COMMAND * pCommand );
 
 #endif

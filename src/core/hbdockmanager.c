@@ -9,6 +9,14 @@ BOOL hbDockManagerCreate(
     ZeroMemory(
         pManager,
         sizeof(HB_DOCK_MANAGER));
+		
+	ZeroMemory(
+		&pManager->Transaction,
+		sizeof(pManager->Transaction));
+	
+	ZeroMemory(
+		&pManager->Scheduler,
+		sizeof(HB_DOCK_SCHEDULER));
 
     pManager->hMainWnd = hWnd;
 
@@ -32,9 +40,32 @@ BOOL hbDockManagerCreate(
 	
 	hbDockPanelRegistryInit(
 		&pManager->Registry );	
+		
+	hbDockCommandQueueInit(
+		&pManager->CommandQueue);
 	
 	hbDockEventDispatcherInit(
 		pManager );
+		
+	hbDockTransactionBegin(
+		&pManager->Transaction);
+
+	ExecuteCommand(
+		pManager,
+		&Cmd);
+
+	hbDockTransactionCommit(
+		&pManager->Transaction);
+	
+	hbDockTransactionRollback(
+		&pManager->Transaction);
+		
+	hbDockQueueCommand(
+        pManager,
+        &Command );
+
+	hbDockKernelProcess(
+        pManager );
 		
     return TRUE;
 }
