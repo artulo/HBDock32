@@ -2,21 +2,19 @@
 #define HBDOCKAUTOHIDEBUTTONGEOMETRY_H
 
 #include <windows.h>
-
 #include "hbdockautohidebutton.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-BOOL hbDockAutoHideButtonGetRect(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton,
+void hbDockAutoHideButtonGetRect(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton,
    RECT * pRect );
 
-BOOL hbDockAutoHideButtonSetRect(
+void hbDockAutoHideButtonSetRect(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   const RECT * pRect,
-   BOOL bRepaint );
+   const RECT * pRect );
 
 #ifdef __cplusplus
 }

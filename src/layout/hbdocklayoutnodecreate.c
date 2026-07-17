@@ -5,22 +5,19 @@
 
 HB_DOCK_LAYOUT_NODE *
 hbDockLayoutCreateLeaf(
-      HWND hDock )
+    HB_DOCK_CONTAINER * pContainer )
 {
    HB_DOCK_LAYOUT_NODE * pNode;
 
-   pNode =
-      (HB_DOCK_LAYOUT_NODE*)
-      calloc(
-         1,
-         sizeof( HB_DOCK_LAYOUT_NODE ) );
+   pNode = (HB_DOCK_LAYOUT_NODE *)
+      calloc( 1, sizeof( HB_DOCK_LAYOUT_NODE ) );
 
    if( pNode == NULL )
       return NULL;
 
    pNode->Type = HB_LAYOUT_LEAF;
    pNode->Ratio = 0.5f;
-   pNode->hDockWindow = hDock;
+   pNode->pContainer = pContainer;
 
    return pNode;
 }
@@ -31,11 +28,8 @@ hbDockLayoutCreateSplit(
 {
    HB_DOCK_LAYOUT_NODE * pNode;
 
-   pNode =
-      (HB_DOCK_LAYOUT_NODE*)
-      calloc(
-         1,
-         sizeof( HB_DOCK_LAYOUT_NODE ) );
+   pNode = (HB_DOCK_LAYOUT_NODE *)
+      calloc( 1, sizeof( HB_DOCK_LAYOUT_NODE ) );
 
    if( pNode == NULL )
       return NULL;

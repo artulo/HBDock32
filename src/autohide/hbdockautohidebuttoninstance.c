@@ -2,14 +2,14 @@
 
 #include "hbdockautohidebuttoninstance.h"
 
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
+
 HINSTANCE hbDockAutoHideButtonGetInstance(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return NULL;
+   HB_SYMBOL_UNUSED( pButton );
 
-   return ( HINSTANCE )
-      GetWindowLong(
-         pButton->hWnd,
-         GWL_HINSTANCE );
+   return GetModuleHandle( NULL );
 }

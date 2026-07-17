@@ -10,6 +10,9 @@ void hbDockAutoHideApplySlide(
    if( pPane == NULL )
       return;
 
+   if( pPane->hWnd == NULL )
+      return;
+
    rc = pPane->WindowRect;
 
    MoveWindow(

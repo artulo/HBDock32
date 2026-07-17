@@ -2,7 +2,7 @@
 
 #include "hbdockmanagerlayout.h"
 
-void hbDockManagerLayout(
+void hbDockManagerUpdateLayout(
    HB_DOCK_MANAGER * pManager )
 {
    HB_DOCK_PANEL * p;
@@ -59,6 +59,6 @@ void hbDockManagerResize(
       cx,
       cy );
 
-   hbDockManagerLayout(
-      pManager );
+   hbDockManagerUpdateLayout(
+    pManager );
 }

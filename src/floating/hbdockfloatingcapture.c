@@ -1,5 +1,5 @@
 #include <windows.h>
-
+#include "hbapi.h"
 #include "hbdockfloatingcapture.h"
 
 void hbDockFloatingSetCapture(

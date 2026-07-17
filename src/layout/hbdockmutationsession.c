@@ -1,4 +1,8 @@
 #include "hbdockmutationsession.h"
+#include "hbdocklayoutnodecreate.h"
+#include "hbdocklayoutoptimizer.h"
+#include "hbdocklayoutvalidate.h"
+#include "hbdocklayoutcompact.h"
 
 BOOL hbDockMutationBegin(
         HB_DOCK_MUTATION_SESSION * pSession,
@@ -21,13 +25,13 @@ BOOL hbDockMutationCommit(
     if(!pSession->Active)
         return FALSE;
 
-    hbDockTreeCompact(
+    hbDockLayoutCompact(
         pSession->Tree );
 
-    hbDockTreeOptimize(
+    hbDockLayoutOptimize(
         pSession->Tree );
 
-    hbDockTreeValidate(
+    hbDockLayoutValidate(
         pSession->Tree );
 
     pSession->Active = FALSE;

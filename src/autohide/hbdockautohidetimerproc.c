@@ -1,7 +1,7 @@
 #include <windows.h>
 
 #include "hbdockautohidetimerproc.h"
-
+#include "hbapi.h"
 VOID CALLBACK hbDockAutoHideTimerProc(
    HWND hwnd,
    UINT uMsg,

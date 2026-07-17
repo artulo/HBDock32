@@ -10,6 +10,6 @@ void hbDockManagerMouseMove(
         return;
 
     hbDragPreviewMouseMove(
-        &pManager->PreviewController,
+        &pManager->Preview,
         pt );
 }

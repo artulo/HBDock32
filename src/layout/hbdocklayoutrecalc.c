@@ -1,4 +1,5 @@
 #include "hbdocklayoutrecalc.h"
+#include "hbdockcontainer.h"
 
 static void hbDockLayoutCalcNode(
       HB_DOCK_LAYOUT_NODE * pNode,
@@ -14,18 +15,18 @@ static void hbDockLayoutCalcNode(
 
    if( pNode->Type == HB_LAYOUT_LEAF )
    {
-      if( pNode->hDockWindow )
-      {
-         MoveWindow(
-            pNode->hDockWindow,
-            rc.left,
-            rc.top,
-            rc.right - rc.left,
-            rc.bottom - rc.top,
-            TRUE );
-      }
-
-      return;
+		if( pNode->pContainer != NULL &&
+			pNode->pContainer->hWnd != NULL )
+		{
+		   MoveWindow(
+			  pNode->pContainer->hWnd,
+			  rc.left,
+			  rc.top,
+			  rc.right - rc.left,
+			  rc.bottom - rc.top,
+			  TRUE );
+		}
+		return;
    }
 
    rc1 = rc;

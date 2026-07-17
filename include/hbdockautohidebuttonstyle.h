@@ -9,19 +9,19 @@
 extern "C" {
 #endif
 
-LONG hbDockAutoHideButtonGetStyle(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton );
+DWORD hbDockAutoHideButtonGetStyle(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton );
 
 void hbDockAutoHideButtonSetStyle(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   LONG lStyle );
+   DWORD dwStyle );
 
-LONG hbDockAutoHideButtonGetExStyle(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton );
+DWORD hbDockAutoHideButtonGetExStyle(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton );
 
 void hbDockAutoHideButtonSetExStyle(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   LONG lStyle );
+   DWORD dwExStyle );
 
 #ifdef __cplusplus
 }

@@ -57,3 +57,18 @@ void hbDockPreviewOverlayDestroy(
       pOverlay->hWnd = NULL;
    }
 }
+void hbDockPreviewOverlayHide(
+   HB_DOCK_PREVIEW_OVERLAY * pOverlay )
+{
+   if( pOverlay == NULL )
+      return;
+
+   if( pOverlay->hWnd )
+   {
+      ShowWindow(
+         pOverlay->hWnd,
+         SW_HIDE );
+   }
+
+   pOverlay->Visible = FALSE;
+}

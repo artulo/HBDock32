@@ -1,14 +1,15 @@
 #include <windows.h>
 
-#include "hbdockautohidebuttonowner.h"
+#include "hbdockautohidebuttoninstance.h"
 
-HWND hbDockAutoHideButtonGetOwner(
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
+
+HINSTANCE hbDockAutoHideButtonGetInstance(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return NULL;
+   HB_SYMBOL_UNUSED( pButton );
 
-   return GetWindow(
-      pButton->hWnd,
-      GW_OWNER );
+   return GetModuleHandle( NULL );
 }

@@ -9,7 +9,7 @@ BOOL hbDockContainerCreate(
    ZeroMemory(
       pContainer,
       sizeof(*pContainer));
-
+   pContainer->hWnd = hParent;
    pContainer->Type =
       HB_CONTAINER_EMPTY;
 

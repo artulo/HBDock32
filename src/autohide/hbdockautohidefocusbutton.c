@@ -2,22 +2,19 @@
 
 #include "hbdockautohidefocusbutton.h"
 
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
+
 void hbDockAutoHideFocusButton(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   SetFocus(
-      pButton->hWnd );
+   HB_SYMBOL_UNUSED( pButton );
 }
 
 int hbDockAutoHideButtonHasFocus(
    const HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return 0;
-
-   return GetFocus() ==
-      pButton->hWnd;
+   HB_SYMBOL_UNUSED( pButton );
+   return 0;
 }

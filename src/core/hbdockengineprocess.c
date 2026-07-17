@@ -39,7 +39,7 @@ static BOOL ExecuteCommand(
       case HB_CMD_FLOAT:
 
          /* Float Window */
-
+		 
          break;
 
       case HB_CMD_AUTOHIDE:

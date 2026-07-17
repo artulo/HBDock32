@@ -2,31 +2,22 @@
 
 #include "hbdockautohidebuttongeometry.h"
 
-BOOL hbDockAutoHideButtonGetRect(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton,
+void hbDockAutoHideButtonGetRect(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton,
    RECT * pRect )
 {
    if( pButton == NULL || pRect == NULL )
-      return FALSE;
+      return;
 
-   return GetWindowRect(
-      pButton->hWnd,
-      pRect );
+   *pRect = pButton->Rect;
 }
 
-BOOL hbDockAutoHideButtonSetRect(
+void hbDockAutoHideButtonSetRect(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   const RECT * pRect,
-   BOOL bRepaint )
+   const RECT * pRect )
 {
    if( pButton == NULL || pRect == NULL )
-      return FALSE;
+      return;
 
-   return MoveWindow(
-      pButton->hWnd,
-      pRect->left,
-      pRect->top,
-      pRect->right - pRect->left,
-      pRect->bottom - pRect->top,
-      bRepaint );
+   pButton->Rect = *pRect;
 }

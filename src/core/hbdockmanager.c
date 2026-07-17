@@ -2,6 +2,9 @@
 
 #include "hbdockmanager.h"
 
+
+
+
 BOOL hbDockManagerCreate(
       HB_DOCK_MANAGER * pManager,
       HWND hWnd )
@@ -47,26 +50,10 @@ BOOL hbDockManagerCreate(
 	hbDockEventDispatcherInit(
 		pManager );
 		
-	hbDockTransactionBegin(
-		&pManager->Transaction);
-
-	ExecuteCommand(
-		pManager,
-		&Cmd);
-
-	hbDockTransactionCommit(
-		&pManager->Transaction);
+	pManager->Dragging = FALSE;
+	pManager->UpdatingLayout = FALSE;
+	pManager->hCapturedWindow = NULL;	
 	
-	hbDockTransactionRollback(
-		&pManager->Transaction);
-		
-	hbDockQueueCommand(
-        pManager,
-        &Command );
-
-	hbDockKernelProcess(
-        pManager );
-		
     return TRUE;
 }
 

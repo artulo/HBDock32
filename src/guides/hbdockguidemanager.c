@@ -2,6 +2,7 @@
 
 #include "hbdockguidemanager.h"
 #include "hbdockguidecreate.h"
+#include "hbdockguidepaint.h"
 
 BOOL hbDockGuideManagerInit(
    HB_DOCK_GUIDE_MANAGER * pManager,
@@ -55,4 +56,25 @@ void hbDockGuideManagerDestroy(
    for( i = 0; i < HB_DOCK_GUIDE_COUNT; ++i )
       hbDockGuideDestroy(
          &pManager->Guides[ i ] );
+}
+void hbDockGuideManagerPaint(
+   HB_DOCK_GUIDE_MANAGER * pManager )
+{
+	int i;
+	HDC hdc;
+
+	hdc = GetDC(
+			pManager->hOwner );
+	if( pManager == NULL )
+      return;
+
+	for( i = 0; i < HB_DOCK_GUIDE_COUNT; ++i )
+	{
+      hbDockGuidePaint(
+         &pManager->Guides[i],
+         hdc );
+	}
+	ReleaseDC(
+	   pManager->hOwner,
+	   hdc );
 }

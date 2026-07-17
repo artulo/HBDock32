@@ -26,6 +26,9 @@ BOOL hbDockGuideManagerInit(
 void hbDockGuideManagerDestroy(
    HB_DOCK_GUIDE_MANAGER * pManager );
 
+void hbDockGuideManagerPaint(
+   HB_DOCK_GUIDE_MANAGER * pManager );
+   
 #ifdef __cplusplus
 }
 #endif

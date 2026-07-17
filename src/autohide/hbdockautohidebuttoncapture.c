@@ -3,26 +3,19 @@
 #include "hbdockautohidebuttoncapture.h"
 
 void hbDockAutoHideButtonSetCapture(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton )
+    HWND hWnd )
 {
-   if( pButton == NULL )
-      return;
-
-   SetCapture(
-      pButton->hWnd );
+    if( hWnd != NULL )
+        SetCapture( hWnd );
 }
 
 void hbDockAutoHideButtonReleaseCapture( void )
 {
-   ReleaseCapture();
+    ReleaseCapture();
 }
 
 int hbDockAutoHideButtonHasCapture(
-   const HB_DOCK_AUTOHIDE_BUTTON * pButton )
+    HWND hWnd )
 {
-   if( pButton == NULL )
-      return 0;
-
-   return GetCapture() ==
-      pButton->hWnd;
+    return GetCapture() == hWnd;
 }

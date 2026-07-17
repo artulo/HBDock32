@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <tchar.h>
 
 #include "hbdockautohidebuttontext.h"
 
@@ -9,9 +10,16 @@ void hbDockAutoHideButtonSetText(
    if( pButton == NULL )
       return;
 
-   SetWindowText(
-      pButton->hWnd,
-      pszText );
+   if( pszText == NULL )
+      pszText = TEXT( "" );
+
+   _tcsncpy(
+      pButton->Text,
+      pszText,
+      HB_DOCK_AUTOHIDE_TEXT_MAX - 1 );
+
+   pButton->Text[
+      HB_DOCK_AUTOHIDE_TEXT_MAX - 1 ] = TEXT( '\0' );
 }
 
 int hbDockAutoHideButtonGetText(
@@ -19,11 +27,17 @@ int hbDockAutoHideButtonGetText(
    LPTSTR pszText,
    int nMax )
 {
-   if( pButton == NULL )
+   if( pButton == NULL ||
+       pszText == NULL ||
+       nMax <= 0 )
       return 0;
 
-   return GetWindowText(
-      pButton->hWnd,
+   _tcsncpy(
       pszText,
-      nMax );
+      pButton->Text,
+      nMax - 1 );
+
+   pszText[ nMax - 1 ] = TEXT( '\0' );
+
+   return ( int ) _tcslen( pszText );
 }

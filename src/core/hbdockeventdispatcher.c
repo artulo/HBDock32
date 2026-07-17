@@ -1,29 +1,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "hbdockmanager.h"
 #include "hbdockeventdispatcher.h"
 
 #define HB_MAX_EVENT_HANDLERS 64
 
-typedef struct
-{
-    HB_DOCK_EVENT_HANDLER Handlers[
-        HB_MAX_EVENT_HANDLERS ];
-
-    UINT Count;
-
-} HB_DOCK_EVENT_DISPATCHER;
-
 BOOL hbDockEventDispatcherInit(
         HB_DOCK_MANAGER * pManager )
 {
-    ZeroMemory(
+	ZeroMemory(
+    &pManager->Dispatcher,
+    sizeof( pManager->Dispatcher ) );
+	/*    ZeroMemory(
 
         &pManager->Dispatcher,
 
         sizeof(
             pManager->Dispatcher ) );
-
+*/
     return TRUE;
 }
 
@@ -31,7 +26,7 @@ BOOL hbDockRegisterEventHandler(
 
         HB_DOCK_MANAGER * pManager,
 
-        HB_DOCK_EVENT_PROC Proc,
+        HB_DOCK_EVENT_HANDLER_PROC Proc,
 
         void * UserData )
 {

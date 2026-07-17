@@ -8,12 +8,13 @@ extern "C" {
 #endif
 
 void hbDockAutoHideButtonSetCapture(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton );
+    HWND hWnd );
+
+int hbDockAutoHideButtonHasCapture(
+    HWND hWnd );
 
 void hbDockAutoHideButtonReleaseCapture( void );
 
-int hbDockAutoHideButtonHasCapture(
-   const HB_DOCK_AUTOHIDE_BUTTON * pButton );
 
 #ifdef __cplusplus
 }

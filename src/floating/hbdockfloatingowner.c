@@ -31,4 +31,4 @@ HWND hbDockFloatingGetOwner(
       GetWindowLong(
          pFrame->hWnd,
          GWL_HWNDPARENT );
-}hbdockfloatingowner.c
+}

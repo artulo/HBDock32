@@ -9,6 +9,11 @@
 #include "hbdockdiamond.h"
 #include "hbdockautohideanimationmanager.h"
 #include "hbdockscheduler.h"
+#include "hbdockpanelregistry.h"
+#include "hbdockcommandqueue.h"
+#include "hbdocktransaction.h"
+#include "hbdockeventdispatcher.h"
+#include "hbdockautohidemanager.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +25,7 @@ typedef struct _HB_DOCK_MANAGER
 
     HB_DOCK_LAYOUT_TREE LayoutTree;
 
-    HB_DOCK_PANEL_REGISTRY Registry;
+   HB_DOCK_PANEL_REGISTRY Registry;
 
     HB_DOCK_EVENT_DISPATCHER Dispatcher;
 
@@ -30,11 +35,13 @@ typedef struct _HB_DOCK_MANAGER
 
     HB_DOCK_DIAMOND Diamond;
 
+	HB_DOCK_AUTOHIDE_MANAGER AutoHideManager;
+
     HB_DOCK_AUTOHIDE_ANIMATION_MANAGER AnimationManager;
 	
-	HB_DOCK_COMMAND_QUEUE CommandQueue;
+ 	HB_DOCK_COMMAND_QUEUE CommandQueue;
 	
-	HB_DOCK_TRANSACTION Transaction;
+ 	HB_DOCK_TRANSACTION Transaction;
 	
 	HB_DOCK_SCHEDULER Scheduler;
 

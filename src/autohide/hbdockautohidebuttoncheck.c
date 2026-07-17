@@ -5,39 +5,22 @@
 void hbDockAutoHideButtonCheck(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   SendMessage(
-      pButton->hWnd,
-      BM_SETCHECK,
-      BST_CHECKED,
-      0 );
+   if( pButton )
+      pButton->Checked = TRUE;
 }
 
 void hbDockAutoHideButtonUncheck(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   SendMessage(
-      pButton->hWnd,
-      BM_SETCHECK,
-      BST_UNCHECKED,
-      0 );
+   if( pButton )
+      pButton->Checked = FALSE;
 }
 
 int hbDockAutoHideButtonIsChecked(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
    if( pButton == NULL )
-      return 0;
+      return FALSE;
 
-   return ( int )
-      SendMessage(
-         pButton->hWnd,
-         BM_GETCHECK,
-         0,
-         0 ) == BST_CHECKED;
+   return pButton->Checked;
 }

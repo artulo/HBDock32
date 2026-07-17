@@ -3,6 +3,7 @@
 #include "hbdocklayout.h"
 #include "hbdockmanager.h"
 #include "hbdockpanel.h"
+#include "hbdockmanagerlayout.h"
 
 static void hbDockLayoutLeft(
     HB_DOCK_MANAGER * pManager,
@@ -10,7 +11,7 @@ static void hbDockLayoutLeft(
     RECT * pClient )
 {
     int cx;
-
+	(void) pManager;
     cx = pPanel->PreferredSize;
 
     pPanel->Rect.left   = pClient->left;
@@ -27,7 +28,7 @@ static void hbDockLayoutRight(
     RECT * pClient )
 {
     int cx;
-
+	(void) pManager;
     cx = pPanel->PreferredSize;
 
     pPanel->Rect.left   = pClient->right - cx;
@@ -44,7 +45,7 @@ static void hbDockLayoutTop(
     RECT * pClient )
 {
     int cy;
-
+	(void) pManager;
     cy = pPanel->PreferredSize;
 
     pPanel->Rect.left   = pClient->left;
@@ -61,7 +62,7 @@ static void hbDockLayoutBottom(
     RECT * pClient )
 {
     int cy;
-
+	(void) pManager;
     cy = pPanel->PreferredSize;
 
     pPanel->Rect.left   = pClient->left;
@@ -77,6 +78,7 @@ static void hbDockLayoutFill(
     HB_DOCK_PANEL * pPanel,
     RECT * pClient )
 {
+	(void) pManager;
     pPanel->Rect = *pClient;
 }
 
@@ -89,12 +91,12 @@ void hbDockPerformLayout(
     if( pManager == NULL )
         return;
 
-    GetClientRect(
-        pManager->hParent,
-        &rc );
+	GetClientRect(
+		pManager->hMainWnd,
+		&rc );
 
-    pManager->ClientRect = rc;
-
+  //  pManager->ClientRect = rc;
+/*
     pPanel = pManager->FirstPanel;
 
     while( pPanel != NULL )
@@ -142,7 +144,7 @@ void hbDockPerformLayout(
 
         pPanel = pPanel->Next;
     }
-
-    hbDockManagerLayout(
-        pManager );
+*/
+    hbDockManagerUpdateLayout(
+		pManager );
 }

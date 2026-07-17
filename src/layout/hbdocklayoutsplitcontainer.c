@@ -2,6 +2,7 @@
 
 #include "hbdocklayoutsplitcontainer.h"
 #include "hbdockcontainer.h"
+#include "hbdocklayoutnodecreate.h"
 
 BOOL hbDockLayoutSplitContainer(
       HB_DOCK_LAYOUT_NODE * pNode,

@@ -1,16 +1,11 @@
-#include <windows.h>
-
 #include "hbdockautohideupdatebutton.h"
+
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
 
 void hbDockAutoHideUpdateButton(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   if( pButton->hWnd == NULL )
-      return;
-
-   UpdateWindow(
-      pButton->hWnd );
+   HB_SYMBOL_UNUSED( pButton );
 }

@@ -6,6 +6,10 @@
 #include "hbdockcontainerlayout.h"
 #include "hbdockpreviewoverlay.h"
 #include "hbdockguidemanager.h"
+#include "hbdockkernel.h"
+#include "hbdockpreviewpaint.h"
+
+
 
 BOOL hbDockEngineInitialize(
         HB_DOCK_MANAGER * pManager )
@@ -41,6 +45,9 @@ BOOL hbDockEngineProcessMessage(
         WPARAM wp,
         LPARAM lp )
 {
+	(void)hWnd;
+	(void)wp;
+	(void)lp;
     switch(msg)
     {
 
@@ -87,14 +94,22 @@ BOOL hbDockEngineProcessMessage(
 void hbDockEngineRender(
         HB_DOCK_MANAGER * pManager )
 {
-    hbDockGuideManagerPaint(
+    HDC hDC;
 
+    hDC = GetDC(
+        pManager->hMainWnd );
+
+    hbDockGuideManagerPaint(
         &pManager->GuideManager );
 
-    hbDockPreviewPaint(
+	hbDockPreviewPaint(
+		&pManager->Preview,
+		hDC );
 
-        &pManager->Preview );
-
+    ReleaseDC(
+        pManager->hMainWnd,
+        hDC );
+}
     /*
        Floating
 
@@ -105,4 +120,4 @@ void hbDockEngineRender(
        Splitters
 
     */
-}
+ 

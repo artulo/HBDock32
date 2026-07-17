@@ -1,6 +1,8 @@
 #include "hbdragpreviewupdate.h"
 
 #include "hbdragpreviewcalc.h"
+#include "hbdockpreviewrect.h"
+#include "hbdockpreviewshow.h"
 
 void hbDragPreviewUpdate(
       HB_DRAG_PREVIEW_CONTROLLER * pController,

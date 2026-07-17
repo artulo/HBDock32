@@ -5,6 +5,7 @@
 
 #include "hbdockarray.h"
 #include "hbdockpanel.h"
+#include "hbdockautohidepane.h"
 
 #ifdef __cplusplus
 extern "C" {

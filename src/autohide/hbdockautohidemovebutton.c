@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "hbdockautohidemovebutton.h"
 
 void hbDockAutoHideMoveButton(
@@ -12,11 +10,8 @@ void hbDockAutoHideMoveButton(
    if( pButton == NULL )
       return;
 
-   MoveWindow(
-      pButton->hWnd,
-      x,
-      y,
-      cx,
-      cy,
-      TRUE );
+   pButton->Rect.left   = x;
+   pButton->Rect.top    = y;
+   pButton->Rect.right  = x + cx;
+   pButton->Rect.bottom = y + cy;
 }

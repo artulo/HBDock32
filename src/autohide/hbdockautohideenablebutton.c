@@ -8,9 +8,7 @@ void hbDockAutoHideEnableButton(
    if( pButton == NULL )
       return;
 
-   EnableWindow(
-      pButton->hWnd,
-      TRUE );
+   pButton->Enabled = TRUE;
 }
 
 void hbDockAutoHideDisableButton(
@@ -19,9 +17,7 @@ void hbDockAutoHideDisableButton(
    if( pButton == NULL )
       return;
 
-   EnableWindow(
-      pButton->hWnd,
-      FALSE );
+   pButton->Enabled = FALSE;
 }
 
 int hbDockAutoHideButtonEnabled(
@@ -30,6 +26,5 @@ int hbDockAutoHideButtonEnabled(
    if( pButton == NULL )
       return 0;
 
-   return IsWindowEnabled(
-      pButton->hWnd );
+   return pButton->Enabled;
 }

@@ -2,6 +2,7 @@
 
 #include "hbdocklayoutoptimizer.h"
 #include "hbdocklayoutvalidate.h"
+#include "hbdockengine.h"
 
 BOOL hbDockLayoutSynchronize(
         HB_DOCK_MANAGER * pManager )

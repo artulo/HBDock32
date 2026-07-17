@@ -44,16 +44,14 @@ int hbDockFloatingGetState(
          &wp ) )
       return HB_FLOAT_STATE_HIDDEN;
 
-   switch( wp.showCmd )
-   {
-      case SW_SHOWMINIMIZED:
-      case SW_MINIMIZE:
-         return HB_FLOAT_STATE_MINIMIZED;
+    switch( wp.showCmd )
+	{
+	   case SW_MINIMIZE:
+		  return HB_FLOAT_STATE_MINIMIZED;
 
-      case SW_SHOWMAXIMIZED:
-      case SW_MAXIMIZE:
-         return HB_FLOAT_STATE_MAXIMIZED;
-   }
+	   case SW_MAXIMIZE:
+		  return HB_FLOAT_STATE_MAXIMIZED;
+	}
 
    if( IsWindowVisible( pFrame->hWnd ) )
       return HB_FLOAT_STATE_NORMAL;

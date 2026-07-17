@@ -8,9 +8,7 @@ int hbDockAutoHideButtonGetWindowId(
    if( pButton == NULL )
       return 0;
 
-   return GetWindowLong(
-      pButton->hWnd,
-      GWL_ID );
+   return pButton->WindowId;
 }
 
 void hbDockAutoHideButtonSetWindowId(
@@ -20,8 +18,5 @@ void hbDockAutoHideButtonSetWindowId(
    if( pButton == NULL )
       return;
 
-   SetWindowLong(
-      pButton->hWnd,
-      GWL_ID,
-      ( LONG ) nId );
+   pButton->WindowId = nId;
 }

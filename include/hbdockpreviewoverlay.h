@@ -23,6 +23,9 @@ BOOL hbDockPreviewOverlayCreate(
    HB_DOCK_PREVIEW_OVERLAY * pOverlay,
    HWND hOwner );
 
+void hbDockPreviewOverlayHide(
+   HB_DOCK_PREVIEW_OVERLAY * pOverlay );
+
 void hbDockPreviewOverlayDestroy(
    HB_DOCK_PREVIEW_OVERLAY * pOverlay );
 

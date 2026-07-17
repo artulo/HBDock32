@@ -10,6 +10,7 @@
 #include "hbdockmanagerdrag.h"
 #include "hbdockmanagerautohide.h"
 #include "hbdockmanagerlayout.h"
+#include "hbdockmanagermousemove.h"
 
 #define HBDOCK_DRAG_THRESHOLD_CX   4
 #define HBDOCK_DRAG_THRESHOLD_CY   4
@@ -30,7 +31,7 @@ BOOL hbDockHostAttach(
    pHost->pManager = pManager;
 
    if( pManager != NULL )
-      pManager->hParent = hWnd;
+      pManager->hMainWnd = hWnd;
 
    return TRUE;
 }
@@ -86,7 +87,7 @@ static HB_DOCK_NODE * hbDockHostFindCaptionAt(
    RECT rc;
 
    hbDockHitTestTree(
-      pManager->LayoutEngine.Root,
+      pManager->LayoutTree.Root,
       pt,
       &Hit );
 
@@ -190,10 +191,9 @@ BOOL hbDockHostHandleMessage(
          pt.x = GET_X_LPARAM( lParam );
          pt.y = GET_Y_LPARAM( lParam );
 
-         pSplitNode = hbDockTreeFindSplitterAt(
-            pHost->pManager->LayoutEngine.Root,
-            pt );
-
+  pSplitNode = hbDockTreeFindSplitterAt(
+   pHost->pManager->LayoutTree.Root,
+   pt );
          if( pSplitNode != NULL )
          {
             hbDockSplitNodeInit(

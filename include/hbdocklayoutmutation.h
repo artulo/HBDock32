@@ -3,14 +3,15 @@
 
 #include "hbdocklayouttree.h"
 #include "hbdockpanelregistry.h"
+#include "hbdockcontainer.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-BOOL hbDockLayoutInsertPanel(
+BOOL hbDockLayoutInsertContainer(
         HB_DOCK_LAYOUT_TREE * pTree,
-        HB_DOCK_PANEL * pPanel,
+        HB_DOCK_CONTAINER * pContainer,
         UINT Side );
 
 BOOL hbDockLayoutRemovePanel(

@@ -12,11 +12,11 @@ static HB_DOCK_AUTOHIDE * hbDockManagerFindAutoHide(
 {
    int i;
 
-   for( i = 0; i < pManager->AutoHidePanels.Count; ++i )
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
    {
       HB_DOCK_AUTOHIDE * pAutoHide =
          ( HB_DOCK_AUTOHIDE * ) hbDockArrayGet(
-            &pManager->AutoHidePanels,
+            &pManager->AutoHideManager.Panes,
             i );
 
       if( pAutoHide != NULL && pAutoHide->Panel == pPanel )
@@ -33,13 +33,21 @@ static void hbDockManagerCalcAutoHideRects(
    RECT * pHidden,
    RECT * pVisible )
 {
-   RECT rc = pManager->ClientRect;
+   RECT rc;
+   int cx;
+   int cy;
 
-   int cx = pPanel->DockSize.cx > 0 ?
-      pPanel->DockSize.cx : pPanel->MinWidth;
+   GetClientRect(
+      pManager->hMainWnd,
+      &rc );
 
-   int cy = pPanel->DockSize.cy > 0 ?
-      pPanel->DockSize.cy : pPanel->MinHeight;
+   cx = pPanel->DockSize.cx > 0 ?
+        pPanel->DockSize.cx :
+        pPanel->MinWidth;
+
+   cy = pPanel->DockSize.cy > 0 ?
+        pPanel->DockSize.cy :
+        pPanel->MinHeight;;
 
    switch( Site )
    {
@@ -166,7 +174,7 @@ void hbDockManagerAutoHidePanel(
    pPanel->Visible = 0;
 
    hbDockArrayAdd(
-      &pManager->AutoHidePanels,
+      &pManager->AutoHideManager.Panes,
       pAutoHide );
 
    hbDockManagerLayout(
@@ -189,14 +197,14 @@ void hbDockManagerAutoHideRestore(
    if( pAutoHide == NULL )
       return;
 
-   for( i = 0; i < pManager->AutoHidePanels.Count; ++i )
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
    {
       if( hbDockArrayGet(
-             &pManager->AutoHidePanels,
+             &pManager->AutoHideManager.Panes,
              i ) == pAutoHide )
       {
          hbDockArrayRemove(
-            &pManager->AutoHidePanels,
+            &pManager->AutoHideManager.Panes,
             i );
          break;
       }
@@ -214,11 +222,10 @@ void hbDockManagerAutoHideRestore(
          SW_SHOW );
 
    hbDockManagerDockPanelAt(
-      pManager,
-      pManager->LayoutEngine.Root,
-      pPanel,
-      Site );
-
+	   pManager,
+	   pManager->LayoutTree.Root,
+	   pPanel,
+	   Site );
    hbDockManagerLayout(
       pManager );
 }
@@ -289,11 +296,11 @@ HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
    if( pManager == NULL )
       return NULL;
 
-   for( i = 0; i < pManager->AutoHidePanels.Count; ++i )
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
    {
       HB_DOCK_AUTOHIDE * pAutoHide =
          ( HB_DOCK_AUTOHIDE * ) hbDockArrayGet(
-            &pManager->AutoHidePanels,
+            &pManager->AutoHideManager.Panes,
             i );
 
       if( pAutoHide != NULL &&

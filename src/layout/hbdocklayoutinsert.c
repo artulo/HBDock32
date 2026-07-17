@@ -1,24 +1,23 @@
 #include "hbdocklayoutinsert.h"
 #include "hbdocklayoutnodecreate.h"
+#include "hbdockcontainer.h"
 
 BOOL hbDockLayoutInsertRoot(
       HB_DOCK_LAYOUT_TREE * pTree,
-      HWND hDock )
+      HB_DOCK_CONTAINER * pContainer )
 {
    if( pTree->Root )
       return FALSE;
 
    pTree->Root =
-      hbDockLayoutCreateLeaf(
-         hDock );
+      hbDockLayoutCreateLeaf( pContainer );
 
-   return
-      pTree->Root != NULL;
+   return pTree->Root != NULL;
 }
 
 BOOL hbDockLayoutSplitLeaf(
       HB_DOCK_LAYOUT_NODE * pLeaf,
-      HWND hNewDock,
+      HB_DOCK_CONTAINER * pNewContainer,
       HB_LAYOUT_NODE_TYPE SplitType )
 {
    HB_DOCK_LAYOUT_NODE * pOld;
@@ -27,13 +26,14 @@ BOOL hbDockLayoutSplitLeaf(
    if( pLeaf == NULL )
       return FALSE;
 
-   pOld =
-      hbDockLayoutCreateLeaf(
-         pLeaf->hDockWindow );
+   pOld = hbDockLayoutCreateLeaf(
+      pLeaf->pContainer );
 
-   pNew =
-      hbDockLayoutCreateLeaf(
-         hNewDock );
+   pNew = hbDockLayoutCreateLeaf(
+      pNewContainer );
+
+   if( pOld == NULL || pNew == NULL )
+      return FALSE;
 
    pLeaf->Type = SplitType;
 
@@ -43,7 +43,7 @@ BOOL hbDockLayoutSplitLeaf(
    pOld->Parent = pLeaf;
    pNew->Parent = pLeaf;
 
-   pLeaf->hDockWindow = NULL;
+   pLeaf->pContainer = NULL;
 
    return TRUE;
 }

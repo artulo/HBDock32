@@ -4,21 +4,21 @@ void hbDockAutoHideBeginMouseLeave(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->WaitingMouseLeave = 1;
+      pPane->WaitingMouseLeave = TRUE;
 }
 
 void hbDockAutoHideEndMouseLeave(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->WaitingMouseLeave = 0;
+      pPane->WaitingMouseLeave = FALSE;
 }
 
 int hbDockAutoHideWaitingMouseLeave(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
-      return 0;
+      return FALSE;
 
    return pPane->WaitingMouseLeave;
 }

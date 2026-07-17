@@ -1,4 +1,5 @@
 #include "hbdocktabdroptarget.h"
+#include "hbapi.h"
 
 HB_DOCK_TAB_GROUP *
 hbDockTabFindDropTarget(

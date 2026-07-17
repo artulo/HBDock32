@@ -1,6 +1,8 @@
 #include <windows.h>
 
 #include "hbdockmanagerdrag.h"
+#include "hbdockdiamondshow.h"
+#include "hbdockpreviewoverlay.h"
 
 void hbDockManagerBeginDrag(
       HB_DOCK_MANAGER * pManager,
@@ -27,6 +29,6 @@ void hbDockManagerEndDrag(
     hbDockDiamondHide(
         &pManager->Diamond );
 
-    hbDockPreviewHide(
-        &pManager->Preview );
+	hbDockPreviewOverlayHide(
+		&pManager->Preview );	
 }

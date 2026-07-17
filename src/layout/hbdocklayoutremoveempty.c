@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "hbdocklayoutremoveempty.h"
+#include "hbdockcontainer.h"
 
 BOOL hbDockLayoutRemoveEmpty(
       HB_DOCK_LAYOUT_NODE * pNode )

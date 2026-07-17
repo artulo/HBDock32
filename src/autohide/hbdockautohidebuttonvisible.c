@@ -8,9 +8,7 @@ void hbDockAutoHideButtonShow(
    if( pButton == NULL )
       return;
 
-   ShowWindow(
-      pButton->hWnd,
-      SW_SHOW );
+   pButton->Visible = TRUE;
 }
 
 void hbDockAutoHideButtonHide(
@@ -19,9 +17,7 @@ void hbDockAutoHideButtonHide(
    if( pButton == NULL )
       return;
 
-   ShowWindow(
-      pButton->hWnd,
-      SW_HIDE );
+   pButton->Visible = FALSE;
 }
 
 int hbDockAutoHideButtonIsVisible(
@@ -30,6 +26,5 @@ int hbDockAutoHideButtonIsVisible(
    if( pButton == NULL )
       return 0;
 
-   return IsWindowVisible(
-      pButton->hWnd );
+   return pButton->Visible;
 }

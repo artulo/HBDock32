@@ -1,5 +1,4 @@
 #include "hbdockcommandexecutor.h"
-
 #include "hbdockdockoperation.h"
 #include "hbdockfloatoperation.h"
 #include "hbdockautohideoperation.h"

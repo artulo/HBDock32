@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "hbdockcontainersplit.h"
+#include "hbapi.h"
 
 BOOL hbDockContainerSplit(
       HB_DOCK_CONTAINER * pContainer,

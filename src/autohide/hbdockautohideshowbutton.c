@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "hbdockautohideshowbutton.h"
 
 void hbDockAutoHideShowButton(
@@ -8,9 +6,7 @@ void hbDockAutoHideShowButton(
    if( pButton == NULL )
       return;
 
-   ShowWindow(
-      pButton->hWnd,
-      SW_SHOW );
+   pButton->Visible = TRUE;
 }
 
 void hbDockAutoHideHideButton(
@@ -19,7 +15,5 @@ void hbDockAutoHideHideButton(
    if( pButton == NULL )
       return;
 
-   ShowWindow(
-      pButton->hWnd,
-      SW_HIDE );
+   pButton->Visible = FALSE;
 }

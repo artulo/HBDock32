@@ -1,18 +1,12 @@
-#include <windows.h>
 
 #include "hbdockautohideinvalidatebutton.h"
+
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
 
 void hbDockAutoHideInvalidateButton(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   if( pButton->hWnd == NULL )
-      return;
-
-   InvalidateRect(
-      pButton->hWnd,
-      NULL,
-      TRUE );
+   HB_SYMBOL_UNUSED( pButton );
 }

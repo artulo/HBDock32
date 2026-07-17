@@ -4,10 +4,8 @@ void hbDockAutoHideSetState(
    HB_DOCK_AUTOHIDE_PANE * pPane,
    DWORD dwState )
 {
-   if( pPane == NULL )
-      return;
-
-   pPane->State = dwState;
+   if( pPane != NULL )
+      pPane->State = dwState;
 }
 
 DWORD hbDockAutoHideGetState(

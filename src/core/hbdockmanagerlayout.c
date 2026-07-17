@@ -1,15 +1,19 @@
 #include "hbdockmanagerlayout.h"
+#include "hbdocklayoutrecalc.h"
 
 void hbDockManagerUpdateLayout(
       HB_DOCK_MANAGER * pManager )
 {
-    if( pManager->UpdatingLayout )
+    RECT rc;
+
+    if( pManager == NULL )
         return;
 
-    pManager->UpdatingLayout = TRUE;
+    GetClientRect(
+        pManager->hMainWnd,
+        &rc );
 
-    hbDockLayoutTreeRecalc(
-        &pManager->LayoutTree );
-
-    pManager->UpdatingLayout = FALSE;
+    hbDockLayoutRecalc(
+        &pManager->LayoutTree,
+        rc );
 }

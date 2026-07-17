@@ -2,24 +2,22 @@
 
 #include "hbdockautohidebuttonparent.h"
 
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
+
 HWND hbDockAutoHideButtonGetParent(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return NULL;
+   HB_SYMBOL_UNUSED( pButton );
 
-   return GetParent(
-      pButton->hWnd );
+   return NULL;
 }
 
 void hbDockAutoHideButtonSetParent(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
    HWND hParent )
 {
-   if( pButton == NULL )
-      return;
-
-   SetParent(
-      pButton->hWnd,
-      hParent );
+   HB_SYMBOL_UNUSED( pButton );
+   HB_SYMBOL_UNUSED( hParent );
 }

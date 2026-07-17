@@ -15,3 +15,12 @@ BOOL hbDockLayoutOptimize(
    return hbOptimizeNode(
       pTree->Root );
 }
+
+static BOOL hbOptimizeNode(
+      HB_DOCK_LAYOUT_NODE * pNode )
+{
+   if( pNode == NULL )
+      return FALSE;
+
+   return TRUE;
+}

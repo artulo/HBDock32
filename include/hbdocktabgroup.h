@@ -2,6 +2,7 @@
 #define HBDOCKTABGROUP_H
 
 #include <windows.h>
+#include "hbdockpanel.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,7 +10,7 @@ extern "C" {
 
 typedef struct _HB_DOCK_TAB
 {
-   HWND hDock;
+   HB_DOCK_PANEL * pPanel;
 
    TCHAR Caption[128];
 

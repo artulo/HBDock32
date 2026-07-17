@@ -4,21 +4,21 @@ void hbDockAutoHideSelect(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Selected = 1;
+      pPane->Selected = TRUE;
 }
 
 void hbDockAutoHideUnselect(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Selected = 0;
+      pPane->Selected = FALSE;
 }
 
 int hbDockAutoHideIsSelected(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
-      return 0;
+      return FALSE;
 
    return pPane->Selected;
 }

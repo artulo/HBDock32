@@ -8,11 +8,12 @@ extern "C" {
 #endif
 
 BOOL hbDockDiamondCreate(
-   HB_DOCK_DIAMOND * pDiamond,
-   HWND hParent );
+    HB_DOCK_DIAMOND * pDiamond,
+    HWND hParent );
 
 void hbDockDiamondDestroy(
-   HB_DOCK_DIAMOND * pDiamond );
+    HB_DOCK_DIAMOND * pDiamond );
+	
 
 #ifdef __cplusplus
 }

@@ -4,21 +4,21 @@ void hbDockAutoHideLock(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Locked = 1;
+      pPane->Locked = TRUE;
 }
 
 void hbDockAutoHideUnlock(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Locked = 0;
+      pPane->Locked = FALSE;
 }
 
 int hbDockAutoHideIsLocked(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
-      return 0;
+      return FALSE;
 
    return pPane->Locked;
 }

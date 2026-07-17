@@ -2,6 +2,7 @@
 
 #include "hbdockdiamondhit.h"
 
+#include "hbdragpreviewhide.h"
 #include "hbdragpreviewupdate.h"
 
 void hbDragPreviewMouseMove(

@@ -4,21 +4,21 @@ void hbDockAutoHideBeginHover(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Hover = 1;
+      pPane->Hover = TRUE;
 }
 
 void hbDockAutoHideEndHover(
    HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane != NULL )
-      pPane->Hover = 0;
+      pPane->Hover = FALSE;
 }
 
 int hbDockAutoHideIsHover(
    const HB_DOCK_AUTOHIDE_PANE * pPane )
 {
    if( pPane == NULL )
-      return 0;
+      return FALSE;
 
    return pPane->Hover;
 }

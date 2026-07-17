@@ -1,5 +1,5 @@
-#ifndef HBDOCKAUTOHIDEOPERATION_H
-#define HBDOCKAUTOHIDEOPERATION_H
+#ifndef HBDOCKSPLITOPERATION_H
+#define HBDOCKSPLITOPERATION_H
 
 #include "hbdockmanager.h"
 #include "hbdockcommand.h"

@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+typedef struct _HB_DOCK_MANAGER HB_DOCK_MANAGER;
+
 typedef enum
 {
    HB_DIAMOND_NONE = 0,
@@ -35,6 +37,13 @@ typedef struct _HB_DOCK_DIAMOND
    BOOL Visible;
 
 } HB_DOCK_DIAMOND;
+
+BOOL hbDockDiamondCreate(
+    HB_DOCK_DIAMOND * pDiamond,
+    HWND hParent );
+
+void hbDockDiamondDestroy(
+    HB_DOCK_DIAMOND * pDiamond );
 
 #ifdef __cplusplus
 }

@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+typedef struct _HB_DOCK_CONTAINER HB_DOCK_CONTAINER;
+
 typedef enum
 {
    HB_LAYOUT_LEAF = 0,

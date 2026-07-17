@@ -2,6 +2,7 @@
 #define HBDOCKPANELSTATE_H
 
 #include <windows.h>
+#include "hbdockpanel.h"
 
 #ifdef __cplusplus
 extern "C" {

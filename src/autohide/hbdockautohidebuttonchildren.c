@@ -2,29 +2,30 @@
 
 #include "hbdockautohidebuttonchildren.h"
 
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
+
 HWND hbDockAutoHideButtonGetFirstChild(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return NULL;
+   HB_SYMBOL_UNUSED( pButton );
 
-   return GetWindow(
-      pButton->hWnd,
-      GW_CHILD );
+   return NULL;
 }
 
 HWND hbDockAutoHideButtonGetNextSibling(
    HWND hWnd )
 {
-   return GetWindow(
-      hWnd,
-      GW_HWNDNEXT );
+   HB_SYMBOL_UNUSED( hWnd );
+
+   return NULL;
 }
 
 HWND hbDockAutoHideButtonGetPreviousSibling(
    HWND hWnd )
 {
-   return GetWindow(
-      hWnd,
-      GW_HWNDPREV );
+   HB_SYMBOL_UNUSED( hWnd );
+
+   return NULL;
 }

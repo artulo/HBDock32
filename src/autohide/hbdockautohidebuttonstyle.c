@@ -2,50 +2,36 @@
 
 #include "hbdockautohidebuttonstyle.h"
 
-LONG hbDockAutoHideButtonGetStyle(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton )
-{
-   if( pButton == NULL )
-      return 0;
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
 
-   return GetWindowLong(
-      pButton->hWnd,
-      GWL_STYLE );
+DWORD hbDockAutoHideButtonGetStyle(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton )
+{
+   HB_SYMBOL_UNUSED( pButton );
+   return 0;
 }
 
 void hbDockAutoHideButtonSetStyle(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   LONG lStyle )
+   DWORD dwStyle )
 {
-   if( pButton == NULL )
-      return;
-
-   SetWindowLong(
-      pButton->hWnd,
-      GWL_STYLE,
-      lStyle );
+   HB_SYMBOL_UNUSED( pButton );
+   HB_SYMBOL_UNUSED( dwStyle );
 }
 
-LONG hbDockAutoHideButtonGetExStyle(
-   HB_DOCK_AUTOHIDE_BUTTON * pButton )
+DWORD hbDockAutoHideButtonGetExStyle(
+   const HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return 0;
-
-   return GetWindowLong(
-      pButton->hWnd,
-      GWL_EXSTYLE );
+   HB_SYMBOL_UNUSED( pButton );
+   return 0;
 }
 
 void hbDockAutoHideButtonSetExStyle(
    HB_DOCK_AUTOHIDE_BUTTON * pButton,
-   LONG lStyle )
+   DWORD dwExStyle )
 {
-   if( pButton == NULL )
-      return;
-
-   SetWindowLong(
-      pButton->hWnd,
-      GWL_EXSTYLE,
-      lStyle );
+   HB_SYMBOL_UNUSED( pButton );
+   HB_SYMBOL_UNUSED( dwExStyle );
 }

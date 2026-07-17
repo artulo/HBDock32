@@ -10,6 +10,9 @@ extern "C" {
 void hbDockManagerUpdateLayout(
       HB_DOCK_MANAGER * pManager );
 
+void hbDockManagerLayout(
+   HB_DOCK_MANAGER * pManager );
+
 #ifdef __cplusplus
 }
 #endif

@@ -10,10 +10,16 @@ extern "C" {
 typedef struct _HB_DOCK_AUTOHIDE_ANIMATION_MANAGER
 {
    HB_DOCK_AUTOHIDE_PANE ** pPanes;
+
    int Count;
    int Capacity;
+
    UINT TimerId;
    UINT Interval;
+
+   BOOL Enabled;
+   BOOL Paused;
+   BOOL Running;
 
 } HB_DOCK_AUTOHIDE_ANIMATION_MANAGER;
 

@@ -1,21 +1,11 @@
-#include <windows.h>
-
 #include "hbdockautohideredrawbutton.h"
+
+#ifndef HB_SYMBOL_UNUSED
+#define HB_SYMBOL_UNUSED(x) ((void)(x))
+#endif
 
 void hbDockAutoHideRedrawButton(
    HB_DOCK_AUTOHIDE_BUTTON * pButton )
 {
-   if( pButton == NULL )
-      return;
-
-   if( pButton->hWnd == NULL )
-      return;
-
-   RedrawWindow(
-      pButton->hWnd,
-      NULL,
-      NULL,
-      RDW_INVALIDATE |
-      RDW_UPDATENOW |
-      RDW_ALLCHILDREN );
+   HB_SYMBOL_UNUSED( pButton );
 }

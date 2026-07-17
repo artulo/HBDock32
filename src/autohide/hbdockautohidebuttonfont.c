@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "hbdockautohidebuttonfont.h"
 
 void hbDockAutoHideButtonSetFont(
@@ -9,11 +7,7 @@ void hbDockAutoHideButtonSetFont(
    if( pButton == NULL )
       return;
 
-   SendMessage(
-      pButton->hWnd,
-      WM_SETFONT,
-      ( WPARAM ) hFont,
-      TRUE );
+   pButton->hFont = hFont;
 }
 
 HFONT hbDockAutoHideButtonGetFont(
@@ -22,10 +16,5 @@ HFONT hbDockAutoHideButtonGetFont(
    if( pButton == NULL )
       return NULL;
 
-   return ( HFONT )
-      SendMessage(
-         pButton->hWnd,
-         WM_GETFONT,
-         0,
-         0 );
+   return pButton->hFont;
 }

@@ -9,10 +9,7 @@ void hbDockAutoHideButtonSetUserData(
    if( pButton == NULL )
       return;
 
-   SetWindowLong(
-      pButton->hWnd,
-      GWL_USERDATA,
-      ( LONG ) pData );
+   pButton->pUserData = pData;
 }
 
 void * hbDockAutoHideButtonGetUserData(
@@ -21,8 +18,5 @@ void * hbDockAutoHideButtonGetUserData(
    if( pButton == NULL )
       return NULL;
 
-   return ( void * )
-      GetWindowLong(
-         pButton->hWnd,
-         GWL_USERDATA );
+   return pButton->pUserData;
 }
