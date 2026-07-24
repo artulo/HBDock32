@@ -1,6 +1,6 @@
 #include "hbdockautohidefirst.h"
 
-HB_DOCK_AUTOHIDE_PANE *
+HB_DOCK_AUTOHIDE *
 hbDockAutoHideFirst(
    HB_DOCK_AUTOHIDE_MANAGER * pManager )
 {
@@ -11,11 +11,11 @@ hbDockAutoHideFirst(
       return NULL;
 
    return
-      ( HB_DOCK_AUTOHIDE_PANE * )
+      ( HB_DOCK_AUTOHIDE * )
       pManager->Panes.Items[ 0 ];
 }
 
-HB_DOCK_AUTOHIDE_PANE *
+HB_DOCK_AUTOHIDE *
 hbDockAutoHideLast(
    HB_DOCK_AUTOHIDE_MANAGER * pManager )
 {
@@ -26,7 +26,7 @@ hbDockAutoHideLast(
       return NULL;
 
    return
-      ( HB_DOCK_AUTOHIDE_PANE * )
+      ( HB_DOCK_AUTOHIDE * )
       pManager->Panes.Items[
          pManager->Panes.Count - 1 ];
 }

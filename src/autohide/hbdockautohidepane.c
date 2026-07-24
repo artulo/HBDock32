@@ -1,41 +1,56 @@
 #include <string.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
-void hbDockAutoHidePaneInit(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+void hbDockAutoHideInit(
+   HB_DOCK_AUTOHIDE * pAutoHide,
+   HB_DOCK_PANEL * pPanel )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
    memset(
-      pPane,
+      pAutoHide,
       0,
-      sizeof( HB_DOCK_AUTOHIDE_PANE ) );
-	
-	SetRectEmpty( &pPane->Rect );
-	SetRectEmpty( &pPane->WindowRect );
+      sizeof( HB_DOCK_AUTOHIDE ) );
 
-	pPane->Visible = FALSE;
-	pPane->Active = FALSE;
-	pPane->Enabled = TRUE;
-	pPane->Expanded = FALSE;
-	pPane->Animation = TRUE;
-	pPane->Delay = 0;
-	pPane->SlideAcceleration = 0;
-	pPane->HotTrack = TRUE;
-	pPane->Hover = FALSE;
-	pPane->Locked = FALSE;
-	pPane->WaitingMouseLeave = FALSE;
-	pPane->Pinned = FALSE;
-	pPane->Pressed = FALSE;
-	pPane->Selected = FALSE;
-	pPane->Sliding         = FALSE;
-	pPane->SlidePosition   = 0;
-	pPane->SlideDirection  = 0;
-	pPane->SlideStep       = 1;
-	pPane->SlideSize = 0;
-	pPane->State = 0;
-	pPane->Tracking = 0;
-   
+   pAutoHide->Panel = pPanel;
+
+   SetRectEmpty(
+      &pAutoHide->HiddenRect );
+
+   SetRectEmpty(
+      &pAutoHide->VisibleRect );
+
+   pAutoHide->Enabled = TRUE;
+   pAutoHide->Expanded = FALSE;
+
+   pAutoHide->Active = FALSE;
+
+   pAutoHide->Animation = TRUE;
+
+   pAutoHide->Delay = 0;
+
+   pAutoHide->SlideSpeed = 1;
+   pAutoHide->SlideAcceleration = 0;
+
+   pAutoHide->HotTrack = TRUE;
+   pAutoHide->Hover = FALSE;
+   pAutoHide->Locked = FALSE;
+
+   pAutoHide->WaitingMouseLeave = FALSE;
+
+   pAutoHide->Pinned = FALSE;
+   pAutoHide->Pressed = FALSE;
+   pAutoHide->Selected = FALSE;
+
+   pAutoHide->Sliding = FALSE;
+
+   pAutoHide->SlidePosition = 0;
+   pAutoHide->SlideDirection = 0;
+   pAutoHide->SlideStep = 1;
+   pAutoHide->SlideSize = 0;
+
+   pAutoHide->State = 0;
+   pAutoHide->Tracking = 0;
 }

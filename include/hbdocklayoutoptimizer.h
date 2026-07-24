@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-BOOL hbDockLayoutOptimize(
-      HB_DOCK_LAYOUT_TREE * pTree );
+void hbDockLayoutOptimize(
+   HB_DOCK_LAYOUT_TREE * pTree );
 
 #ifdef __cplusplus
 }

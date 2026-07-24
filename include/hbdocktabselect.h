@@ -1,6 +1,8 @@
 #ifndef HBDOCKTABSELECT_H
 #define HBDOCKTABSELECT_H
 
+#include <windows.h>
+
 #include "hbdocktabgroup.h"
 
 #ifdef __cplusplus

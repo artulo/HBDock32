@@ -3,21 +3,27 @@
 #include "hbdockautohidemove.h"
 
 void hbDockAutoHideMove(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int x,
    int y )
 {
    RECT rc;
 
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       &rc );
 
    MoveWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       x,
       y,
       rc.right - rc.left,
@@ -25,22 +31,29 @@ void hbDockAutoHideMove(
       TRUE );
 }
 
+
 void hbDockAutoHideResize(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int cx,
    int cy )
 {
    RECT rc;
 
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       &rc );
 
    MoveWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       rc.left,
       rc.top,
       cx,

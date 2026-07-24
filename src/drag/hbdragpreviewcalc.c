@@ -1,13 +1,13 @@
 #include "hbdragpreviewcalc.h"
 
 void hbDragPreviewCalcRect(
-      const RECT * pHost,
-      HB_DOCK_DIAMOND_PART Part,
-      RECT * pPreview )
+   const RECT * pHost,
+   HB_DOCK_DIAMOND_BUTTON Button,
+   RECT * pPreview )
 {
    *pPreview = *pHost;
 
-   switch( Part )
+   switch( Button )
    {
       case HB_DIAMOND_LEFT:
 

@@ -2,7 +2,7 @@
 
 int hbDockAutoHideIndexOf(
    HB_DOCK_AUTOHIDE_MANAGER * pManager,
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
    int i;
 
@@ -11,7 +11,7 @@ int hbDockAutoHideIndexOf(
 
    for( i = 0; i < pManager->Panes.Count; ++i )
    {
-      if( pManager->Panes.Items[ i ] == pPane )
+      if( pManager->Panes.Items[ i ] == pAutoHide )
          return i;
    }
 

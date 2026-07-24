@@ -17,9 +17,39 @@ typedef struct _HB_DOCK_AUTOHIDE
    RECT VisibleRect;
 
    int Enabled;
+   int Visible;
    int Expanded;
 
+   int Active;
+
+   int Animation;
+
+   UINT Delay;
+
+   int SlideSpeed;
+   int SlideAcceleration;
+
+   int HotTrack;
+   int Hover;
+   int Locked;
+   int WaitingMouseLeave;
+
+   int Pinned;
+   int Pressed;
+   int Selected;
+
+   int Sliding;
+
+   int SlidePosition;
+   int SlideDirection;
+   int SlideStep;
+   int SlideSize;
+
+   int State;
+   int Tracking;
+
 } HB_DOCK_AUTOHIDE;
+
 
 void hbDockAutoHideInit(
    HB_DOCK_AUTOHIDE * pAutoHide,

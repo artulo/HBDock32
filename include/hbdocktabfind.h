@@ -9,7 +9,7 @@ extern "C" {
 
 int hbDockTabFind(
       const HB_DOCK_TAB_GROUP * pGroup,
-      HWND hDock );
+      const HB_DOCK_PANEL * pPanel );
 
 #ifdef __cplusplus
 }

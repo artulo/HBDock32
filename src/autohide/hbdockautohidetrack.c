@@ -1,24 +1,26 @@
 #include "hbdockautohidetrack.h"
 
 void hbDockAutoHideBeginTrack(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Tracking = 1;
+   if( pAutoHide != NULL )
+      pAutoHide->Tracking = 1;
 }
+
 
 void hbDockAutoHideEndTrack(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Tracking = 0;
+   if( pAutoHide != NULL )
+      pAutoHide->Tracking = 0;
 }
 
+
 int hbDockAutoHideIsTracking(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->Tracking;
+   return pAutoHide->Tracking;
 }

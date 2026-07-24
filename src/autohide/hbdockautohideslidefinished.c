@@ -1,13 +1,13 @@
 #include "hbdockautohideslidefinished.h"
 
 int hbDockAutoHideSlideFinished(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 1;
 
-   if( pPane->SlideDirection > 0 )
-      return pPane->SlidePosition >= pPane->SlideSize;
+   if( pAutoHide->SlideDirection > 0 )
+      return pAutoHide->SlidePosition >= pAutoHide->SlideSize;
 
-   return pPane->SlidePosition <= 0;
+   return pAutoHide->SlidePosition <= 0;
 }

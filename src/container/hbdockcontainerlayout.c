@@ -1,50 +1,37 @@
 #include <windows.h>
-
+ 
 #include "hbdockcontainerlayout.h"
+#include "hbdockcontainer.h"
+#include "hbdocktabgroup.h"
 
-static void hbLayoutContainer(
-      HB_DOCK_CONTAINER * pContainer,
-      RECT rc )
+
+void hbLayoutContainer(
+   HB_DOCK_CONTAINER * pContainer,
+   const RECT * pRect )
 {
-   if(pContainer==NULL)
+   if( pContainer == NULL )
       return;
 
-   pContainer->Rect = rc;
+   if( pRect == NULL )
+      return;
 
-   switch(pContainer->Type)
+
+   pContainer->Rect = *pRect;
+
+
+   /*
+    * El tamaño del contenedor corresponde
+    * al área donde se dibuja el grupo de tabs.
+    */
+
+   if( pContainer->TabGroup.hWnd != NULL )
    {
-      case HB_CONTAINER_TABS:
-
-         if(pContainer->TabGroup.hActiveDock)
-         {
-            MoveWindow(
-               pContainer->TabGroup.hActiveDock,
-               rc.left,
-               rc.top+24,
-               rc.right-rc.left,
-               rc.bottom-rc.top-24,
-               TRUE);
-         }
-
-         break;
-
-      case HB_CONTAINER_SPLIT:
-
-         /* siguiente etapa */
-
-         break;
-
-      default:
-
-         break;
+      MoveWindow(
+         pContainer->TabGroup.hWnd,
+         pRect->left,
+         pRect->top,
+         pRect->right  - pRect->left,
+         pRect->bottom - pRect->top,
+         TRUE );
    }
-}
-
-void hbDockContainerLayout(
-      HB_DOCK_CONTAINER * pContainer,
-      RECT rc )
-{
-   hbLayoutContainer(
-      pContainer,
-      rc);
 }

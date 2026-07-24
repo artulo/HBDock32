@@ -1,6 +1,6 @@
 #include "hbdockautohidefind.h"
 
-HB_DOCK_AUTOHIDE_PANE *
+HB_DOCK_AUTOHIDE *
 hbDockAutoHideFindPanel(
    HB_DOCK_AUTOHIDE_MANAGER * pManager,
    HB_DOCK_PANEL * pPanel )
@@ -12,17 +12,17 @@ hbDockAutoHideFindPanel(
 
    for( i = 0; i < pManager->Panes.Count; ++i )
    {
-      HB_DOCK_AUTOHIDE_PANE * pPane;
+      HB_DOCK_AUTOHIDE * pAutoHide;
 
-      pPane =
-         ( HB_DOCK_AUTOHIDE_PANE * )
+      pAutoHide =
+         ( HB_DOCK_AUTOHIDE * )
          hbDockArrayGet(
             &pManager->Panes,
             i );
 
-      if( pPane != NULL &&
-          pPane->Panel == pPanel )
-         return pPane;
+      if( pAutoHide != NULL &&
+          pAutoHide->Panel == pPanel )
+         return pAutoHide;
    }
 
    return NULL;

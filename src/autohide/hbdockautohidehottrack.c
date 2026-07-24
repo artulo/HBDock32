@@ -1,18 +1,19 @@
 #include "hbdockautohidehottrack.h"
 
 void hbDockAutoHideSetHotTrack(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int bEnable )
 {
-   if( pPane != NULL )
-      pPane->HotTrack = bEnable;
+   if( pAutoHide != NULL )
+      pAutoHide->HotTrack = bEnable;
 }
 
+
 int hbDockAutoHideGetHotTrack(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return FALSE;
 
-   return pPane->HotTrack;
+   return pAutoHide->HotTrack;
 }

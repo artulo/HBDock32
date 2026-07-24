@@ -1,17 +1,17 @@
 #ifndef HBDOCKAUTOHIDEFOCUS_H
 #define HBDOCKAUTOHIDEFOCUS_H
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void hbDockAutoHideSetFocus(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 int hbDockAutoHideHasFocus(
-   const HB_DOCK_AUTOHIDE_PANE * pPane );
+   const HB_DOCK_AUTOHIDE * pAutoHide );
 
 #ifdef __cplusplus
 }

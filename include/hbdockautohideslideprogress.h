@@ -1,14 +1,14 @@
 #ifndef HBDOCKAUTOHIDESLIDEPROGRESS_H
 #define HBDOCKAUTOHIDESLIDEPROGRESS_H
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 double hbDockAutoHideSlideProgress(
-   const HB_DOCK_AUTOHIDE_PANE * pPane );
+   const HB_DOCK_AUTOHIDE * pAutoHide );
 
 #ifdef __cplusplus
 }

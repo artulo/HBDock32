@@ -3,18 +3,18 @@
 
 #include <windows.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 BOOL hbDockAutoHideGetWindowRect(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    RECT * pRect );
 
 BOOL hbDockAutoHideSetWindowRect(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    const RECT * pRect,
    BOOL bRepaint );
 

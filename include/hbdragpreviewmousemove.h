@@ -6,13 +6,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 void hbDragPreviewMouseMove(
-    HB_DOCK_PREVIEW_OVERLAY * pPreview,
+    HB_DRAG_PREVIEW_CONTROLLER * pController,
     POINT pt );
-	/*
-void hbDragPreviewMouseMove(
-      HB_DRAG_PREVIEW_CONTROLLER * pController,
-      POINT pt );*/
 
 #ifdef __cplusplus
 }

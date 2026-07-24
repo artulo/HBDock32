@@ -1,18 +1,21 @@
-#include "hbdockautohideenabledflag.h"
+#ifndef HBDOCKAUTOHIDEENABLEDFLAG_H
+#define HBDOCKAUTOHIDEENABLEDFLAG_H
+
+#include "hbdockautohide.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void hbDockAutoHideSetEnabledFlag(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
-   int bEnabled )
-{
-   if( pPane != NULL )
-      pPane->Enabled = bEnabled;
-}
+   HB_DOCK_AUTOHIDE * pAutoHide,
+   int bEnabled );
 
 int hbDockAutoHideGetEnabledFlag(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
-{
-   if( pPane == NULL )
-      return 0;
+   const HB_DOCK_AUTOHIDE * pAutoHide );
 
-   return pPane->Enabled;
+#ifdef __cplusplus
 }
+#endif
+
+#endif

@@ -3,15 +3,18 @@
 #include "hbdockautohideclass.h"
 #include "hbdockautohidecreate.h"
 
+
 HWND hbDockAutoHideCreate(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HWND hParent,
    LPCTSTR pszCaption )
 {
-   if( pPane == NULL )
+   HWND hWnd;
+
+   if( pAutoHide == NULL )
       return NULL;
 
-   pPane->hWnd =
+   hWnd =
       CreateWindowEx(
          0,
          HB_DOCK_AUTOHIDE_CLASS,
@@ -28,5 +31,13 @@ HWND hbDockAutoHideCreate(
          GetModuleHandle( NULL ),
          NULL );
 
-   return pPane->hWnd;
+   if( hWnd == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel != NULL )
+   {
+      pAutoHide->Panel->hWnd = hWnd;
+   }
+
+   return hWnd;
 }

@@ -7,9 +7,11 @@
 extern "C" {
 #endif
 
+
 void hbDockGuideManagerLayout(
    HB_DOCK_GUIDE_MANAGER * pManager,
    const RECT * pRect );
+
 
 #ifdef __cplusplus
 }

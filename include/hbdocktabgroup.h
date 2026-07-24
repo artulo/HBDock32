@@ -2,11 +2,13 @@
 #define HBDOCKTABGROUP_H
 
 #include <windows.h>
-#include "hbdockpanel.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* Declaración adelantada */
+typedef struct _HB_DOCK_PANEL HB_DOCK_PANEL;
 
 typedef struct _HB_DOCK_TAB
 {
@@ -24,6 +26,8 @@ typedef struct _HB_DOCK_TAB_GROUP
 
    HWND hActiveDock;
 
+   HB_DOCK_PANEL * pPanel;
+
    HB_DOCK_TAB * Tabs;
 
    UINT Count;
@@ -35,13 +39,32 @@ typedef struct _HB_DOCK_TAB_GROUP
 } HB_DOCK_TAB_GROUP;
 
 BOOL hbDockTabGroupInit(
-      HB_DOCK_TAB_GROUP * pGroup );
+   HB_DOCK_TAB_GROUP * pGroup );
 
 void hbDockTabGroupDone(
-      HB_DOCK_TAB_GROUP * pGroup );
+   HB_DOCK_TAB_GROUP * pGroup );
+   
+BOOL hbDockTabGroupAddPanel(
+   HB_DOCK_TAB_GROUP * pGroup,
+   HB_DOCK_PANEL * pPanel );
 
+BOOL hbDockTabGroupRemovePanel(
+   HB_DOCK_TAB_GROUP * pGroup,
+   HB_DOCK_PANEL * pPanel );
+
+HB_DOCK_PANEL * hbDockTabGroupGetActivePanel(
+   const HB_DOCK_TAB_GROUP * pGroup );
+
+
+HB_DOCK_PANEL * hbDockTabGroupGetActive(
+   HB_DOCK_TAB_GROUP * pGroup );
+
+BOOL hbDockTabGroupSetActive(
+   HB_DOCK_TAB_GROUP * pGroup,
+   UINT Index );
+   
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKTABGROUP_H */

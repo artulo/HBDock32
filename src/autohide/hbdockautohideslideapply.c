@@ -3,20 +3,23 @@
 #include "hbdockautohideslideapply.h"
 
 void hbDockAutoHideApplySlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
    RECT rc;
 
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( pPane->hWnd == NULL )
+   if( pAutoHide->Panel == NULL )
       return;
 
-   rc = pPane->WindowRect;
+   if( pAutoHide->Panel->hWnd == NULL )
+      return;
+
+   rc = pAutoHide->VisibleRect;
 
    MoveWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       rc.left,
       rc.top,
       rc.right - rc.left,

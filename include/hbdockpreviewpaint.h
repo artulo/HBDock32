@@ -1,15 +1,15 @@
 #ifndef HBDOCKPREVIEWPAINT_H
 #define HBDOCKPREVIEWPAINT_H
 
-#include "hbdockpreviewoverlay.h"
+#include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void hbDockPreviewPaint(
-   HB_DOCK_PREVIEW_OVERLAY * pOverlay,
-   HDC hDC );
+BOOL hbDockPreviewPaint(
+   HDC hDC,
+   const RECT * pRect );
 
 #ifdef __cplusplus
 }

@@ -3,19 +3,22 @@
 #include "hbdockautohiderefresh.h"
 
 void hbDockAutoHideRefresh(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( pPane->hWnd == NULL )
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    InvalidateRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       NULL,
       TRUE );
 
    UpdateWindow(
-      pPane->hWnd );
+      pAutoHide->Panel->hWnd );
 }

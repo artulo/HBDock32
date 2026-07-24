@@ -2,25 +2,55 @@
 
 #include "hbdockguidehit.h"
 
-HB_DOCK_GUIDE *
-hbDockGuideManagerHitTest(
-   HB_DOCK_GUIDE_MANAGER * pManager,
+
+
+HB_DOCK_GUIDE_TYPE hbDockGuideManagerHitTest(
+   const HB_DOCK_GUIDE_MANAGER * pManager,
    POINT pt )
 {
-   int i;
-
    if( pManager == NULL )
-      return NULL;
+      return HB_GUIDE_NONE;
 
-   for( i = 0; i < HB_DOCK_GUIDE_COUNT; ++i )
+
+   if( PtInRect(
+          &pManager->Left.Rect,
+          pt ) )
    {
-      if( PtInRect(
-             &pManager->Guides[ i ].Rect,
-             pt ) )
-      {
-         return &pManager->Guides[ i ];
-      }
+      return HB_GUIDE_LEFT;
    }
 
-   return NULL;
+
+   if( PtInRect(
+          &pManager->Right.Rect,
+          pt ) )
+   {
+      return HB_GUIDE_RIGHT;
+   }
+
+
+   if( PtInRect(
+          &pManager->Top.Rect,
+          pt ) )
+   {
+      return HB_GUIDE_TOP;
+   }
+
+
+   if( PtInRect(
+          &pManager->Bottom.Rect,
+          pt ) )
+   {
+      return HB_GUIDE_BOTTOM;
+   }
+
+
+   if( PtInRect(
+          &pManager->Center.Rect,
+          pt ) )
+   {
+      return HB_GUIDE_CENTER;
+   }
+
+
+   return HB_GUIDE_NONE;
 }

@@ -1,6 +1,7 @@
-#include <string.h>
-
 #include "hbdockautohidestrip.h"
+#include "hbdockarray.h"
+ 
+#include <string.h>
 
 void hbDockAutoHideStripInit(
    HB_DOCK_AUTOHIDE_STRIP * pStrip )

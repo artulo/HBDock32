@@ -1,39 +1,42 @@
 #include "hbdockautohideslideengine.h"
 
 void hbDockAutoHideSlideIn(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->Sliding = 1;
-   pPane->SlideDirection = 1;
+   pAutoHide->Sliding = 1;
+   pAutoHide->SlideDirection = 1;
 }
+
 
 void hbDockAutoHideSlideOut(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->Sliding = 1;
-   pPane->SlideDirection = -1;
+   pAutoHide->Sliding = 1;
+   pAutoHide->SlideDirection = -1;
 }
+
 
 void hbDockAutoHideStopSlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->Sliding = 0;
+   pAutoHide->Sliding = 0;
 }
 
+
 int hbDockAutoHideSlideRunning(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->Sliding;
+   return pAutoHide->Sliding;
 }

@@ -3,14 +3,14 @@
 
 #include <windows.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 BOOL hbDockAutoHideRedrawWindow(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    UINT uFlags );
 
 #ifdef __cplusplus

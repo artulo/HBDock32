@@ -3,23 +3,35 @@
 #include "hbdockautohideparent.h"
 
 HWND hbDockAutoHideGetParent(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return NULL;
 
    return GetParent(
-      pPane->hWnd );
+      pAutoHide->Panel->hWnd );
 }
 
 void hbDockAutoHideSetParent(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HWND hParent )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetParent(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       hParent );
 }

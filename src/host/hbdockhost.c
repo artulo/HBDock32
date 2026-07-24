@@ -11,6 +11,8 @@
 #include "hbdockmanagerautohide.h"
 #include "hbdockmanagerlayout.h"
 #include "hbdockmanagermousemove.h"
+#include "hbdockcontainer.h"
+#include "hbdocktabgroup.h"
 
 #define HBDOCK_DRAG_THRESHOLD_CX   4
 #define HBDOCK_DRAG_THRESHOLD_CY   4
@@ -79,28 +81,31 @@ void hbDockHostInvalidate(
 
 /* Encuentra, si lo hay, el nodo hoja bajo pt cuyo caption
  * (franja superior del panel) contiene el punto. */
-static HB_DOCK_NODE * hbDockHostFindCaptionAt(
+static HB_DOCK_LAYOUT_NODE * hbDockHostFindCaptionAt(
    HB_DOCK_MANAGER * pManager,
    POINT pt )
 {
    HB_DOCK_HITTEST Hit;
    RECT rc;
+   
+	HB_DOCK_LAYOUT_NODE * pSplitNode;
+	HB_DOCK_LAYOUT_NODE * pCaptionNode;
 
    hbDockHitTestTree(
       pManager->LayoutTree.Root,
       pt,
       &Hit );
 
-   if( Hit.Hit != HB_DOCK_HIT_PANEL || Hit.Node == NULL )
-      return NULL;
+   if( Hit.Hit != HB_DOCK_HIT_PANEL || Hit.pNode == NULL )
+		return NULL;
 
-   rc = Hit.Node->Rect;
+	rc = Hit.pNode->Rect;
    rc.bottom = rc.top + HBDOCK_CAPTION_HEIGHT;
 
    if( !PtInRect( &rc, pt ) )
       return NULL;
 
-   return Hit.Node;
+   return Hit.pNode;
 }
 
 static void hbDockHostUpdateAutoHideHover(
@@ -177,7 +182,7 @@ BOOL hbDockHostHandleMessage(
    LPARAM lParam )
 {
    POINT pt;
-
+ 
    if( pHost == NULL || pHost->pManager == NULL )
       return FALSE;
 
@@ -185,15 +190,15 @@ BOOL hbDockHostHandleMessage(
    {
       case WM_LBUTTONDOWN:
       {
-         HB_DOCK_NODE * pSplitNode;
-         HB_DOCK_NODE * pCaptionNode;
-
+		 HB_DOCK_LAYOUT_NODE * pSplitNode;
+		 HB_DOCK_LAYOUT_NODE * pCaptionNode;
+		 
          pt.x = GET_X_LPARAM( lParam );
          pt.y = GET_Y_LPARAM( lParam );
 
-  pSplitNode = hbDockTreeFindSplitterAt(
-   pHost->pManager->LayoutTree.Root,
-   pt );
+		 pSplitNode = hbDockTreeFindSplitterAt(
+		   pHost->pManager->LayoutTree.Root,
+		   pt );
          if( pSplitNode != NULL )
          {
             hbDockSplitNodeInit(
@@ -217,16 +222,21 @@ BOOL hbDockHostHandleMessage(
             pHost->pManager,
             pt );
 
-         if( pCaptionNode != NULL && pCaptionNode->Panel != NULL )
-         {
-            pHost->PendingDragPanel = pCaptionNode->Panel;
-            pHost->PendingDragPoint = pt;
+		if( pCaptionNode != NULL &&
+			pCaptionNode->pContainer != NULL &&
+			pCaptionNode->pContainer->TabGroup.pPanel != NULL )
+		{
+		   pHost->PendingDragPanel =
+			  pCaptionNode->pContainer->TabGroup.pPanel;
 
-            SetCapture( pHost->hWnd );
+		   pHost->PendingDragPoint = pt;
 
-            return TRUE;
-         }
+		   SetCapture(
+			  pHost->hWnd );
 
+		   return TRUE;
+		}
+		
          return FALSE;
       }
 

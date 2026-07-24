@@ -3,16 +3,22 @@
 #include "hbdockautohideposition.h"
 
 void hbDockAutoHideGetPosition(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    POINT * pPoint )
 {
    RECT rc;
 
-   if( pPane == NULL || pPoint == NULL )
+   if( pAutoHide == NULL || pPoint == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       &rc );
 
    pPoint->x = rc.left;

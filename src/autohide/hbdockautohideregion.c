@@ -3,27 +3,39 @@
 #include "hbdockautohideregion.h"
 
 void hbDockAutoHideSetRegion(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HRGN hRegion,
    BOOL bRedraw )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetWindowRgn(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       hRegion,
       bRedraw );
 }
 
 void hbDockAutoHideClearRegion(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetWindowRgn(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       NULL,
       TRUE );
 }

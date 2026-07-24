@@ -3,11 +3,14 @@
 
 #include <windows.h>
 
+#include "hbdockpanel.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _HB_DOCK_CONTAINER HB_DOCK_CONTAINER;
+
+/* Tipos de nodo del árbol */
 
 typedef enum
 {
@@ -17,36 +20,76 @@ typedef enum
 
 } HB_LAYOUT_NODE_TYPE;
 
+
+
+/* Nodo del árbol de layout */
+
 typedef struct _HB_DOCK_LAYOUT_NODE
 {
    HB_LAYOUT_NODE_TYPE Type;
 
+
    RECT Rect;
+
+
+   /* Relación de división */
 
    float Ratio;
 
-   //HWND hDockWindow;
-   HB_DOCK_CONTAINER * pContainer;	
+
+   /* Posición del splitter */
+
+   int SplitPos;
+
+
+   /* Tamaño del splitter */
+
+   int SplitterSize;
+
+
+   /*
+    * Panel asociado al nodo hoja
+    */
+
+   HB_DOCK_PANEL * pPanel;
+
+
+   /*
+    * Relaciones del árbol
+    */
+
    struct _HB_DOCK_LAYOUT_NODE * Parent;
+
    struct _HB_DOCK_LAYOUT_NODE * First;
+
    struct _HB_DOCK_LAYOUT_NODE * Second;
+
 
 } HB_DOCK_LAYOUT_NODE;
 
-typedef struct
+
+
+/* Árbol completo */
+
+typedef struct _HB_DOCK_LAYOUT_TREE
 {
    HB_DOCK_LAYOUT_NODE * Root;
 
 } HB_DOCK_LAYOUT_TREE;
 
+
+
 BOOL hbDockLayoutTreeInit(
-      HB_DOCK_LAYOUT_TREE * pTree );
+   HB_DOCK_LAYOUT_TREE * pTree );
+
 
 void hbDockLayoutTreeDone(
-      HB_DOCK_LAYOUT_TREE * pTree );
+   HB_DOCK_LAYOUT_TREE * pTree );
+
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKLAYOUTTREE_H */

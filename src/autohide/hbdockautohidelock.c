@@ -1,24 +1,26 @@
 #include "hbdockautohidelock.h"
 
 void hbDockAutoHideLock(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Locked = TRUE;
+   if( pAutoHide != NULL )
+      pAutoHide->Locked = TRUE;
 }
+
 
 void hbDockAutoHideUnlock(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Locked = FALSE;
+   if( pAutoHide != NULL )
+      pAutoHide->Locked = FALSE;
 }
 
+
 int hbDockAutoHideIsLocked(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return FALSE;
 
-   return pPane->Locked;
+   return pAutoHide->Locked;
 }

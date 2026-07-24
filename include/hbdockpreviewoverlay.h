@@ -11,6 +11,8 @@ typedef struct _HB_DOCK_PREVIEW_OVERLAY
 {
    HWND hWnd;
 
+   HWND hOwner;
+
    RECT PreviewRect;
 
    BOOL Visible;
@@ -23,11 +25,25 @@ BOOL hbDockPreviewOverlayCreate(
    HB_DOCK_PREVIEW_OVERLAY * pOverlay,
    HWND hOwner );
 
+BOOL hbDockPreviewOverlayRegisterClass(
+   HINSTANCE hInstance );
+   
+void hbDockPreviewOverlayDestroy(
+   HB_DOCK_PREVIEW_OVERLAY * pOverlay );
+
+void hbDockPreviewOverlayShow(
+   HB_DOCK_PREVIEW_OVERLAY * pOverlay,
+   const RECT * pRect );
+
 void hbDockPreviewOverlayHide(
    HB_DOCK_PREVIEW_OVERLAY * pOverlay );
 
-void hbDockPreviewOverlayDestroy(
-   HB_DOCK_PREVIEW_OVERLAY * pOverlay );
+void hbDockPreviewOverlayMove(
+   HB_DOCK_PREVIEW_OVERLAY * pOverlay,
+   const RECT * pRect );
+
+BOOL hbDockPreviewOverlayVisible(
+   const HB_DOCK_PREVIEW_OVERLAY * pOverlay );
 
 #ifdef __cplusplus
 }

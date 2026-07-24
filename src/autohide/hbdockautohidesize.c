@@ -3,16 +3,22 @@
 #include "hbdockautohidesize.h"
 
 void hbDockAutoHideGetSize(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    SIZE * pSize )
 {
    RECT rc;
 
-   if( pPane == NULL || pSize == NULL )
+   if( pAutoHide == NULL || pSize == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       &rc );
 
    pSize->cx = rc.right - rc.left;

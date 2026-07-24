@@ -2,7 +2,7 @@
 
 int hbDockTabFind(
       const HB_DOCK_TAB_GROUP * pGroup,
-      HWND hDock )
+      const HB_DOCK_PANEL * pPanel )
 {
    UINT i;
 
@@ -10,9 +10,8 @@ int hbDockTabFind(
         i < pGroup->Count;
         i++ )
    {
-      if( pGroup->Tabs[i].hDock ==
-          hDock )
-         return (int)i;
+      if( pGroup->Tabs[ i ].pPanel == pPanel )
+         return (int) i;
    }
 
    return -1;

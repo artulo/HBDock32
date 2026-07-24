@@ -11,7 +11,7 @@ extern "C" {
 
 void hbDragPreviewCalcRect(
       const RECT * pHost,
-      HB_DOCK_DIAMOND_PART Part,
+      HB_DOCK_DIAMOND_BUTTON Button,
       RECT * pPreview );
 
 #ifdef __cplusplus

@@ -1,24 +1,24 @@
 #include "hbdockautohidepin.h"
 
 void hbDockAutoHidePin(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Pinned = TRUE;
+   if( pAutoHide != NULL )
+      pAutoHide->Pinned = TRUE;
 }
 
 void hbDockAutoHideUnpin(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Pinned = FALSE;
+   if( pAutoHide != NULL )
+      pAutoHide->Pinned = FALSE;
 }
 
 int hbDockAutoHideIsPinned(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return FALSE;
 
-   return pPane->Pinned;
+   return pAutoHide->Pinned;
 }

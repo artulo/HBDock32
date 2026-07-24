@@ -6,6 +6,9 @@ void hbDockCaptionInit(
    HB_DOCK_CAPTION * pCaption,
    HB_DOCK_PANEL * pPanel )
 {
+   if( pCaption == NULL )
+      return;
+
    ZeroMemory(
       pCaption,
       sizeof( HB_DOCK_CAPTION ) );
@@ -17,6 +20,12 @@ void hbDockCaptionLayout(
    HB_DOCK_CAPTION * pCaption,
    const RECT * pRect )
 {
+   if( pCaption == NULL )
+      return;
+
+   if( pRect == NULL )
+      return;
+
    pCaption->Rect = *pRect;
 
    SetRect(
@@ -38,6 +47,12 @@ void hbDockCaptionDraw(
    HDC hDC,
    HB_DOCK_CAPTION * pCaption )
 {
+   if( hDC == NULL )
+      return;
+
+   if( pCaption == NULL )
+      return;
+
    Rectangle(
       hDC,
       pCaption->Rect.left,

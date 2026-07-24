@@ -1,14 +1,14 @@
 #include "hbdockautohideslideprogress.h"
-
+ 
 double hbDockAutoHideSlideProgress(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0.0;
 
-   if( pPane->SlideSize == 0 )
+   if( pAutoHide->SlideSize == 0 )
       return 0.0;
 
-   return ( double ) pPane->SlidePosition /
-          ( double ) pPane->SlideSize;
+   return ( double ) pAutoHide->SlidePosition /
+          ( double ) pAutoHide->SlideSize;
 }

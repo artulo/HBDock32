@@ -3,18 +3,18 @@
 
 #include <windows.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void hbDockAutoHideSetIcon(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HICON hIcon );
 
 HICON hbDockAutoHideGetIcon(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 #ifdef __cplusplus
 }

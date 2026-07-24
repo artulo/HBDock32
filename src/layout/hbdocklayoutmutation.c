@@ -1,114 +1,174 @@
+#include <windows.h>
 #include <stdlib.h>
 
 #include "hbdocklayoutmutation.h"
 #include "hbdocklayoutnodecreate.h"
-#include "hbdocklayoutinsert.h"
-#include "hbdockcontainer.h"
-#include "hbdockcontainerfactory.h"
-#include "hbdocklayoutfind.h"
-#include "hbdocklayoutdetach.h"
-#include "hbdocklayoutinsertnode.h"
-#include "hbdocklayoutrelative.h" 
-#include "hbdockcontaineraddtab.h"
 
 
-BOOL hbDockLayoutInsertContainer(
-        HB_DOCK_LAYOUT_TREE * pTree,
-        HB_DOCK_CONTAINER * pContainer,
-        UINT Side )
+
+static void hbDockLayoutDetachNode(
+   HB_DOCK_LAYOUT_NODE * pNode )
 {
-    HB_DOCK_LAYOUT_NODE * pNode;
+   if( pNode == NULL )
+      return;
 
-    if( pContainer == NULL )
-        return FALSE;
 
-    pNode = hbDockLayoutCreateLeaf( pContainer );
+   if( pNode->Parent == NULL )
+      return;
 
-    if( pNode == NULL )
-        return FALSE;
 
-	pNode = hbDockLayoutCreateLeaf( pContainer );
+   if( pNode->Parent->First == pNode )
+   {
+      pNode->Parent->First = NULL;
+   }
+   else if( pNode->Parent->Second == pNode )
+   {
+      pNode->Parent->Second = NULL;
+   }
 
-    if( pNode == NULL )
-        return FALSE;
 
-    pNode->pContainer = pContainer;
-
-    if( pTree->Root == NULL )
-    {
-        pTree->Root = pNode;
-        return TRUE;
-    }
-
-    return hbDockLayoutInsertNode(
-                pTree,
-                pNode,
-                Side );
-}
-
-BOOL hbDockLayoutRemovePanel(
-        HB_DOCK_LAYOUT_TREE * pTree,
-        HB_DOCK_PANEL * pPanel )
-{
-    HB_DOCK_LAYOUT_NODE * pNode;
-
-    pNode =
-        hbDockLayoutFindPanel(
-            pTree,
-            pPanel );
-
-    if( pNode == NULL )
-        return FALSE;
-
-    hbDockLayoutDetachNode(
-        pTree,
-        pNode );
-
-    hbDockLayoutCompact(
-        pTree );
-
-    return TRUE;
-}
-
-BOOL hbDockLayoutMovePanel(
-        HB_DOCK_LAYOUT_TREE * pTree,
-        HB_DOCK_PANEL * pPanel,
-        HB_DOCK_LAYOUT_NODE * pTarget,
-        UINT Side )
-{
-    if( !hbDockLayoutRemovePanel(
-            pTree,
-            pPanel ) )
-        return FALSE;
-
-    return hbDockLayoutInsertRelative(
-            pTree,
-            pPanel,
-            pTarget,
-            Side );
-}
-
-BOOL hbDockLayoutTabifyPanel(
-        HB_DOCK_LAYOUT_TREE * pTree,
-        HB_DOCK_PANEL * pSource,
-        HB_DOCK_PANEL * pTarget )
-{
-		HB_DOCK_LAYOUT_NODE * pNode;
-		HB_DOCK_CONTAINER * pContainer;
-
-		pNode = hbDockLayoutFindPanel(
-            pTree,
-            pTarget );
-
-		if( pNode == NULL )
-			return FALSE;
-
-		pContainer = pNode->pContainer;
-
-		return hbDockContainerAddTab(
-            pContainer,
-            pSource->hWnd,
-            pSource->Caption );
+   pNode->Parent = NULL;
 }
 
 
+
+BOOL hbDockLayoutRemoveNode(
+   HB_DOCK_LAYOUT_TREE * pTree,
+   HB_DOCK_LAYOUT_NODE * pNode )
+{
+   HB_DOCK_LAYOUT_NODE * pParent;
+   HB_DOCK_LAYOUT_NODE * pBrother;
+
+
+   if( pTree == NULL ||
+       pNode == NULL )
+      return FALSE;
+
+
+   pParent = pNode->Parent;
+
+
+   /*
+    * Si es raíz.
+    */
+
+   if( pParent == NULL )
+   {
+      if( pTree->Root == pNode )
+      {
+         pTree->Root = NULL;
+
+         free(
+            pNode );
+
+         return TRUE;
+      }
+
+      return FALSE;
+   }
+
+
+
+   /*
+    * Buscar hermano.
+    */
+
+   if( pParent->First == pNode )
+   {
+      pBrother =
+         pParent->Second;
+   }
+   else
+   {
+      pBrother =
+         pParent->First;
+   }
+
+
+   if( pBrother == NULL )
+      return FALSE;
+
+
+
+   /*
+    * Reemplazar el padre por el hermano.
+    */
+
+   if( pParent->Parent == NULL )
+   {
+      pTree->Root = pBrother;
+
+      pBrother->Parent = NULL;
+   }
+   else
+   {
+      pBrother->Parent =
+         pParent->Parent;
+
+
+      if( pParent->Parent->First == pParent )
+      {
+         pParent->Parent->First =
+            pBrother;
+      }
+      else
+      {
+         pParent->Parent->Second =
+            pBrother;
+      }
+   }
+
+
+
+   free(
+      pNode );
+
+
+   free(
+      pParent );
+
+
+   return TRUE;
+}
+
+
+
+BOOL hbDockLayoutReplace(
+   HB_DOCK_LAYOUT_TREE * pTree,
+   HB_DOCK_LAYOUT_NODE * pOld,
+   HB_DOCK_LAYOUT_NODE * pNew )
+{
+   if( pTree == NULL ||
+       pOld == NULL ||
+       pNew == NULL )
+      return FALSE;
+
+
+   if( pOld->Parent == NULL )
+   {
+      pTree->Root = pNew;
+
+      pNew->Parent = NULL;
+
+      return TRUE;
+   }
+
+
+   pNew->Parent =
+      pOld->Parent;
+
+
+   if( pOld->Parent->First == pOld )
+   {
+      pOld->Parent->First =
+         pNew;
+   }
+   else
+   {
+      pOld->Parent->Second =
+         pNew;
+   }
+
+
+   return TRUE;
+}

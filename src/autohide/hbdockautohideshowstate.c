@@ -3,34 +3,52 @@
 #include "hbdockautohideshowstate.h"
 
 void hbDockAutoHideMinimize(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    ShowWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       SW_MINIMIZE );
 }
 
 void hbDockAutoHideMaximize(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    ShowWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       SW_MAXIMIZE );
 }
 
 void hbDockAutoHideRestore(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    ShowWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       SW_RESTORE );
 }

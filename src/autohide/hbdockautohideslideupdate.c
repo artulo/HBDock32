@@ -1,25 +1,38 @@
 #include "hbdockautohideslideupdate.h"
+
 #include "hbdockautohideslideanimation.h"
 #include "hbdockautohideslidelimits.h"
 #include "hbdockautohideslideapply.h"
 #include "hbdockautohideslidefinished.h"
 #include "hbdockautohideslideengine.h"
 
+
 void hbDockAutoHideUpdateSlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( !pPane->Sliding )
+   if( !pAutoHide->Sliding )
       return;
 
-   hbDockAutoHideAnimationStep( pPane );
 
-   hbDockAutoHideNormalizeSlide( pPane );
+   hbDockAutoHideAnimationStep(
+      pAutoHide );
 
-   hbDockAutoHideApplySlide( pPane );
 
-   if( hbDockAutoHideSlideFinished( pPane ) )
-      hbDockAutoHideStopSlide( pPane );
+   hbDockAutoHideNormalizeSlide(
+      pAutoHide );
+
+
+   hbDockAutoHideApplySlide(
+      pAutoHide );
+
+
+   if( hbDockAutoHideSlideFinished(
+          pAutoHide ) )
+   {
+      hbDockAutoHideStopSlide(
+         pAutoHide );
+   }
 }

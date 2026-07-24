@@ -3,15 +3,22 @@
 #include "hbdockautohidechildren.h"
 
 HWND hbDockAutoHideGetFirstChild(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return NULL;
 
    return GetWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       GW_CHILD );
 }
+
 
 HWND hbDockAutoHideGetNextSibling(
    HWND hWnd )
@@ -20,6 +27,7 @@ HWND hbDockAutoHideGetNextSibling(
       hWnd,
       GW_HWNDNEXT );
 }
+
 
 HWND hbDockAutoHideGetPreviousSibling(
    HWND hWnd )

@@ -2,19 +2,27 @@
 
 #include "hbdockautohidewindowtext.h"
 
+
 BOOL hbDockAutoHideCopyWindowText(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    LPTSTR pszText,
    int nMax )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return FALSE;
 
    if( pszText == NULL )
       return FALSE;
 
+
    return GetWindowText(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       pszText,
       nMax ) >= 0;
 }

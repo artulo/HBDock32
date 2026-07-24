@@ -1,24 +1,24 @@
 #include "hbdockautohideexpand.h"
 
 void hbDockAutoHideExpand(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Expanded = 1;
+   if( pAutoHide != NULL )
+      pAutoHide->Expanded = 1;
 }
 
 void hbDockAutoHideCollapse(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Expanded = 0;
+   if( pAutoHide != NULL )
+      pAutoHide->Expanded = 0;
 }
 
 int hbDockAutoHideIsExpanded(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->Expanded;
+   return pAutoHide->Expanded;
 }

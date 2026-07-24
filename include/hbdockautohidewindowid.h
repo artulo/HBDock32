@@ -3,18 +3,20 @@
 
 #include <windows.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 int hbDockAutoHideGetWindowId(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
+
 
 void hbDockAutoHideSetWindowId(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nId );
+
 
 #ifdef __cplusplus
 }

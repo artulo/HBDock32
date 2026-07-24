@@ -3,32 +3,45 @@
 #include "hbdockautohidemessage.h"
 
 LRESULT hbDockAutoHideSendMessage(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    UINT uMsg,
    WPARAM wParam,
    LPARAM lParam )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return 0;
+
+   if( pAutoHide->Panel == NULL )
+      return 0;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return 0;
 
    return SendMessage(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       uMsg,
       wParam,
       lParam );
 }
 
+
 BOOL hbDockAutoHidePostMessage(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    UINT uMsg,
    WPARAM wParam,
    LPARAM lParam )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return FALSE;
 
    return PostMessage(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       uMsg,
       wParam,
       lParam );

@@ -1,39 +1,41 @@
 #ifndef HBDOCKTRANSACTION_H
 #define HBDOCKTRANSACTION_H
 
-#include <windows.h>
+#include "hbdocklayouttree.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef enum
+
+typedef struct _HB_DOCK_TRANSACTION
 {
-    HB_TX_IDLE = 0,
-    HB_TX_RUNNING,
-    HB_TX_COMMIT,
-    HB_TX_ROLLBACK
+   HB_DOCK_LAYOUT_TREE Backup;
 
-} HB_DOCK_TX_STATE;
+   HB_DOCK_LAYOUT_TREE * pTarget;
 
-typedef struct
-{
-    HB_DOCK_TX_STATE State;
-
-    UINT Level;
-
-    BOOL Modified;
+   BOOL Active;
 
 } HB_DOCK_TRANSACTION;
 
+
+
 BOOL hbDockTransactionBegin(
-        HB_DOCK_TRANSACTION * pTx );
+   HB_DOCK_TRANSACTION * pTransaction,
+   HB_DOCK_LAYOUT_TREE * pTree );
+
 
 BOOL hbDockTransactionCommit(
-        HB_DOCK_TRANSACTION * pTx );
+   HB_DOCK_TRANSACTION * pTransaction );
+
 
 BOOL hbDockTransactionRollback(
-        HB_DOCK_TRANSACTION * pTx );
+   HB_DOCK_TRANSACTION * pTransaction );
+
+
+void hbDockTransactionDestroy(
+   HB_DOCK_TRANSACTION * pTransaction );
+
 
 #ifdef __cplusplus
 }

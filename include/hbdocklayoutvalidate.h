@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 BOOL hbDockLayoutValidate(
-      const HB_DOCK_LAYOUT_TREE * pTree );
+   const HB_DOCK_LAYOUT_TREE * pTree );
 
 #ifdef __cplusplus
 }

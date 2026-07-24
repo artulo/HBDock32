@@ -1,20 +1,20 @@
 #ifndef HBDOCKAUTOHIDEEXPAND_H
 #define HBDOCKAUTOHIDEEXPAND_H
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void hbDockAutoHideExpand(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 void hbDockAutoHideCollapse(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 int hbDockAutoHideIsExpanded(
-   const HB_DOCK_AUTOHIDE_PANE * pPane );
+   const HB_DOCK_AUTOHIDE * pAutoHide );
 
 #ifdef __cplusplus
 }

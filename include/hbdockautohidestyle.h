@@ -3,24 +3,24 @@
 
 #include <windows.h>
 
-#include "hbdockautohidepane.h"
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 LONG hbDockAutoHideGetStyle(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 void hbDockAutoHideSetStyle(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    LONG lStyle );
 
 LONG hbDockAutoHideGetExStyle(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 void hbDockAutoHideSetExStyle(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    LONG lStyle );
 
 #ifdef __cplusplus

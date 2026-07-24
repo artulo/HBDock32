@@ -12,19 +12,17 @@ BOOL hbDockTabTransfer(
    if( SourceIndex >= pSource->Count )
       return FALSE;
 
-   Tab =
-      pSource->Tabs[
-         SourceIndex ];
+   Tab = pSource->Tabs[ SourceIndex ];
 
    if( !hbDockTabAdd(
-         pTarget,
-         Tab.hDock,
-         Tab.Caption ) )
+            pTarget,
+            Tab.pPanel,
+            Tab.Caption ) )
       return FALSE;
 
    hbDockTabRemove(
-      pSource,
-      SourceIndex );
+         pSource,
+         SourceIndex );
 
    return TRUE;
 }

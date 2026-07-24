@@ -1,30 +1,37 @@
 #ifndef HBDOCKPANELSTATE_H
 #define HBDOCKPANELSTATE_H
 
-#include <windows.h>
-#include "hbdockpanel.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef enum
+
+typedef enum _HB_DOCK_PANEL_STATE
 {
-    HB_PANEL_STATE_DOCKED = 0,
-    HB_PANEL_STATE_FLOATING,
-    HB_PANEL_STATE_AUTOHIDE,
-    HB_PANEL_STATE_HIDDEN,
-    HB_PANEL_STATE_DOCUMENT
+   HB_PANEL_STATE_NONE = 0,
+
+   HB_PANEL_STATE_DOCKED,
+
+   HB_PANEL_STATE_FLOATING,
+
+   HB_PANEL_STATE_AUTOHIDE,
+
+   HB_PANEL_STATE_HIDDEN
 
 } HB_DOCK_PANEL_STATE;
 
-void hbDockPanelSetState(
-        HB_DOCK_PANEL * pPanel,
-        HB_DOCK_PANEL_STATE State );
 
-HB_DOCK_PANEL_STATE
-hbDockPanelGetState(
-        const HB_DOCK_PANEL * pPanel );
+typedef struct _HB_DOCK_PANEL HB_DOCK_PANEL;
+
+
+void hbDockPanelSetState(
+   HB_DOCK_PANEL * pPanel,
+   HB_DOCK_PANEL_STATE State );
+
+
+HB_DOCK_PANEL_STATE hbDockPanelGetState(
+   const HB_DOCK_PANEL * pPanel );
+
 
 #ifdef __cplusplus
 }

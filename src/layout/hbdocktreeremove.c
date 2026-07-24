@@ -2,12 +2,12 @@
 
 #include "hbdocktreeremove.h"
 
-HB_DOCK_NODE * hbDockTreeRemoveNode(
-   HB_DOCK_NODE * pRoot,
-   HB_DOCK_NODE * pNode )
+HB_DOCK_LAYOUT_NODE * hbDockTreeRemoveNode(
+   HB_DOCK_LAYOUT_NODE * pRoot,
+   HB_DOCK_LAYOUT_NODE * pNode )
 {
-   HB_DOCK_NODE * pParent;
-   HB_DOCK_NODE * pKeep;
+   HB_DOCK_LAYOUT_NODE * pParent;
+   HB_DOCK_LAYOUT_NODE * pKeep;
 
    if( pRoot == NULL || pNode == NULL )
       return pRoot;

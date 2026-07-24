@@ -2,38 +2,59 @@
 
 #include "hbdockautohidetext.h"
 
+
 int hbDockAutoHideGetTextLength(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return 0;
+
+   if( pAutoHide->Panel == NULL )
+      return 0;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return 0;
 
    return GetWindowTextLength(
-      pPane->hWnd );
+      pAutoHide->Panel->hWnd );
 }
 
+
 void hbDockAutoHideGetText(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    LPTSTR pszText,
    int nSize )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    GetWindowText(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       pszText,
       nSize );
 }
 
+
 void hbDockAutoHideSetText(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    LPCTSTR pszText )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetWindowText(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       pszText );
 }

@@ -7,11 +7,14 @@
 extern "C" {
 #endif
 
+
 void hbDockGuideManagerMove(
-   HB_DOCK_GUIDE_MANAGER * pManager );
+   HB_DOCK_GUIDE_MANAGER * pManager,
+   POINT pt );
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKGUIDEMOVE_H */

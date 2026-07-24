@@ -2,25 +2,73 @@
 
 #include "hbdockguidemove.h"
 
+
 void hbDockGuideManagerMove(
-   HB_DOCK_GUIDE_MANAGER * pManager )
+   HB_DOCK_GUIDE_MANAGER * pManager,
+   POINT pt )
 {
-   int i;
+   int dx;
+   int dy;
+
 
    if( pManager == NULL )
       return;
 
-   for( i = 0; i < HB_DOCK_GUIDE_COUNT; ++i )
-   {
-      RECT * r =
-         &pManager->Guides[ i ].Rect;
 
-      MoveWindow(
-         pManager->Guides[ i ].hWnd,
-         r->left,
-         r->top,
-         r->right - r->left,
-         r->bottom - r->top,
-         TRUE );
-   }
+   /*
+    * Desplazamiento desde la posición actual.
+    */
+
+   dx = pt.x;
+   dy = pt.y;
+
+
+   /*
+    * Mover guía izquierda
+    */
+
+   OffsetRect(
+      &pManager->Left.Rect,
+      dx,
+      dy );
+
+
+   /*
+    * Mover guía derecha
+    */
+
+   OffsetRect(
+      &pManager->Right.Rect,
+      dx,
+      dy );
+
+
+   /*
+    * Mover guía superior
+    */
+
+   OffsetRect(
+      &pManager->Top.Rect,
+      dx,
+      dy );
+
+
+   /*
+    * Mover guía inferior
+    */
+
+   OffsetRect(
+      &pManager->Bottom.Rect,
+      dx,
+      dy );
+
+
+   /*
+    * Mover guía central
+    */
+
+   OffsetRect(
+      &pManager->Center.Rect,
+      dx,
+      dy );
 }

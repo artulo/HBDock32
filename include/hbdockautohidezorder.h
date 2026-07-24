@@ -1,17 +1,21 @@
 #ifndef HBDOCKAUTOHIDEZORDER_H
 #define HBDOCKAUTOHIDEZORDER_H
 
-#include "hbdockautohidepane.h"
+#include <windows.h>
+
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void hbDockAutoHideBringToFront(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
+
 
 void hbDockAutoHideSendToBack(
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
+
 
 #ifdef __cplusplus
 }

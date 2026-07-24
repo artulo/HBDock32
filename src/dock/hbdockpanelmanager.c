@@ -1,4 +1,5 @@
 #include "hbdockpanelmanager.h"
+#include "hbdockarray.h"
 
 void hbDockPanelManagerInit(
    HB_DOCK_PANEL_MANAGER * pManager )
@@ -10,7 +11,10 @@ void hbDockPanelManagerInit(
 void hbDockPanelManagerDestroy(
    HB_DOCK_PANEL_MANAGER * pManager )
 {
-   hbDockArrayRelease(
+   if( pManager == NULL )
+      return;
+
+   hbDockArrayDestroy(
       &pManager->Panels );
 }
 

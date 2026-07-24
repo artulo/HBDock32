@@ -3,35 +3,47 @@
 #include "hbdockautohideenableredraw.h"
 
 void hbDockAutoHideLockRedraw(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SendMessage(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       WM_SETREDRAW,
       FALSE,
       0 );
 }
 
 void hbDockAutoHideUnlockRedraw(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SendMessage(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       WM_SETREDRAW,
       TRUE,
       0 );
 
    InvalidateRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       NULL,
       TRUE );
 
    UpdateWindow(
-      pPane->hWnd );
+      pAutoHide->Panel->hWnd );
 }

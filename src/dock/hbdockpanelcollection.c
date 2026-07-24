@@ -1,4 +1,5 @@
 #include "hbdockpanelcollection.h"
+#include "hbdockarray.h"
 
 void hbDockPanelCollectionInit(
    HB_DOCK_PANEL_COLLECTION * pCollection )
@@ -10,7 +11,10 @@ void hbDockPanelCollectionInit(
 void hbDockPanelCollectionRelease(
    HB_DOCK_PANEL_COLLECTION * pCollection )
 {
-   hbDockArrayRelease(
+   if( pCollection == NULL )
+      return;
+
+   hbDockArrayDestroy(
       &pCollection->Items );
 }
 

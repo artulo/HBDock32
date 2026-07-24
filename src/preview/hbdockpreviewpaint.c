@@ -2,46 +2,55 @@
 
 #include "hbdockpreviewpaint.h"
 
-void hbDockPreviewPaint(
-   HB_DOCK_PREVIEW_OVERLAY * pOverlay,
-   HDC hDC )
+#define HBDOCK_PREVIEW_BORDER     2
+
+static void hbDockPreviewFill(
+   HDC hDC,
+   const RECT * pRect )
 {
    HBRUSH hBrush;
+
+   hBrush = CreateSolidBrush(
+      RGB( 70, 140, 240 ) );
+
+   FillRect(
+      hDC,
+      ( RECT * ) pRect,
+      hBrush );
+
+   DeleteObject(
+      hBrush );
+}
+
+static void hbDockPreviewFrame(
+   HDC hDC,
+   const RECT * pRect )
+{
    HPEN hPen;
-   HGDIOBJ hOldBrush;
-   HGDIOBJ hOldPen;
+   HPEN hOld;
+   HBRUSH hOldBrush;
 
-   if( pOverlay == NULL )
-      return;
+   hPen = CreatePen(
+      PS_SOLID,
+      HBDOCK_PREVIEW_BORDER,
+      RGB( 30, 90, 220 ) );
 
-   hBrush =
-      CreateSolidBrush(
-         RGB( 80, 140, 255 ) );
-
-   hPen =
-      CreatePen(
-         PS_SOLID,
-         2,
-         RGB( 0, 70, 200 ) );
-
-   hOldBrush =
-      SelectObject(
-         hDC,
-         hBrush );
-
-   hOldPen =
+   hOld =
       SelectObject(
          hDC,
          hPen );
 
+   hOldBrush =
+      SelectObject(
+         hDC,
+         GetStockObject( NULL_BRUSH ) );
+
    Rectangle(
       hDC,
-      0,
-      0,
-      pOverlay->PreviewRect.right -
-      pOverlay->PreviewRect.left,
-      pOverlay->PreviewRect.bottom -
-      pOverlay->PreviewRect.top );
+      pRect->left,
+      pRect->top,
+      pRect->right,
+      pRect->bottom );
 
    SelectObject(
       hDC,
@@ -49,11 +58,40 @@ void hbDockPreviewPaint(
 
    SelectObject(
       hDC,
-      hOldPen );
-
-   DeleteObject(
-      hBrush );
+      hOld );
 
    DeleteObject(
       hPen );
+}
+
+BOOL hbDockPreviewPaint(
+   HDC hDC,
+   const RECT * pRect )
+{
+   if( hDC == NULL )
+      return FALSE;
+
+   if( pRect == NULL )
+      return FALSE;
+
+   SaveDC(
+      hDC );
+
+   SetBkMode(
+      hDC,
+      TRANSPARENT );
+
+   hbDockPreviewFill(
+      hDC,
+      pRect );
+
+   hbDockPreviewFrame(
+      hDC,
+      pRect );
+
+   RestoreDC(
+      hDC,
+      -1 );
+
+   return TRUE;
 }

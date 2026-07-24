@@ -3,27 +3,40 @@
 #include "hbdockautohidegeometry.h"
 
 BOOL hbDockAutoHideGetWindowRect(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    RECT * pRect )
 {
-   if( pPane == NULL || pRect == NULL )
+   if( pAutoHide == NULL || pRect == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return FALSE;
 
    return GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       pRect );
 }
 
+
 BOOL hbDockAutoHideSetWindowRect(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    const RECT * pRect,
    BOOL bRepaint )
 {
-   if( pPane == NULL || pRect == NULL )
+   if( pAutoHide == NULL || pRect == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel == NULL )
+      return FALSE;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return FALSE;
 
    return MoveWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       pRect->left,
       pRect->top,
       pRect->right - pRect->left,

@@ -1,20 +1,20 @@
 #include "hbdockautohideslidedirection.h"
 
 void hbDockAutoHideSetDirection(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nDirection )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->SlideDirection = nDirection;
+   pAutoHide->SlideDirection = nDirection;
 }
 
 int hbDockAutoHideGetDirection(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->SlideDirection;
+   return pAutoHide->SlideDirection;
 }

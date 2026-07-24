@@ -1,20 +1,20 @@
 #include "hbdockautohideacceleration.h"
 
 void hbDockAutoHideSetAcceleration(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nAccel )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->SlideAcceleration = nAccel;
+   pAutoHide->SlideAcceleration = nAccel;
 }
 
 int hbDockAutoHideGetAcceleration(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->SlideAcceleration;
+   return pAutoHide->SlideAcceleration;
 }

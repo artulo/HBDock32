@@ -1,26 +1,100 @@
+#include <stdlib.h>
+
 #include "hbdocklayoutoptimizer.h"
 
-static BOOL hbOptimizeNode(
-      HB_DOCK_LAYOUT_NODE * pNode );
-
-BOOL hbDockLayoutOptimize(
-      HB_DOCK_LAYOUT_TREE * pTree )
+static HB_DOCK_LAYOUT_NODE * hbDockOptimizeNode(
+   HB_DOCK_LAYOUT_NODE * pNode )
 {
-   if( pTree == NULL )
-      return FALSE;
+   HB_DOCK_LAYOUT_NODE * pChild;
 
-   if( pTree->Root == NULL )
-      return TRUE;
+   if( pNode == NULL )
+      return NULL;
 
-   return hbOptimizeNode(
-      pTree->Root );
+   if( pNode->Type == HB_LAYOUT_LEAF )
+      return pNode;
+
+   pNode->First =
+      hbDockOptimizeNode(
+         pNode->First );
+
+   pNode->Second =
+      hbDockOptimizeNode(
+         pNode->Second );
+
+   /*
+    * Ambos hijos eliminados
+    */
+
+   if( pNode->First == NULL &&
+       pNode->Second == NULL )
+   {
+      free(
+         pNode );
+
+      return NULL;
+   }
+
+   /*
+    * Sólo queda el hijo izquierdo
+    */
+
+   if( pNode->Second == NULL )
+   {
+      pChild =
+         pNode->First;
+
+      if( pChild != NULL )
+         pChild->Parent =
+            pNode->Parent;
+
+      free(
+         pNode );
+
+      return pChild;
+   }
+
+   /*
+    * Sólo queda el hijo derecho
+    */
+
+   if( pNode->First == NULL )
+   {
+      pChild =
+         pNode->Second;
+
+      if( pChild != NULL )
+         pChild->Parent =
+            pNode->Parent;
+
+      free(
+         pNode );
+
+      return pChild;
+   }
+
+   /*
+    * Actualizar padres
+    */
+
+   pNode->First->Parent =
+      pNode;
+
+   pNode->Second->Parent =
+      pNode;
+
+   return pNode;
 }
 
-static BOOL hbOptimizeNode(
-      HB_DOCK_LAYOUT_NODE * pNode )
+void hbDockLayoutOptimize(
+   HB_DOCK_LAYOUT_TREE * pTree )
 {
-   if( pNode == NULL )
-      return FALSE;
+   if( pTree == NULL )
+      return;
 
-   return TRUE;
+   pTree->Root =
+      hbDockOptimizeNode(
+         pTree->Root );
+
+   if( pTree->Root != NULL )
+      pTree->Root->Parent = NULL;
 }

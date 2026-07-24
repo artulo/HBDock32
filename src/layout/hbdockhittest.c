@@ -1,13 +1,17 @@
 #include <windows.h>
 
 #include "hbdockhittest.h"
+#include "hbdockcontainer.h"
 
 static void hbDockTreeHit(
-   HB_DOCK_NODE * pNode,
+   HB_DOCK_LAYOUT_NODE * pNode,
    POINT pt,
    HB_DOCK_HITTEST * pHit )
 {
    if( pNode == NULL )
+      return;
+
+   if( pHit == NULL )
       return;
 
    if( !PtInRect(
@@ -15,11 +19,18 @@ static void hbDockTreeHit(
          pt ) )
       return;
 
-   if( pNode->Type == HB_DOCK_NODE_LEAF )
+   if( pNode->Type == HB_LAYOUT_LEAF )
    {
       pHit->Hit = HB_DOCK_HIT_PANEL;
-      pHit->Panel = pNode->Panel;
-      pHit->Node = pNode;
+
+      pHit->pNode = pNode;
+
+      if( pNode->pContainer != NULL )
+         pHit->pPanel =
+            pNode->pContainer->TabGroup.pPanel;
+      else
+         pHit->pPanel = NULL;
+
       return;
    }
 
@@ -40,13 +51,20 @@ static void hbDockTreeHit(
 void hbDockHitTestInit(
    HB_DOCK_HITTEST * pHit )
 {
+   if( pHit == NULL )
+      return;
+
    ZeroMemory(
       pHit,
       sizeof( HB_DOCK_HITTEST ) );
+
+   pHit->Hit = HB_DOCK_HIT_NONE;
+   pHit->pPanel = NULL;
+   pHit->pNode = NULL;
 }
 
 void hbDockHitTestTree(
-   HB_DOCK_NODE * pRoot,
+   HB_DOCK_LAYOUT_NODE * pRoot,
    POINT pt,
    HB_DOCK_HITTEST * pHit )
 {

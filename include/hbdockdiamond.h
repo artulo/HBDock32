@@ -7,8 +7,6 @@
 extern "C" {
 #endif
 
-typedef struct _HB_DOCK_MANAGER HB_DOCK_MANAGER;
-
 typedef enum
 {
    HB_DIAMOND_NONE = 0,
@@ -18,32 +16,48 @@ typedef enum
    HB_DIAMOND_BOTTOM,
    HB_DIAMOND_CENTER
 
-} HB_DOCK_DIAMOND_PART;
+} HB_DOCK_DIAMOND_BUTTON;
+
+typedef HB_DOCK_DIAMOND_BUTTON HB_DOCK_DIAMOND_PART;
 
 typedef struct _HB_DOCK_DIAMOND
 {
    HWND hWnd;
 
-   RECT Bounds;
+   HWND hOwner;
 
-   RECT Left;
-   RECT Right;
-   RECT Top;
-   RECT Bottom;
-   RECT Center;
+   RECT Rect;
 
-   HB_DOCK_DIAMOND_PART HotPart;
+   RECT LeftRect;
+   RECT RightRect;
+   RECT TopRect;
+   RECT BottomRect;
+   RECT CenterRect;
 
    BOOL Visible;
 
 } HB_DOCK_DIAMOND;
 
 BOOL hbDockDiamondCreate(
-    HB_DOCK_DIAMOND * pDiamond,
-    HWND hParent );
+   HB_DOCK_DIAMOND * pDiamond,
+   HWND hOwner );
 
 void hbDockDiamondDestroy(
-    HB_DOCK_DIAMOND * pDiamond );
+   HB_DOCK_DIAMOND * pDiamond );
+
+void hbDockDiamondShow(
+   HB_DOCK_DIAMOND * pDiamond );
+
+void hbDockDiamondHide(
+   HB_DOCK_DIAMOND * pDiamond );
+
+void hbDockDiamondMove(
+   HB_DOCK_DIAMOND * pDiamond,
+   POINT pt );
+
+HB_DOCK_DIAMOND_BUTTON hbDockDiamondHitTest(
+   const HB_DOCK_DIAMOND * pDiamond,
+   POINT pt );
 
 #ifdef __cplusplus
 }

@@ -1,18 +1,19 @@
 #include "hbdockautohidestate.h"
 
 void hbDockAutoHideSetState(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    DWORD dwState )
 {
-   if( pPane != NULL )
-      pPane->State = dwState;
+   if( pAutoHide != NULL )
+      pAutoHide->State = dwState;
 }
 
+
 DWORD hbDockAutoHideGetState(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->State;
+   return pAutoHide->State;
 }

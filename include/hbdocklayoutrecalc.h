@@ -8,8 +8,8 @@ extern "C" {
 #endif
 
 void hbDockLayoutRecalc(
-      HB_DOCK_LAYOUT_TREE * pTree,
-      RECT rcClient );
+   HB_DOCK_LAYOUT_TREE * pTree,
+   const RECT * pRect );
 
 #ifdef __cplusplus
 }

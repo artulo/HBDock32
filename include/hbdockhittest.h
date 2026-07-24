@@ -3,7 +3,8 @@
 
 #include <windows.h>
 
-#include "hbdocktree.h"
+#include "hbdocklayouttree.h"
+#include "hbdockpanel.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,9 +22,9 @@ typedef struct
 {
    HB_DOCK_HIT Hit;
 
-   HB_DOCK_PANEL * Panel;
+   HB_DOCK_PANEL * pPanel;
 
-   HB_DOCK_NODE * Node;
+   HB_DOCK_LAYOUT_NODE * pNode;
 
 } HB_DOCK_HITTEST;
 
@@ -31,7 +32,7 @@ void hbDockHitTestInit(
    HB_DOCK_HITTEST * pHit );
 
 void hbDockHitTestTree(
-   HB_DOCK_NODE * pRoot,
+   HB_DOCK_LAYOUT_NODE * pRoot,
    POINT pt,
    HB_DOCK_HITTEST * pHit );
 

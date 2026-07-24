@@ -3,28 +3,40 @@
 #include "hbdockautohidefont.h"
 
 void hbDockAutoHideSetFont(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HFONT hFont )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SendMessage(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       WM_SETFONT,
-      ( WPARAM ) hFont,
+      (WPARAM) hFont,
       TRUE );
 }
 
 HFONT hbDockAutoHideGetFont(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return NULL;
 
-   return ( HFONT )
+   if( pAutoHide->Panel == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel->hWnd == NULL )
+      return NULL;
+
+   return (HFONT)
       SendMessage(
-         pPane->hWnd,
+         pAutoHide->Panel->hWnd,
          WM_GETFONT,
          0,
          0 );

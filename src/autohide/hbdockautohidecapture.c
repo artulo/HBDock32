@@ -3,13 +3,19 @@
 #include "hbdockautohidecapture.h"
 
 void hbDockAutoHideSetCapture(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetCapture(
-      pPane->hWnd );
+      pAutoHide->Panel->hWnd );
 }
 
 void hbDockAutoHideReleaseCapture( void )
@@ -18,11 +24,14 @@ void hbDockAutoHideReleaseCapture( void )
 }
 
 int hbDockAutoHideHasCapture(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return 0;
+
+   if( pAutoHide->Panel == NULL )
       return 0;
 
    return GetCapture() ==
-      pPane->hWnd;
+      pAutoHide->Panel->hWnd;
 }

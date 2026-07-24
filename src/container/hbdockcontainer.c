@@ -1,27 +1,57 @@
-#include <string.h>
+#include <windows.h>
 
 #include "hbdockcontainer.h"
 
+
 BOOL hbDockContainerCreate(
-      HB_DOCK_CONTAINER * pContainer,
-      HWND hParent )
+   HB_DOCK_CONTAINER * pContainer,
+   HWND hParent )
 {
+   if( pContainer == NULL )
+      return FALSE;
+
+
    ZeroMemory(
       pContainer,
-      sizeof(*pContainer));
-   pContainer->hWnd = hParent;
-   pContainer->Type =
-      HB_CONTAINER_EMPTY;
+      sizeof( HB_DOCK_CONTAINER ) );
 
-   pContainer->Ratio = 0.5f;
 
-   return hbDockTabGroupInit(
-      &pContainer->TabGroup);
+   pContainer->hParent = hParent;
+
+
+   if( !hbDockTabGroupInit(
+          &pContainer->TabGroup ) )
+   {
+      return FALSE;
+   }
+
+
+   pContainer->pActivePanel = NULL;
+
+   pContainer->Visible = TRUE;
+
+
+   SetRectEmpty(
+      &pContainer->Rect );
+
+
+   return TRUE;
 }
 
+
+
 void hbDockContainerDestroy(
-      HB_DOCK_CONTAINER * pContainer )
+   HB_DOCK_CONTAINER * pContainer )
 {
+   if( pContainer == NULL )
+      return;
+
+
    hbDockTabGroupDone(
-      &pContainer->TabGroup);
+      &pContainer->TabGroup );
+
+
+   ZeroMemory(
+      pContainer,
+      sizeof( HB_DOCK_CONTAINER ) );
 }

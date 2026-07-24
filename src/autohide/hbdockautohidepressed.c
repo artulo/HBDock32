@@ -1,18 +1,18 @@
 #include "hbdockautohidepressed.h"
 
 void hbDockAutoHideSetPressed(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int bPressed )
 {
-   if( pPane != NULL )
-      pPane->Pressed = bPressed;
+   if( pAutoHide != NULL )
+      pAutoHide->Pressed = bPressed;
 }
 
 int hbDockAutoHideIsPressed(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return FALSE;
 
-   return pPane->Pressed;
+   return pAutoHide->Pressed;
 }

@@ -1,17 +1,39 @@
-#include "hbdockcontaineraddtab.h"
+#include <windows.h>
 
-#include "hbdocktabadd.h"
+#include "hbdockcontaineraddtab.h"
+#include "hbdocktabgroup.h"
+
 
 BOOL hbDockContainerAddTab(
-      HB_DOCK_CONTAINER * pContainer,
-      HWND hDock,
-      LPCTSTR Caption )
+   HB_DOCK_CONTAINER * pContainer,
+   HB_DOCK_PANEL * pPanel )
 {
-   pContainer->Type =
-      HB_CONTAINER_TABS;
+   if( pContainer == NULL )
+      return FALSE;
 
-   return hbDockTabAdd(
+   if( pPanel == NULL )
+      return FALSE;
+
+
+   return hbDockTabGroupAddPanel(
       &pContainer->TabGroup,
-      hDock,
-      Caption );
+      pPanel );
+}
+
+
+
+BOOL hbDockContainerRemoveTab(
+   HB_DOCK_CONTAINER * pContainer,
+   HB_DOCK_PANEL * pPanel )
+{
+   if( pContainer == NULL )
+      return FALSE;
+
+   if( pPanel == NULL )
+      return FALSE;
+
+
+   return hbDockTabGroupRemovePanel(
+      &pContainer->TabGroup,
+      pPanel );
 }

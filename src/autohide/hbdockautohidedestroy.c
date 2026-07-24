@@ -2,17 +2,21 @@
 
 #include "hbdockautohidedestroy.h"
 
+
 void hbDockAutoHideDestroy(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( pPane->hWnd != NULL )
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd != NULL )
    {
       DestroyWindow(
-         pPane->hWnd );
+         pAutoHide->Panel->hWnd );
 
-      pPane->hWnd = NULL;
+      pAutoHide->Panel->hWnd = NULL;
    }
 }

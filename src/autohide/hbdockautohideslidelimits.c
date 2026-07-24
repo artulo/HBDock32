@@ -1,14 +1,14 @@
 #include "hbdockautohideslidelimits.h"
 
 void hbDockAutoHideNormalizeSlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( pPane->SlidePosition < 0 )
-      pPane->SlidePosition = 0;
+   if( pAutoHide->SlidePosition < 0 )
+      pAutoHide->SlidePosition = 0;
 
-   if( pPane->SlidePosition > pPane->SlideSize )
-      pPane->SlidePosition = pPane->SlideSize;
+   if( pAutoHide->SlidePosition > pAutoHide->SlideSize )
+      pAutoHide->SlidePosition = pAutoHide->SlideSize;
 }

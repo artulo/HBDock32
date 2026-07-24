@@ -8,18 +8,26 @@ void hbDockPaintBackground(
 {
    HBRUSH hBrush;
 
-   if( hDC == NULL || pRect == NULL )
+   if( hDC == NULL )
+      return;
+
+   if( pRect == NULL )
       return;
 
    hBrush = CreateSolidBrush(
-      GetSysColor( COLOR_BTNFACE ) );
+      GetSysColor(
+         COLOR_BTNFACE ) );
+
+   if( hBrush == NULL )
+      return;
 
    FillRect(
       hDC,
-      ( RECT * ) pRect,
+      (RECT *) pRect,
       hBrush );
 
-   DeleteObject( hBrush );
+   DeleteObject(
+      hBrush );
 }
 
 void hbDockPaintBorder(
@@ -28,7 +36,10 @@ void hbDockPaintBorder(
 {
    RECT rc;
 
-   if( hDC == NULL || pRect == NULL )
+   if( hDC == NULL )
+      return;
+
+   if( pRect == NULL )
       return;
 
    rc = *pRect;

@@ -1,18 +1,22 @@
 #include "hbdockautohidedelay.h"
 
+
 void hbDockAutoHideSetDelay(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    UINT nDelay )
 {
-   if( pPane != NULL )
-      pPane->Delay = nDelay;
+   if( pAutoHide == NULL )
+      return;
+
+   pAutoHide->SlideSpeed = (int)nDelay;
 }
 
+
 UINT hbDockAutoHideGetDelay(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->Delay;
+   return (UINT)pAutoHide->SlideSpeed;
 }

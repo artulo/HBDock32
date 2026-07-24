@@ -1,15 +1,15 @@
 #include "hbdockautohideslideanimation.h"
 
 void hbDockAutoHideAnimationStep(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   if( !pPane->Sliding )
+   if( !pAutoHide->Sliding )
       return;
 
-   pPane->SlidePosition +=
-      pPane->SlideDirection *
-      pPane->SlideStep;
+   pAutoHide->SlidePosition +=
+      pAutoHide->SlideDirection *
+      pAutoHide->SlideStep;
 }

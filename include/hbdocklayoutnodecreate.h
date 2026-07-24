@@ -2,22 +2,25 @@
 #define HBDOCKLAYOUTNODECREATE_H
 
 #include "hbdocklayouttree.h"
-#include "hbdockcontainer.h"
+#include "hbdockpanel.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-HB_DOCK_LAYOUT_NODE *
-hbDockLayoutCreateLeaf(
-      HB_DOCK_CONTAINER * pContainer );
-	  
-HB_DOCK_LAYOUT_NODE *
-hbDockLayoutCreateSplit(
-      HB_LAYOUT_NODE_TYPE Type );
+
+HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateLeaf(
+   HB_DOCK_PANEL * pPanel );
+
+
+HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateSplit(
+   HB_LAYOUT_NODE_TYPE Type,
+   HB_DOCK_LAYOUT_NODE * pFirst,
+   HB_DOCK_LAYOUT_NODE * pSecond );
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKLAYOUTNODECREATE_H */

@@ -3,27 +3,40 @@
 #include "hbdockautohideshow.h"
 
 void hbDockAutoHideShow(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->Visible = TRUE;
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
+      return;
+
+   pAutoHide->Visible = TRUE;
 
    ShowWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       SW_SHOW );
 }
 
+
 void hbDockAutoHideHide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->Visible = FALSE;
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
+      return;
+
+   pAutoHide->Visible = FALSE;
 
    ShowWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       SW_HIDE );
 }

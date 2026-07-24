@@ -5,6 +5,7 @@
 
 #include "hbdockmanager.h"
 #include "hbdockpanel.h"
+#include "hbdockdragcontroller.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +16,7 @@ void hbDockManagerBeginDrag(
    HB_DOCK_PANEL * pPanel,
    POINT pt );
 
-void hbDockManagerDragMove(
+int hbDockManagerDragMove(
    HB_DOCK_MANAGER * pManager,
    POINT pt );
 

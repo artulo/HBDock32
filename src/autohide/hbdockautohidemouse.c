@@ -12,20 +12,27 @@ void hbDockAutoHideGetMousePos(
       pPoint );
 }
 
+
 int hbDockAutoHideMouseInside(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
    RECT rc;
    POINT pt;
 
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return 0;
+
+   if( pAutoHide->Panel == NULL )
+      return 0;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return 0;
 
    GetCursorPos(
       &pt );
 
    GetWindowRect(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       &rc );
 
    return PtInRect(

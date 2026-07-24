@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 BOOL hbDockLayoutRemoveEmpty(
-      HB_DOCK_LAYOUT_NODE * pNode );
+   HB_DOCK_LAYOUT_TREE * pTree,
+   HB_DOCK_LAYOUT_NODE * pLeaf );
 
 #ifdef __cplusplus
 }

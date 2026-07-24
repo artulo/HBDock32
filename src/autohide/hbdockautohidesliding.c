@@ -1,24 +1,26 @@
 #include "hbdockautohidesliding.h"
 
 void hbDockAutoHideBeginSlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Sliding = 1;
+   if( pAutoHide != NULL )
+      pAutoHide->Sliding = 1;
 }
+
 
 void hbDockAutoHideEndSlide(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->Sliding = 0;
+   if( pAutoHide != NULL )
+      pAutoHide->Sliding = 0;
 }
 
+
 int hbDockAutoHideIsSliding(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->Sliding;
+   return pAutoHide->Sliding;
 }

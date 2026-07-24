@@ -1,23 +1,24 @@
 #include "hbdockautohidespeed.h"
 
 void hbDockAutoHideSetSlideSpeed(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nSpeed )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
    if( nSpeed < 1 )
       nSpeed = 1;
 
-   pPane->SlideStep = nSpeed;
+   pAutoHide->SlideStep = nSpeed;
 }
 
+
 int hbDockAutoHideGetSlideSpeed(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->SlideStep;
+   return pAutoHide->SlideStep;
 }

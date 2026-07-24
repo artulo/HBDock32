@@ -4,19 +4,34 @@
 #include "hbdockautohidedebug.h"
 
 void hbDockAutoHideDump(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
    char szBuffer[ 256 ];
 
-   if( pPane == NULL )
+   HWND hWnd;
+
+
+   if( pAutoHide == NULL )
       return;
+
+
+   hWnd = NULL;
+
+
+   if( pAutoHide->Panel != NULL )
+   {
+      hWnd = pAutoHide->Panel->hWnd;
+   }
+
 
    wsprintf(
       szBuffer,
-      "HWND=%p Visible=%d Side=%lu\r\n",
-      pPane->hWnd,
-      pPane->Visible,
-      ( unsigned long ) pPane->Side );
+      "HWND=%p Active=%d Expanded=%d Enabled=%d\r\n",
+      hWnd,
+      pAutoHide->Active,
+      pAutoHide->Expanded,
+      pAutoHide->Enabled );
+
 
    OutputDebugString(
       szBuffer );

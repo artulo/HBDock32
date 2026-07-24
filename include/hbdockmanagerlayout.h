@@ -7,10 +7,17 @@
 extern "C" {
 #endif
 
-void hbDockManagerUpdateLayout(
-      HB_DOCK_MANAGER * pManager );
+BOOL hbDockManagerLayout(
+   HB_DOCK_MANAGER * pManager );
 
-void hbDockManagerLayout(
+BOOL hbDockManagerLayoutRect(
+   HB_DOCK_MANAGER * pManager,
+   const RECT * pRect );
+
+void hbDockManagerInvalidateLayout(
+   HB_DOCK_MANAGER * pManager );
+
+void hbDockManagerUpdateLayout(
    HB_DOCK_MANAGER * pManager );
 
 #ifdef __cplusplus

@@ -1,24 +1,26 @@
 #include "hbdockautohidemouseleave.h"
 
 void hbDockAutoHideBeginMouseLeave(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->WaitingMouseLeave = TRUE;
+   if( pAutoHide != NULL )
+      pAutoHide->WaitingMouseLeave = TRUE;
 }
+
 
 void hbDockAutoHideEndMouseLeave(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane != NULL )
-      pPane->WaitingMouseLeave = FALSE;
+   if( pAutoHide != NULL )
+      pAutoHide->WaitingMouseLeave = FALSE;
 }
 
+
 int hbDockAutoHideWaitingMouseLeave(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return FALSE;
 
-   return pPane->WaitingMouseLeave;
+   return pAutoHide->WaitingMouseLeave;
 }

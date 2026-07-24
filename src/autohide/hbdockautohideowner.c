@@ -3,25 +3,38 @@
 #include "hbdockautohideowner.h"
 
 HWND hbDockAutoHideGetOwner(
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel == NULL )
+      return NULL;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return NULL;
 
    return GetWindow(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       GW_OWNER );
 }
 
+
 void hbDockAutoHideSetOwner(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    HWND hOwner )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
+      return;
+
+   if( pAutoHide->Panel == NULL )
+      return;
+
+   if( pAutoHide->Panel->hWnd == NULL )
       return;
 
    SetWindowLong(
-      pPane->hWnd,
+      pAutoHide->Panel->hWnd,
       GWL_HWNDPARENT,
       ( LONG ) hOwner );
 }

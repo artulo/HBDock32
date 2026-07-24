@@ -1,5 +1,5 @@
 #include "hbdockautohideinsert.h"
-
+ 
 int hbDockAutoHideInsert(
    HB_DOCK_AUTOHIDE_MANAGER * pManager,
    int nIndex,
@@ -12,7 +12,7 @@ int hbDockAutoHideInsert(
 
    if( nIndex < 0 )
       nIndex = 0;
-
+ 
    if( nIndex > pManager->Panes.Count )
       nIndex = pManager->Panes.Count;
 

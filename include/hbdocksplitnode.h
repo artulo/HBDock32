@@ -3,7 +3,7 @@
 
 #include <windows.h>
 
-#include "hbdocktree.h"
+#include "hbdocklayouttree.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +11,7 @@ extern "C" {
 
 typedef struct _HB_DOCK_SPLIT_NODE
 {
-   HB_DOCK_NODE * Node;
+   HB_DOCK_LAYOUT_NODE * Node;
 
    RECT SplitterRect;
 
@@ -25,7 +25,7 @@ typedef struct _HB_DOCK_SPLIT_NODE
 
 void hbDockSplitNodeInit(
    HB_DOCK_SPLIT_NODE * pSplit,
-   HB_DOCK_NODE * pNode );
+   HB_DOCK_LAYOUT_NODE * pNode );
 
 void hbDockSplitNodeUpdate(
    HB_DOCK_SPLIT_NODE * pSplit );

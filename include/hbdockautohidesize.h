@@ -1,14 +1,16 @@
 #ifndef HBDOCKAUTOHIDESIZE_H
 #define HBDOCKAUTOHIDESIZE_H
 
-#include "hbdockautohidepane.h"
+#include <windows.h>
+
+#include "hbdockautohide.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void hbDockAutoHideGetSize(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    SIZE * pSize );
 
 #ifdef __cplusplus

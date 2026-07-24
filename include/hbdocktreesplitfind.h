@@ -3,19 +3,14 @@
 
 #include <windows.h>
 
-#include "hbdocktree.h"
+#include "hbdocklayouttree.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/*
- * Recorre el arbol buscando el nodo split cuyo separador
- * (calculado a partir de Node->Rect + SplitPos + SplitterSize)
- * contiene el punto pt. Devuelve NULL si ninguno coincide.
- */
-HB_DOCK_NODE * hbDockTreeFindSplitterAt(
-   HB_DOCK_NODE * pNode,
+HB_DOCK_LAYOUT_NODE * hbDockTreeFindSplitterAt(
+   HB_DOCK_LAYOUT_NODE * pNode,
    POINT pt );
 
 #ifdef __cplusplus

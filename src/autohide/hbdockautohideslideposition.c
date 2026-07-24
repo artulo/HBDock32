@@ -1,20 +1,21 @@
 #include "hbdockautohideslideposition.h"
 
 void hbDockAutoHideSetSlidePosition(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nPos )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return;
 
-   pPane->SlidePosition = nPos;
+   pAutoHide->SlidePosition = nPos;
 }
 
+
 int hbDockAutoHideGetSlidePosition(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->SlidePosition;
+   return pAutoHide->SlidePosition;
 }

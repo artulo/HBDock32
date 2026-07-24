@@ -1,5 +1,6 @@
 #include "hbdockdocument.h"
-
+#include "hbdocktabgroup.h"
+ 
 void hbDockDocumentInit(
    HB_DOCK_DOCUMENT_AREA * pArea )
 {

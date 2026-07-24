@@ -7,13 +7,14 @@
 extern "C" {
 #endif
 
-HB_DOCK_DIAMOND_PART
-hbDockDiamondHitTest(
-   HB_DOCK_DIAMOND * pDiamond,
+
+HB_DOCK_DIAMOND_BUTTON hbDockDiamondHitTest(
+   const HB_DOCK_DIAMOND * pDiamond,
    POINT pt );
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKDIAMONDHIT_H */

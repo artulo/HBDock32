@@ -7,13 +7,14 @@
 extern "C" {
 #endif
 
-HB_DOCK_GUIDE *
-hbDockGuideManagerHitTest(
-   HB_DOCK_GUIDE_MANAGER * pManager,
+
+HB_DOCK_GUIDE_TYPE hbDockGuideManagerHitTest(
+   const HB_DOCK_GUIDE_MANAGER * pManager,
    POINT pt );
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* HBDOCKGUIDEHIT_H */

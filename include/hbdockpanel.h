@@ -4,100 +4,173 @@
 #include <windows.h>
 
 #include "hbdockconfig.h"
+#include "hbdockpanelstate.h"
 
-//typedef unsigned int HB_DOCK_ID;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 typedef struct _HB_DOCK_PANEL HB_DOCK_PANEL;
+
+typedef struct _HB_DOCK_FLOATING HB_DOCK_FLOATING;
+
+typedef struct _HB_DOCK_CONTAINER HB_DOCK_CONTAINER;
+ /*
+typedef enum _HB_DOCK_PANEL_STATE
+{
+   HB_PANEL_STATE_NONE = 0,
+
+   HB_PANEL_STATE_DOCKED,
+
+   HB_PANEL_STATE_FLOATING,
+
+   HB_PANEL_STATE_AUTOHIDE,
+
+   HB_PANEL_STATE_HIDDEN
+
+} HB_DOCK_PANEL_STATE;
+
+*/
 
 struct _HB_DOCK_PANEL
 {
-    HWND hWnd;
-    HWND hParent;
-    HWND hToolTip;
+   HWND hWnd;
 
-    char Name[64];
-    char Caption[HBDOCK_MAX_CAPTION];
-    char Hint[HBDOCK_MAX_CAPTION];
+   HWND hParent;
 
-    RECT Rect;
-    RECT FloatRect;
-    RECT Margin;
-    RECT Padding;
+   HWND hToolTip;
 
-    int DockSide;
-    int DockSite;
 
-    int MinWidth;
-    int MinHeight;
+   char Name[64];
 
-    SIZE MinSize;
-    SIZE MaxSize;
-    SIZE DockSize;
+   char Caption[HBDOCK_MAX_CAPTION];
 
-    int PreferredSize;
+   char Hint[HBDOCK_MAX_CAPTION];
 
-    int Visible;
-    int Enabled;
-    int Active;
-    int Floating;
-    int Modified;
-    int Border;
-    int UpdateCount;
 
-    int Align;
-    int State;
 
-    unsigned int Id;
-    long Tag;
+   RECT Rect;
 
-    unsigned long Flags;
-    unsigned long Options;
+   RECT FloatRect;
 
-    DWORD Style;
-    DWORD ExStyle;
+   RECT Margin;
 
-    COLORREF BkColor;
-    COLORREF TextColor;
+   RECT Padding;
 
-    HFONT hFont;
-    HICON hIcon;
-    HCURSOR hCursor;
 
-    void * UserData;
-    void * Cargo;
-	
-  //  HB_DOCK_ID Id;
 
-   // HWND hWnd;
+   int DockSide;
 
- //   TCHAR Name[64];
+   int DockSite;
 
-   // TCHAR Caption[128];
 
-   // HB_DOCK_STATE State;
-    HB_DOCK_PANEL * Next;
+
+   int MinWidth;
+
+   int MinHeight;
+
+
+
+   SIZE MinSize;
+
+   SIZE MaxSize;
+
+   SIZE DockSize;
+
+
+
+   int PreferredSize;
+
+
+
+   int Visible;
+
+   int Enabled;
+
+   int Active;
+
+   int Floating;
+
+   int Modified;
+
+   int Border;
+
+   int UpdateCount;
+
+
+
+   int Align;
+
+
+
+   HB_DOCK_PANEL_STATE State;
+
+
+
+   unsigned int Id;
+
+   long Tag;
+
+
+
+   unsigned long Flags;
+
+   unsigned long Options;
+
+
+
+   DWORD Style;
+
+   DWORD ExStyle;
+
+
+
+   COLORREF BkColor;
+
+   COLORREF TextColor;
+
+
+
+   HFONT hFont;
+
+   HICON hIcon;
+
+   HCURSOR hCursor;
+
+
+
+   void * UserData;
+
+   void * Cargo;
+
+
+   HB_DOCK_FLOATING * pFloating;
+
+   HB_DOCK_CONTAINER * pContainer;
+
+   HB_DOCK_PANEL * Next;
 };
 
-HB_DOCK_PANEL * hbDockPanelNew( void );
-/*
-typedef struct
-{
-    HB_DOCK_ID Id;
 
-    HWND hWnd;
 
-    TCHAR Name[64];
+HB_DOCK_PANEL * hbDockPanelNew(
+   void );
 
-    TCHAR Caption[128];
 
-    HB_DOCK_STATE State;
-
-} HB_DOCK_PANEL;
-*/
 void hbDockPanelDelete(
-    HB_DOCK_PANEL * pPanel );
+   HB_DOCK_PANEL * pPanel );
+
 
 void hbDockPanelSetName(
-    HB_DOCK_PANEL * pPanel,
-    const char * pszName );
+   HB_DOCK_PANEL * pPanel,
+   const char * pszName );
 
+
+
+#ifdef __cplusplus
+}
 #endif
+
+
+#endif /* HBDOCKPANEL_H */

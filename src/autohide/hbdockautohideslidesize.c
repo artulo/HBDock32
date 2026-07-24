@@ -1,18 +1,21 @@
 #include "hbdockautohideslidesize.h"
 
 void hbDockAutoHideSetSlideSize(
-   HB_DOCK_AUTOHIDE_PANE * pPane,
+   HB_DOCK_AUTOHIDE * pAutoHide,
    int nSize )
 {
-   if( pPane != NULL )
-      pPane->SlideSize = nSize;
+   if( pAutoHide == NULL )
+      return;
+
+   pAutoHide->SlideSize = nSize;
 }
 
+
 int hbDockAutoHideGetSlideSize(
-   const HB_DOCK_AUTOHIDE_PANE * pPane )
+   const HB_DOCK_AUTOHIDE * pAutoHide )
 {
-   if( pPane == NULL )
+   if( pAutoHide == NULL )
       return 0;
 
-   return pPane->SlideSize;
+   return pAutoHide->SlideSize;
 }

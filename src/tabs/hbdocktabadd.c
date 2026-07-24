@@ -5,7 +5,7 @@
 
 BOOL hbDockTabAdd(
       HB_DOCK_TAB_GROUP * pGroup,
-      HWND hDock,
+      HB_DOCK_PANEL * pPanel,
       LPCTSTR Caption )
 {
    if( pGroup->Count == pGroup->Capacity )
@@ -18,11 +18,10 @@ BOOL hbDockTabAdd(
       HB_DOCK_TAB * pNew;
 
       pNew =
-         (HB_DOCK_TAB*)
+         (HB_DOCK_TAB *)
          realloc(
             pGroup->Tabs,
-            sizeof(HB_DOCK_TAB) *
-            NewCapacity );
+            sizeof( HB_DOCK_TAB ) * NewCapacity );
 
       if( pNew == NULL )
          return FALSE;
@@ -31,13 +30,13 @@ BOOL hbDockTabAdd(
       pGroup->Capacity = NewCapacity;
    }
 
-   pGroup->Tabs[
-      pGroup->Count ].hDock = hDock;
+   pGroup->Tabs[ pGroup->Count ].pPanel = pPanel;
 
    lstrcpy(
-      pGroup->Tabs[
-         pGroup->Count ].Caption,
+      pGroup->Tabs[ pGroup->Count ].Caption,
       Caption );
+
+   pGroup->Tabs[ pGroup->Count ].UserData = 0;
 
    pGroup->Count++;
 
