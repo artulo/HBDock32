@@ -42,7 +42,7 @@ extern "C" {
  Initialization
 ---------------------------------------------------------------*/
 
-HBDOCK_API HB_BOOL hbDockInitialize( void );
+HBDOCK_API HB_DOCK_BOOL hbDockInitialize( void );
 
 HBDOCK_API void hbDockExit( void );
 
@@ -50,7 +50,7 @@ HBDOCK_API void hbDockExit( void );
  Version
 ---------------------------------------------------------------*/
 
-HBDOCK_API HB_DWORD hbDockVersion( void );
+HBDOCK_API HB_DOCK_DWORD hbDockVersion( void );
 
 /*---------------------------------------------------------------
  Information

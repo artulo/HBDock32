@@ -4,18 +4,18 @@
 
 int hbDockAutoHideAnimationAddPane(
    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager,
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
    if( pManager->Count >= pManager->Capacity )
    {
       int nCapacity =
          pManager->Capacity + 16;
 
-      HB_DOCK_AUTOHIDE_PANE ** pNew =
-         ( HB_DOCK_AUTOHIDE_PANE ** )
+      HB_DOCK_AUTOHIDE ** pNew =
+         ( HB_DOCK_AUTOHIDE ** )
          realloc(
             pManager->pPanes,
-            sizeof( HB_DOCK_AUTOHIDE_PANE * ) *
+            sizeof( HB_DOCK_AUTOHIDE * ) *
             nCapacity );
 
       if( pNew == NULL )
@@ -26,7 +26,7 @@ int hbDockAutoHideAnimationAddPane(
    }
 
    pManager->pPanes[
-      pManager->Count++ ] = pPane;
+      pManager->Count++ ] = pAutoHide;
 
    return 1;
 }

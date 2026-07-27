@@ -10,7 +10,7 @@ extern "C" {
 
 
 HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateLeaf(
-   HB_DOCK_PANEL * pPanel );
+   HB_DOCK_CONTAINER * pContainer );
 
 
 HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateSplit(

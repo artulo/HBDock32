@@ -5,6 +5,9 @@
 #include "hbdocklayoutinsertpanel.h"
 #include "hbdockcontainer.h"
 #include "hbdockmanagertabify.h"
+#include "hbdockmanagerrefreshlayout.h"
+#include "hbdockmanagerundock.h"
+#include "hbdockpaneldock.h"
 
 static HB_DOCK_SITE hbDockGuideToSite(
    HB_DOCK_GUIDE_TYPE Guide )
@@ -31,6 +34,66 @@ static HB_DOCK_SITE hbDockGuideToSite(
    }
 }
 
+/*
+ * Nota de estabilizacion: "acoplar al centro" (tabificar) solo
+ * funcionaba cuando la raiz del arbol era exactamente una sola hoja
+ * (el primer panel acoplado alguna vez) -- con mas de un panel ya
+ * acoplados, la raiz pasa a ser un nodo de division, y el camino de
+ * CENTER no sabia que hacer con eso (hbDockLayoutInsertPanel no
+ * tiene un caso para HB_DOCKSITE_CENTER en su switch, cae al
+ * default y devuelve FALSE en silencio). Se agrega esta funcion
+ * para bajar por el arbol hasta encontrar la primera hoja
+ * disponible y tabificar ahi, en vez de exigir que la raiz misma
+ * sea una hoja.
+ */
+static HB_DOCK_LAYOUT_NODE * hbDockFindFirstLeaf(
+   HB_DOCK_LAYOUT_NODE * pNode )
+{
+   if( pNode == NULL )
+      return NULL;
+
+   if( pNode->Type == HB_LAYOUT_LEAF )
+      return pNode;
+
+   if( pNode->First != NULL )
+   {
+      HB_DOCK_LAYOUT_NODE * pFound =
+         hbDockFindFirstLeaf( pNode->First );
+
+      if( pFound != NULL )
+         return pFound;
+   }
+
+   return hbDockFindFirstLeaf( pNode->Second );
+}
+
+/*
+ * Nota de estabilizacion: esta funcion insertaba el nuevo contenedor
+ * en el arbol de layout (estructura en memoria, via
+ * hbDockLayoutInsertPanel) pero nunca disparaba un recalculo real --
+ * hbDockLayoutRecalc (la que de verdad mueve la ventana del panel,
+ * Etapa 9) solo se llamaba desde otros caminos (undock, drag,
+ * autohide, cargar workspace), nunca desde aca. Resultado: acoplar
+ * un panel por primera vez insertaba todo bien en el arbol y
+ * devolvia TRUE, pero la ventana real del panel se quedaba donde
+ * estaba (invisible o superpuesta) hasta el primer resize manual de
+ * la ventana principal. Se agrega el refresh en las 2 salidas
+ * exitosas (la rama CENTER que tabifica, y la rama normal que
+ * inserta un nodo nuevo).
+ *
+ * Nota de estabilizacion (2): pPanel->pContainer nunca se asignaba
+ * en ningun lugar del proyecto, solo se leia -- se corrige aca.
+ *
+ * Nota de estabilizacion (3): si el panel ya estaba acoplado en
+ * otro lado y se llama a Dock() de nuevo (por ejemplo, el usuario
+ * aprieta "Acoplar a la izquierda" sobre un panel que ya esta
+ * acoplado), hay que sacarlo de su posicion vieja primero. Si no,
+ * el mismo panel queda referenciado por dos contenedores del arbol
+ * a la vez, y el resultado visual queda roto (confirmado con
+ * capturas reales: un recuadro huerfano mas dos paneles mal
+ * ubicados).
+ */
+
 BOOL hbDockManagerDockPanel(
    HB_DOCK_MANAGER * pManager,
    HB_DOCK_PANEL * pPanel,
@@ -51,6 +114,15 @@ BOOL hbDockManagerDockPanel(
 
    if( Site == HB_DOCKSITE_NONE )
       return FALSE;
+
+   if( pPanel->pContainer != NULL )
+   {
+      hbDockManagerUndock(
+         pManager,
+         pPanel->pContainer );
+
+      pPanel->pContainer = NULL;
+   }
 
    pContainer =
       ( HB_DOCK_CONTAINER * )
@@ -82,17 +154,28 @@ BOOL hbDockManagerDockPanel(
 	   HB_DOCK_LAYOUT_NODE * pNode;
 
 	   pNode =
-		  pManager->LayoutTree.Root;
+		  hbDockFindFirstLeaf(
+		     pManager->LayoutTree.Root );
 
 	   if( pNode != NULL )
 	   {
-		  if( pNode->Type == HB_LAYOUT_LEAF )
-		  {
-			 return hbDockManagerTabifyPanel(
+			 BOOL bOk;
+
+			 bOk = hbDockManagerTabifyPanel(
 				pManager,
 				pNode->pContainer,
 				pPanel );
-		  }
+
+			 /* El contenedor local que reservamos arriba no hacia
+			  * falta para este camino (se tabifica sobre el que ya
+			  * existia) -- liberarlo aca. */
+			 hbDockContainerDestroy(
+				pContainer );
+
+			 LocalFree(
+				pContainer );
+
+			 return bOk;
 	   }
 	}
 	
@@ -110,6 +193,15 @@ BOOL hbDockManagerDockPanel(
 
       return FALSE;
    }
+
+   pPanel->pContainer = pContainer;
+
+   hbDockPanelSetDockSite(
+      pPanel,
+      Site );
+
+   hbDockManagerRefreshLayout(
+      pManager );
 
    return TRUE;
 }

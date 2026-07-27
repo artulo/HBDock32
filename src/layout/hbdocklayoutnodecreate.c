@@ -4,13 +4,9 @@
 
 
 HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateLeaf(
-   HB_DOCK_PANEL * pPanel )
+   HB_DOCK_CONTAINER * pContainer )
 {
    HB_DOCK_LAYOUT_NODE * pNode;
-
-
-   if( pPanel == NULL )
-      return NULL;
 
 
    pNode =
@@ -27,8 +23,8 @@ HB_DOCK_LAYOUT_NODE * hbDockLayoutNodeCreateLeaf(
       HB_LAYOUT_LEAF;
 
 
-   pNode->pPanel =
-      pPanel;
+   pNode->pContainer =
+      pContainer;
 
 
    return pNode;

@@ -1,8 +1,9 @@
 #include "hbdragpreviewhide.h"
+#include "hbdockpreviewoverlay.h"
 
 void hbDragPreviewHide(
       HB_DRAG_PREVIEW_CONTROLLER * pController )
 {
-   hbDockPreviewHide(
+   hbDockPreviewOverlayHide(
       &pController->Overlay );
 }

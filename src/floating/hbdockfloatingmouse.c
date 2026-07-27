@@ -1,12 +1,11 @@
 #include <windows.h>
 
 #include "hbdockfloatingmouse.h"
-#include "hbApi.h"
 void hbDockFloatingGetMousePosition(
    HB_DOCK_FLOATING_FRAME * pFrame,
    POINT * pPoint )
 {
-   HB_SYMBOL_UNUSED( pFrame );
+   (void)(pFrame);
 
    if( pPoint == NULL )
       return;

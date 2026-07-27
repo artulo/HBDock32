@@ -26,56 +26,56 @@ extern "C" {
  * Basic Types
  *---------------------------------------------------------------------*/
 
-typedef unsigned char   HB_BYTE;
-typedef unsigned short  HB_WORD;
-typedef unsigned long   HB_DWORD;
+typedef unsigned char   HB_DOCK_BYTE;
+typedef unsigned short  HB_DOCK_WORD;
+typedef unsigned long   HB_DOCK_DWORD;
 
-typedef int             HB_BOOL;
+typedef int             HB_DOCK_BOOL;
 
-#ifndef HB_TRUE
-#define HB_TRUE  1
+#ifndef HB_DOCK_TRUE
+#define HB_DOCK_TRUE  1
 #endif
 
-#ifndef HB_FALSE
-#define HB_FALSE 0
+#ifndef HB_DOCK_FALSE
+#define HB_DOCK_FALSE 0
 #endif
 
-typedef void * HB_HANDLE;
+typedef void * HB_DOCK_HANDLE;
 
 /*----------------------------------------------------------------------
  * Rectangle
  *---------------------------------------------------------------------*/
 
-typedef struct _HB_RECT
+typedef struct _HB_DOCK_RECT
 {
    int Left;
    int Top;
    int Right;
    int Bottom;
 
-} HB_RECT;
+} HB_DOCK_RECT;
 
 /*----------------------------------------------------------------------
  * Point
  *---------------------------------------------------------------------*/
 
-typedef struct _HB_POINT
+typedef struct _HB_DOCK_POINT
 {
    int X;
    int Y;
 
-} HB_POINT;
+} HB_DOCK_POINT;
 
 /*----------------------------------------------------------------------
  * Size
  *---------------------------------------------------------------------*/
 
-typedef struct _HB_SIZE
+typedef struct _HB_DOCK_SIZE
 {
    int Width;
    int Height;
 
-} HB_SIZE;
+} HB_DOCK_SIZE;
 
 /*----------------------------------------------------------------------
  * Dock Position
@@ -93,15 +93,15 @@ typedef struct _HB_SIZE
  * Orientation
  *---------------------------------------------------------------------*/
 
-#define HB_ORIENT_HORIZONTAL  0
-#define HB_ORIENT_VERTICAL    1
+#define HB_DOCK_ORIENT_HORIZONTAL  0
+#define HB_DOCK_ORIENT_VERTICAL    1
 
 /*----------------------------------------------------------------------
  * Visibility
  *---------------------------------------------------------------------*/
 
-#define HB_VISIBLE   1
-#define HB_HIDDEN    0
+#define HB_DOCK_VISIBLE_FLAG   1
+#define HB_DOCK_HIDDEN_FLAG    0
 
 #ifdef __cplusplus
 }

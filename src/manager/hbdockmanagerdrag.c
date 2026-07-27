@@ -4,8 +4,16 @@
 #include "hbdockmanagerdock.h"
 #include "hbdockmanagerlayout.h"
 #include "hbdockmanagerfloat.h"
+#include "hbdockdragpreview.h"
 
-/*
+/* Nota de estabilizacion (Etapa 4): esta funcion estaba comentada por
+ * completo. include/hbdockmanagerdrag.h la declara y
+ * src/host/hbdockhost.c la llama de verdad (WM_LBUTTONDOWN, inicio de
+ * arrastre) -- sin el cuerpo, el enlazador iba a fallar con
+ * "unresolved external '_hbDockManagerBeginDrag'" apenas se intentara
+ * generar el .exe. Se restaura tal cual estaba escrita (coincide con
+ * el patron de EndDrag/CancelDrag mas abajo, y pDragController ya se
+ * reserva e inicializa en hbdockmanager.c). */
 void hbDockManagerBeginDrag(
    HB_DOCK_MANAGER * pManager,
    HB_DOCK_PANEL * pPanel,
@@ -31,7 +39,7 @@ void hbDockManagerBeginDrag(
    pManager->Dragging = TRUE;
 }
 
-*/
+
 int hbDockManagerDragMove(
    HB_DOCK_MANAGER * pManager,
    POINT pt )
@@ -47,6 +55,15 @@ int hbDockManagerDragMove(
 
    hbDockDragControllerMove(
       pManager->pDragController,
+      pt );
+
+
+   /* Nota de estabilizacion (Etapa 4): hbDockDragPreviewUpdate ya
+    * existia, completa y correcta, pero nada la llamaba -- el overlay
+    * de vista previa (creado/destruido en hbdockmanager.c) nunca se
+    * mostraba durante el arrastre. Se conecta aqui. */
+   hbDockDragPreviewUpdate(
+      pManager,
       pt );
 
 
@@ -84,6 +101,10 @@ void hbDockManagerEndDrag(
 
    hbDockDragControllerEnd(
       pManager->pDragController );
+
+
+   hbDockDragPreviewHide(
+      pManager );
 
 
    pManager->Dragging = FALSE;
@@ -136,6 +157,10 @@ void hbDockManagerCancelDrag(
 
    hbDockDragControllerCancel(
       pManager->pDragController );
+
+
+   hbDockDragPreviewHide(
+      pManager );
 
 
    pManager->Dragging = FALSE;

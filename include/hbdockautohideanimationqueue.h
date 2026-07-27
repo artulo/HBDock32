@@ -9,7 +9,7 @@ extern "C" {
 
 int hbDockAutoHideAnimationIsQueued(
    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager,
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 void hbDockAutoHideAnimationClear(
    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager );

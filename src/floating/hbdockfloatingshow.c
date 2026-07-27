@@ -2,7 +2,7 @@
 
 #include "hbdockfloatingshow.h"
 
-void hbDockFloatingShow(
+void hbDockFloatingFrameShow(
    HB_DOCK_FLOATING_FRAME * pFrame )
 {
    if( pFrame == NULL )

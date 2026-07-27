@@ -12,6 +12,7 @@ extern "C" {
 #endif
 
 #define HBDOCK_AUTOHIDE_TIMER_ID   ( 0x4844 )
+#define HBDOCK_ANIMATION_TIMER_ID  ( 0x4845 )
 #define HBDOCK_AUTOHIDE_TIMER_MS   200
 
 typedef struct _HB_DOCK_HOST

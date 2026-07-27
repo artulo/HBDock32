@@ -41,6 +41,15 @@ void hbDockArrayClear(
    HB_DOCK_ARRAY * pArray );
 
 
+int hbDockArrayResize(
+   HB_DOCK_ARRAY * pArray,
+   int NewCapacity );
+
+
+void hbDockArrayRelease(
+   HB_DOCK_ARRAY * pArray );
+
+
 #ifdef __cplusplus
 }
 #endif

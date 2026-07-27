@@ -4,6 +4,7 @@
 #include <windows.h>
 
 #include "hbdocklayouttree.h"
+#include "hbdockpanelregistry.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +16,8 @@ BOOL hbDockSaveNode(
 
 BOOL hbDockLoadNode(
       FILE * fp,
-      HB_DOCK_LAYOUT_NODE ** ppNode );
+      HB_DOCK_LAYOUT_NODE ** ppNode,
+      HB_DOCK_PANEL_REGISTRY * pRegistry );
 
 #ifdef __cplusplus
 }

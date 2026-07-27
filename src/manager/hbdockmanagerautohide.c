@@ -2,11 +2,17 @@
 
 #include "hbdockmanagerundock.h"
 #include "hbdockmanagerlayout.h"
+#include "hbdockmanagerrefreshlayout.h"
+#include "hbdockmanagerdock.h"
 
-#include "hbdocklayoutinsert.h"
+#include "hbdocklayoutinsertpanel.h"
 
 #include "hbdockpaneldock.h"
+
+#include "hbdockarray.h"
 #include "hbdockconfig.h"
+#include "hbdockautohideslideengine.h"
+#include "hbdockautohideanimationadd.h"
 
 static HB_DOCK_AUTOHIDE * hbDockManagerFindAutoHide(
    HB_DOCK_MANAGER * pManager,
@@ -139,6 +145,23 @@ void hbDockManagerAutoHidePanel(
 
    Site = hbDockPanelGetDockSite( pPanel );
 
+   /*
+    * Nota de estabilizacion: AutoHide no tiene sentido para un panel
+    * sin un borde claro contra el cual replegarse (CENTER -- un
+    * panel tabificado -- o NONE). hbDockManagerCalcAutoHideRects
+    * solo maneja LEFT/RIGHT/TOP/BOTTOM en su switch; con CENTER o
+    * NONE, pHidden/pVisible quedaban con memoria sin inicializar
+    * (nunca se les asignaba nada), y eso corrompia el resto del
+    * layout -- confirmado con captura real: dejaba toda la ventana
+    * en blanco. Se rechaza de forma segura en vez de proceder con
+    * rects invalidos.
+    */
+   if( Site != HB_DOCKSITE_LEFT &&
+       Site != HB_DOCKSITE_RIGHT &&
+       Site != HB_DOCKSITE_TOP &&
+       Site != HB_DOCKSITE_BOTTOM )
+      return;
+
    hbDockManagerUndockPanel(
       pManager,
       pPanel );
@@ -179,7 +202,7 @@ void hbDockManagerAutoHidePanel(
       &pManager->AutoHideManager.Panes,
       pAutoHide );
 
-   hbDockManagerLayout(
+   hbDockManagerRefreshLayout(
       pManager );
 }
 
@@ -222,15 +245,21 @@ void hbDockManagerAutoHideRestore(
       ShowWindow(
          pPanel->hWnd,
          SW_SHOW );
-		 
-	hbDockLayoutInsertPanel(
-	   &pManager->LayoutTree,
-	   pPanel->pContainer,
-	   (int) Site );
-  
-	   
-   hbDockManagerLayout(
-      pManager );
+
+   /*
+    * Nota de estabilizacion: esta funcion reinsertaba usando
+    * pPanel->pContainer -- pero hbDockManagerAutoHidePanel llama a
+    * hbDockManagerUndockPanel al entrar en autohide, que (correctamente,
+    * desde que se asigna el enlace inverso panel-contenedor) deja
+    * pPanel->pContainer en NULL. Reinsertar con un contenedor NULL
+    * fallaba en silencio. Se delega en hbDockManagerDockPanel, que
+    * ya crea un contenedor nuevo, inserta, asigna el enlace inverso
+    * y repinta -- el mismo camino que "Dock()" normal.
+    */
+   hbDockManagerDockPanel(
+      pManager,
+      pPanel,
+      ( HB_DOCK_GUIDE_TYPE ) Site );
 }
 
 void hbDockManagerAutoHideExpand(
@@ -247,24 +276,51 @@ void hbDockManagerAutoHideExpand(
    if( pAutoHide == NULL || pAutoHide->Expanded )
       return;
 
-   hbDockAutoHideExpand( pAutoHide );
+   pAutoHide->Expanded = 1;
 
    if( pPanel->hWnd != NULL )
    {
-      MoveWindow(
-         pPanel->hWnd,
-         pPanel->Rect.left,
-         pPanel->Rect.top,
-         pPanel->Rect.right  - pPanel->Rect.left,
-         pPanel->Rect.bottom - pPanel->Rect.top,
-         TRUE );
-
       ShowWindow(
          pPanel->hWnd,
          SW_SHOW );
 
       BringWindowToTop(
          pPanel->hWnd );
+   }
+
+   /* Etapa 11: si el panel tiene animacion habilitada, no saltamos
+    * directo a VisibleRect -- arrancamos el deslizamiento y lo
+    * registramos en el AnimationManager del manager; el timer real
+    * (Etapa 11, hbdockhost.c) lo va llevando de a poco en cada tick.
+    * Si Animation esta apagado para este panel, se mantiene el salto
+    * instantaneo de siempre (hbDockAutoHideExpand, Etapa 1). */
+   if( pAutoHide->Animation )
+   {
+      pAutoHide->SlideSize = 100;
+      pAutoHide->SlidePosition = 0;
+      pAutoHide->SlideStep = 20;
+
+      hbDockAutoHideSlideIn(
+         pAutoHide );
+
+      hbDockAutoHideAnimationAddPane(
+         &pManager->AnimationManager,
+         pAutoHide );
+   }
+   else
+   {
+      hbDockAutoHideExpand( pAutoHide );
+
+      if( pPanel->hWnd != NULL )
+      {
+         MoveWindow(
+            pPanel->hWnd,
+            pPanel->Rect.left,
+            pPanel->Rect.top,
+            pPanel->Rect.right  - pPanel->Rect.left,
+            pPanel->Rect.bottom - pPanel->Rect.top,
+            TRUE );
+      }
    }
 }
 
@@ -282,12 +338,37 @@ void hbDockManagerAutoHideCollapse(
    if( pAutoHide == NULL || !pAutoHide->Expanded )
       return;
 
-   hbDockAutoHideCollapse( pAutoHide );
+   pAutoHide->Expanded = 0;
 
-   if( pPanel->hWnd != NULL )
-      ShowWindow(
-         pPanel->hWnd,
-         SW_HIDE );
+   if( pAutoHide->Animation )
+   {
+      /* Etapa 11: al contrario que Expand, aca NO ocultamos la
+       * ventana todavia -- tiene que verse deslizarse hacia afuera.
+       * hbDockAutoHideAnimationManagerTick la oculta (SW_HIDE) recien
+       * cuando el deslizamiento termina de verdad. */
+      pAutoHide->SlideSize = 100;
+
+      if( pAutoHide->SlidePosition <= 0 )
+         pAutoHide->SlidePosition = 100;
+
+      pAutoHide->SlideStep = 20;
+
+      hbDockAutoHideSlideOut(
+         pAutoHide );
+
+      hbDockAutoHideAnimationAddPane(
+         &pManager->AnimationManager,
+         pAutoHide );
+   }
+   else
+   {
+      hbDockAutoHideCollapse( pAutoHide );
+
+      if( pPanel->hWnd != NULL )
+         ShowWindow(
+            pPanel->hWnd,
+            SW_HIDE );
+   }
 }
 
 HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(

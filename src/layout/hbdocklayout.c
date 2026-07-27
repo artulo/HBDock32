@@ -85,66 +85,17 @@ static void hbDockLayoutFill(
 void hbDockPerformLayout(
     HB_DOCK_MANAGER * pManager )
 {
-    RECT rc;
-    HB_DOCK_PANEL * pPanel;
-
     if( pManager == NULL )
         return;
 
-	GetClientRect(
-		pManager->hMainWnd,
-		&rc );
+    /* Nota de estabilizacion: esta funcion conservaba ~150 lineas
+     * comentadas de una generacion anterior del layout, basada en
+     * una lista enlazada de paneles (pManager->FirstPanel, pPanel->Next,
+     * pPanel->DockSide) que ya no existe en HB_DOCK_MANAGER/HB_DOCK_PANEL
+     * (el modelo actual es el arbol HB_DOCK_LAYOUT_TREE). Se retiro el
+     * bloque muerto; hbDockManagerUpdateLayout ya hace el trabajo real
+     * (compactar + optimizar + recalcular sobre el arbol vigente). */
 
-  //  pManager->ClientRect = rc;
-/*
-    pPanel = pManager->FirstPanel;
-
-    while( pPanel != NULL )
-    {
-        if( pPanel->Visible )
-        {
-            switch( pPanel->DockSide )
-            {
-                case HB_DOCK_LEFT:
-                    hbDockLayoutLeft(
-                        pManager,
-                        pPanel,
-                        &rc );
-                    break;
-
-                case HB_DOCK_RIGHT:
-                    hbDockLayoutRight(
-                        pManager,
-                        pPanel,
-                        &rc );
-                    break;
-
-                case HB_DOCK_TOP:
-                    hbDockLayoutTop(
-                        pManager,
-                        pPanel,
-                        &rc );
-                    break;
-
-                case HB_DOCK_BOTTOM:
-                    hbDockLayoutBottom(
-                        pManager,
-                        pPanel,
-                        &rc );
-                    break;
-
-                case HB_DOCK_FILL:
-                    hbDockLayoutFill(
-                        pManager,
-                        pPanel,
-                        &rc );
-                    break;
-            }
-        }
-
-        pPanel = pPanel->Next;
-    }
-*/
     hbDockManagerUpdateLayout(
 		pManager );
 }

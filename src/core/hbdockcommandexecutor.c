@@ -10,7 +10,7 @@ BOOL hbDockExecuteCommand(
       HB_DOCK_MANAGER * pManager,
       const HB_DOCK_COMMAND * pCommand )
 {
-   BOOL Result = FALSE;
+   BOOL Result;
 
    if( pManager == NULL || pCommand == NULL )
       return FALSE;

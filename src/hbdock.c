@@ -9,29 +9,29 @@
 
 #include "hbdock.h"
 
-static HB_BOOL s_bInitialized = HB_FALSE;
+static HB_DOCK_BOOL s_bInitialized = HB_DOCK_FALSE;
 
-HB_BOOL hbDockInitialize( void )
+HB_DOCK_BOOL hbDockInitialize( void )
 {
     if( s_bInitialized )
-        return HB_TRUE;
+        return HB_DOCK_TRUE;
 
-    s_bInitialized = HB_TRUE;
+    s_bInitialized = HB_DOCK_TRUE;
 
-    return HB_TRUE;
+    return HB_DOCK_TRUE;
 }
 
 void hbDockExit( void )
 {
-    s_bInitialized = HB_FALSE;
+    s_bInitialized = HB_DOCK_FALSE;
 }
 
-HB_DWORD hbDockVersion( void )
+HB_DOCK_DWORD hbDockVersion( void )
 {
     return
-        ((HB_DWORD) HBDOCK_VERSION_MAJOR << 24) |
-        ((HB_DWORD) HBDOCK_VERSION_MINOR << 16) |
-        ((HB_DWORD) HBDOCK_VERSION_BUILD);
+        ((HB_DOCK_DWORD) HBDOCK_VERSION_MAJOR << 24) |
+        ((HB_DOCK_DWORD) HBDOCK_VERSION_MINOR << 16) |
+        ((HB_DOCK_DWORD) HBDOCK_VERSION_BUILD);
 }
 
 const char * hbDockVersionString( void )

@@ -2,10 +2,6 @@
 
 #include "hbdockarray.h"
 
-extern int hbDockArrayResize(
-   HB_DOCK_ARRAY * pArray,
-   int NewCapacity );
-
 int hbDockArrayInsert(
    HB_DOCK_ARRAY * pArray,
    int Index,

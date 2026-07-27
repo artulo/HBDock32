@@ -39,7 +39,7 @@ BOOL hbDockLayoutInsertPanel(
 
          pSplit =
             hbDockLayoutNodeCreateSplit(
-               HB_LAYOUT_VERTICAL,
+               HB_LAYOUT_HORIZONTAL,
                pLeaf,
                pTarget );
          break;
@@ -48,7 +48,7 @@ BOOL hbDockLayoutInsertPanel(
 
          pSplit =
             hbDockLayoutNodeCreateSplit(
-               HB_LAYOUT_HORIZONTAL,
+               HB_LAYOUT_VERTICAL,
                pLeaf,
                pTarget );
          break;
@@ -57,7 +57,7 @@ BOOL hbDockLayoutInsertPanel(
 
          pSplit =
             hbDockLayoutNodeCreateSplit(
-               HB_LAYOUT_VERTICAL,
+               HB_LAYOUT_HORIZONTAL,
                pTarget,
                pLeaf );
          break;
@@ -66,7 +66,7 @@ BOOL hbDockLayoutInsertPanel(
 
          pSplit =
             hbDockLayoutNodeCreateSplit(
-               HB_LAYOUT_HORIZONTAL,
+               HB_LAYOUT_VERTICAL,
                pTarget,
                pLeaf );
          break;

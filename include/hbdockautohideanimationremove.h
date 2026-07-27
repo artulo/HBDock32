@@ -9,7 +9,7 @@ extern "C" {
 
 void hbDockAutoHideAnimationRemovePane(
    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager,
-   HB_DOCK_AUTOHIDE_PANE * pPane );
+   HB_DOCK_AUTOHIDE * pAutoHide );
 
 #ifdef __cplusplus
 }

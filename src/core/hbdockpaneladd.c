@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <windows.h>
 
 #include "hbdockpaneladd.h"
 
@@ -18,9 +19,15 @@ BOOL hbDockPanelAdd(
 
     p->hWnd = hWnd;
 
-    lstrcpy(p->Name,pszName);
+    /* Nota de estabilizacion (Etapa 3): lstrcpy() no acota longitud.
+     * p->Name y p->Caption son buffers fijos (Name[64], Caption[128]
+     * en hbdockpanel.h) y pszName/pszCaption vienen del lado Harbour,
+     * con longitud arbitraria -- un nombre o caption mas largo que el
+     * buffer corrompia memoria del heap. Se usa lstrcpyn con el
+     * tamano real del buffer para truncar en vez de desbordar. */
+    lstrcpyn( p->Name, pszName, sizeof( p->Name ) );
 
-    lstrcpy(p->Caption,pszCaption);
+    lstrcpyn( p->Caption, pszCaption, sizeof( p->Caption ) );
 
     p->Next =
         pRegistry->First;

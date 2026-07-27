@@ -1,6 +1,6 @@
 #include "hbapi.h"
 
-#include "hbdockapi.h"
+#include "hbdock.h"
 
 HB_FUNC( HBDOCKINITIALIZE )
 {
@@ -10,5 +10,5 @@ HB_FUNC( HBDOCKINITIALIZE )
 
 HB_FUNC( HBDOCKFINALIZE )
 {
-    hbDockFinalize();
+    hbDockExit();
 }

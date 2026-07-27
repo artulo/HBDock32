@@ -53,14 +53,22 @@ BOOL hbDockManagerRefreshLayout(
 
    /*
     * Repintar.
+    *
+    * Nota de estabilizacion: InvalidateRect solo invalida la ventana
+    * que se le pasa -- NO baja automaticamente a las ventanas hijas
+    * (los paneles acoplados), aunque tengan WS_CLIPCHILDREN. Por eso
+    * el primer acople (por ejemplo en ON INIT) calculaba la
+    * geometria bien pero los paneles no se repintaban hasta el
+    * primer resize real de la ventana (que FiveWin si propaga a
+    * todos sus hijos por su cuenta). RedrawWindow con
+    * RDW_ALLCHILDREN si baja el repintado a todo el arbol de
+    * ventanas hijas de una.
     */
-   InvalidateRect(
+   RedrawWindow(
       pManager->hMainWnd,
       NULL,
-      TRUE );
-
-   UpdateWindow(
-      pManager->hMainWnd );
+      NULL,
+      RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_UPDATENOW | RDW_ERASE );
 
    return TRUE;
 }

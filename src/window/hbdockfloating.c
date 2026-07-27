@@ -1,8 +1,21 @@
 #include <windows.h>
 
 #include "hbdockfloating.h"
+#include "hbdockpanel.h"
 
 #define HBDOCK_FLOAT_CLASS "HBDockFloating"
+
+/*
+ * Nota de estabilizacion (Etapa 9): esta ventana se creaba pero
+ * quedaba vacia -- titulo en blanco (""), y el hWnd real del panel
+ * (pPanel->hWnd) nunca se reparentaba adentro ni se movia con ella.
+ * Flotar un panel mostraba una ventanita gris sin nada dentro. Se
+ * corrige: WM_CREATE reparenta el panel como hijo y le pone el
+ * titulo real; WM_SIZE lo estira para llenar el cliente; WM_DESTROY
+ * lo devuelve a NULL como padre antes de que la ventana desaparezca
+ * (si el panel se vuelve a acoplar despues, hbDockPanelSetParent lo
+ * reparenta a donde corresponda).
+ */
 
 static LRESULT CALLBACK hbDockFloatingProc(
    HWND hWnd,
@@ -14,6 +27,34 @@ static LRESULT CALLBACK hbDockFloatingProc(
    {
       case WM_ERASEBKGND:
          return 1;
+
+      case WM_SIZE:
+      {
+         HB_DOCK_FLOATING * pFloating;
+         RECT rc;
+
+         pFloating = ( HB_DOCK_FLOATING * )
+            GetWindowLongPtr( hWnd, GWLP_USERDATA );
+
+         if( pFloating != NULL &&
+             pFloating->Panel != NULL &&
+             pFloating->Panel->hWnd != NULL )
+         {
+            GetClientRect(
+               hWnd,
+               &rc );
+
+            MoveWindow(
+               pFloating->Panel->hWnd,
+               rc.left,
+               rc.top,
+               rc.right - rc.left,
+               rc.bottom - rc.top,
+               TRUE );
+         }
+
+         return 0;
+      }
 
       case WM_CLOSE:
          ShowWindow(
@@ -62,8 +103,11 @@ static BOOL hbDockFloatingRegister(
 BOOL hbDockFloatingCreate(
    HB_DOCK_FLOATING * pFloating,
    HINSTANCE hInstance,
-   HB_DOCK_PANEL * pPanel )
+   HB_DOCK_PANEL * pPanel,
+   HWND hOwnerWnd )
 {
+   LPCTSTR pszCaption;
+
    if( pFloating == NULL )
       return FALSE;
 
@@ -71,11 +115,25 @@ BOOL hbDockFloatingCreate(
          hInstance ) )
       return FALSE;
 
+   pszCaption =
+      ( pPanel != NULL ) ? pPanel->Caption : "";
+
+   /*
+    * Nota de estabilizacion: el parametro de ventana "padre" de
+    * CreateWindowEx, para una ventana WS_POPUP, es en realidad el
+    * OWNER -- sin el, esta ventana flotante no tiene ninguna
+    * relacion con la ventana principal, y puede terminar tapada
+    * detras de ella con solo hacer click en la principal (Windows
+    * no tiene motivo para mantenerla al frente si no sabe que le
+    * "pertenece"). Confirmado con captura real: la ventana flotante
+    * parecia "desaparecer" al clickear, pero seguia abierta, solo
+    * que detras de la ventana principal.
+    */
    pFloating->hWnd =
       CreateWindowEx(
          WS_EX_TOOLWINDOW,
          HBDOCK_FLOAT_CLASS,
-         "",
+         pszCaption,
          WS_POPUP |
          WS_CAPTION |
          WS_THICKFRAME |
@@ -84,7 +142,7 @@ BOOL hbDockFloatingCreate(
          CW_USEDEFAULT,
          300,
          300,
-         NULL,
+         hOwnerWnd,
          NULL,
          hInstance,
          NULL );
@@ -92,7 +150,26 @@ BOOL hbDockFloatingCreate(
    pFloating->Panel = pPanel;
    pFloating->Active = 0;
 
-   return pFloating->hWnd != NULL;
+   if( pFloating->hWnd == NULL )
+      return FALSE;
+
+   SetWindowLongPtr(
+      pFloating->hWnd,
+      GWLP_USERDATA,
+      ( LONG_PTR ) pFloating );
+
+   if( pPanel != NULL && pPanel->hWnd != NULL )
+   {
+      SetParent(
+         pPanel->hWnd,
+         pFloating->hWnd );
+
+      ShowWindow(
+         pPanel->hWnd,
+         SW_SHOW );
+   }
+
+   return TRUE;
 }
 
 void hbDockFloatingDestroy(

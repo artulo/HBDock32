@@ -81,6 +81,18 @@ HB_DOCK_GUIDE_TYPE hbDockGuideManagerHitTest(
 BOOL hbDockGuideManagerVisible(
    const HB_DOCK_GUIDE_MANAGER * pManager );
 
+/*
+ * Nota de estabilizacion: se llama desde hbdockengine.c (motor
+ * alternativo, ver notas de Etapas 2/4/5 sobre el arbol de codigo
+ * desconectado). Las guias reales son ventanas propias (creadas via
+ * hbDockGuideWindowCreate) que Windows ya repinta solas con su propio
+ * WM_PAINT -- no hace falta pintarlas manualmente desde afuera, asi
+ * que esta funcion no tiene nada que hacer hoy. Se declara e
+ * implementa como no-op para que el arbol compile completo.
+ */
+void hbDockGuideManagerPaint(
+   const HB_DOCK_GUIDE_MANAGER * pManager );
+
 #ifdef __cplusplus
 }
 #endif

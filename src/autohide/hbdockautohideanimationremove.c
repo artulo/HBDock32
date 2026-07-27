@@ -2,13 +2,13 @@
 
 void hbDockAutoHideAnimationRemovePane(
    HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager,
-   HB_DOCK_AUTOHIDE_PANE * pPane )
+   HB_DOCK_AUTOHIDE * pAutoHide )
 {
    int i;
 
    for( i = 0; i < pManager->Count; ++i )
    {
-      if( pManager->pPanes[ i ] == pPane )
+      if( pManager->pPanes[ i ] == pAutoHide )
       {
          int j;
 

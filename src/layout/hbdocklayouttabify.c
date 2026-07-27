@@ -3,6 +3,7 @@
 
 #include "hbdocklayouttabify.h"
 #include "hbdockcontainer.h"
+#include "hbdockcontaineraddtab.h"
 
 
 static HB_DOCK_LAYOUT_NODE * hbDockLayoutFindPanelNode(

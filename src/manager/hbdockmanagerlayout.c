@@ -92,11 +92,13 @@ void hbDockManagerInvalidateLayout(
    if( pManager->hMainWnd == NULL )
       return;
 
-
-   InvalidateRect(
+   /* Nota de estabilizacion: ver hbdockmanagerrefreshlayout.c --
+    * InvalidateRect no baja a las ventanas hijas (los paneles). */
+   RedrawWindow(
       pManager->hMainWnd,
       NULL,
-      TRUE );
+      NULL,
+      RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_UPDATENOW | RDW_ERASE );
 }
 
 

@@ -132,3 +132,36 @@ void hbDockArrayClear(
 
    pArray->Count = 0;
 }
+
+
+/*
+ * Nota de estabilizacion: hbDockArrayResize/hbDockArrayRelease se
+ * llamaban desde 5 archivos distintos (hbdockarrayinsert.c,
+ * hbdockautohideinsert.c, hbdockautohidemanager.c,
+ * hbdockfloatinginsert.c, hbdockfloatingmanager.c) pero no existian
+ * en ningun lado -- ni implementadas ni declaradas en el header.
+ * Resize es simplemente el mismo crecimiento que ya hace
+ * hbDockArrayGrow (static, privado) puesto en una funcion publica;
+ * Release es un sinonimo de hbDockArrayDestroy (mismo semantica,
+ * nombre distinto usado por los llamadores).
+ */
+
+int hbDockArrayResize(
+   HB_DOCK_ARRAY * pArray,
+   int NewCapacity )
+{
+   if( pArray == NULL )
+      return 0;
+
+   return hbDockArrayGrow(
+      pArray,
+      NewCapacity );
+}
+
+
+void hbDockArrayRelease(
+   HB_DOCK_ARRAY * pArray )
+{
+   hbDockArrayDestroy(
+      pArray );
+}

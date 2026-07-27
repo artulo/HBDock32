@@ -2,7 +2,7 @@
 
 #include "hbdragpreviewcalc.h"
 #include "hbdockpreviewrect.h"
-#include "hbdockpreviewshow.h"
+#include "hbdockpreviewoverlay.h"
 
 void hbDragPreviewUpdate(
       HB_DRAG_PREVIEW_CONTROLLER * pController,
@@ -19,6 +19,7 @@ void hbDragPreviewUpdate(
       &pController->Overlay,
       &rc );
 
-   hbDockPreviewShow(
-      &pController->Overlay );
+   hbDockPreviewOverlayShow(
+      &pController->Overlay,
+      NULL );
 }

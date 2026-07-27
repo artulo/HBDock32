@@ -3,9 +3,10 @@
 #include "hbdockpanel.h"
 #include "hbdockpanelstate.h"
 
-#include "hbdocklayoutinsert.h"
+#include "hbdocklayoutinsertpanel.h"
 #include "hbdocklayoutmutation.h"
 #include "hbdocklayouttabify.h"
+#include "hbdockcontainer.h"
 
 #include "hbdockautohideinsert.h"
 #include "hbdockautohidepane.h"
@@ -17,7 +18,8 @@ BOOL hbDockExecuteDock(
    const HB_DOCK_COMMAND * pCommand )
 {
    HB_DOCK_PANEL * pPanel;
-   LPARAM lSide;
+   HB_DOCK_CONTAINER * pContainer;
+   HB_DOCK_SITE Site;
 
    if( pManager == NULL )
       return FALSE;
@@ -34,12 +36,54 @@ BOOL hbDockExecuteDock(
       pPanel,
       HB_PANEL_STATE_DOCKED );
 
-   lSide = pCommand->Param;
+   Site = ( HB_DOCK_SITE ) pCommand->Param;
 
-   return hbDockLayoutInsertPanel(
-      &pManager->LayoutTree,
-      pPanel,
-      ( int ) lSide );
+   /* Envuelve el panel suelto en un contenedor nuevo, igual que
+    * hbDockManagerDockPanel en src/manager/hbdockmanagerdock.c,
+    * para poder usar la firma canonica de hbDockLayoutInsertPanel
+    * (arbol, nodo destino, contenedor, sitio). Antes esta funcion
+    * llamaba a una version de 3 argumentos (arbol, panel, sitio)
+    * que vivia en hbdocklayoutinsert.c y que colisionaba por nombre
+    * con esta (Etapa 1, hallazgo de hbDockLayoutInsertPanel). */
+
+   pContainer =
+      ( HB_DOCK_CONTAINER * )
+      LocalAlloc(
+         LPTR,
+         sizeof( HB_DOCK_CONTAINER ) );
+
+   if( pContainer == NULL )
+      return FALSE;
+
+   if( !hbDockContainerCreate(
+            pContainer,
+            pManager->hMainWnd ) )
+   {
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
+   pContainer->Type = HB_CONTAINER_TABS;
+   pContainer->TabGroup.pPanel = pPanel;
+
+   if( !hbDockLayoutInsertPanel(
+            &pManager->LayoutTree,
+            pManager->LayoutTree.Root,
+            pContainer,
+            Site ) )
+   {
+      hbDockContainerDestroy(
+         pContainer );
+
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
+   return TRUE;
 }
 
 BOOL hbDockExecuteAutoHide(

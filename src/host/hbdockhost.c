@@ -12,72 +12,11 @@
 #include "hbdockmanagerlayout.h"
 #include "hbdockmanagermousemove.h"
 #include "hbdockcontainer.h"
+#include "hbdockautohideanimationmanagertick.h"
 #include "hbdocktabgroup.h"
 
 #define HBDOCK_DRAG_THRESHOLD_CX   4
 #define HBDOCK_DRAG_THRESHOLD_CY   4
-
-BOOL hbDockHostAttach(
-   HB_DOCK_HOST * pHost,
-   HWND hWnd,
-   HB_DOCK_MANAGER * pManager )
-{
-   if( pHost == NULL )
-      return FALSE;
-
-   ZeroMemory(
-      pHost,
-      sizeof( HB_DOCK_HOST ) );
-
-   pHost->hWnd = hWnd;
-   pHost->pManager = pManager;
-
-   if( pManager != NULL )
-      pManager->hMainWnd = hWnd;
-
-   return TRUE;
-}
-
-void hbDockHostDetach(
-   HB_DOCK_HOST * pHost )
-{
-   if( pHost == NULL )
-      return;
-
-   if( pHost->hWnd != NULL )
-      KillTimer(
-         pHost->hWnd,
-         HBDOCK_AUTOHIDE_TIMER_ID );
-
-   pHost->hWnd = NULL;
-   pHost->pManager = NULL;
-}
-
-void hbDockHostResize(
-   HB_DOCK_HOST * pHost )
-{
-   if( pHost == NULL )
-      return;
-
-   if( pHost->pManager == NULL )
-      return;
-
-   hbDockPerformLayout(
-      pHost->pManager );
-}
-
-void hbDockHostInvalidate(
-   HB_DOCK_HOST * pHost )
-{
-   if( pHost == NULL )
-      return;
-
-   if( pHost->hWnd != NULL )
-      InvalidateRect(
-         pHost->hWnd,
-         NULL,
-         TRUE );
-}
 
 /* Encuentra, si lo hay, el nodo hoja bajo pt cuyo caption
  * (franja superior del panel) contiene el punto. */
@@ -372,6 +311,20 @@ BOOL hbDockHostHandleMessage(
          {
             hbDockHostCheckAutoHideLeave(
                pHost );
+
+            return TRUE;
+         }
+
+         /* Etapa 11: tick real del motor de animacion de AutoHide.
+          * Sin esto, el motor de slide (Etapa 5) nunca avanzaba --
+          * quedaba todo escrito pero sin nadie llamandolo. */
+         if( wParam == HBDOCK_ANIMATION_TIMER_ID )
+         {
+            if( pHost->pManager != NULL )
+            {
+               hbDockAutoHideAnimationManagerTick(
+                  &pHost->pManager->AnimationManager );
+            }
 
             return TRUE;
          }

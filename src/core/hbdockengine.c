@@ -4,6 +4,7 @@
 #include "hbdocklayoutvalidate.h"
 #include "hbdockeventdispatcher.h"
 #include "hbdockcontainerlayout.h"
+#include "hbdockcontainer.h"
 #include "hbdockpreviewoverlay.h"
 #include "hbdockguidemanager.h"
 #include "hbdockkernel.h"
@@ -20,10 +21,11 @@ static void hbDockEngineLayoutNode(
 
     if( pNode->Type == HB_LAYOUT_LEAF )
     {
-        if( pNode->pPanel != NULL )
+        if( pNode->pContainer != NULL &&
+            pNode->pContainer->TabGroup.pPanel != NULL )
         {
             hbDockContainerLayout(
-                pNode->pPanel,
+                pNode->pContainer->TabGroup.pPanel,
                 rc );
         }
 
@@ -172,8 +174,8 @@ void hbDockEngineRender(
 
 
     hbDockPreviewPaint(
-        &pManager->Preview,
-        hDC );
+        hDC,
+        &pManager->Preview.PreviewRect );
 
 
     ReleaseDC(

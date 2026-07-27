@@ -1,5 +1,4 @@
 #include "hbdocklayoutfind.h"
-#include "hbapi.h"
 
 static HB_DOCK_LAYOUT_NODE *
 hbDockFindRecursive(
@@ -45,8 +44,8 @@ hbDockLayoutFindPanel(
    HB_DOCK_LAYOUT_TREE * pTree,
    HB_DOCK_PANEL * pPanel )
 {
-   HB_SYMBOL_UNUSED( pTree );
-   HB_SYMBOL_UNUSED( pPanel );
+   (void)(pTree);
+   (void)(pPanel);
 
    return NULL;
 }

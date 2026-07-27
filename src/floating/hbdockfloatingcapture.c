@@ -1,5 +1,4 @@
 #include <windows.h>
-#include "hbapi.h"
 #include "hbdockfloatingcapture.h"
 
 void hbDockFloatingSetCapture(
@@ -16,7 +15,7 @@ void hbDockFloatingSetCapture(
 void hbDockFloatingReleaseCapture(
    HB_DOCK_FLOATING_FRAME * pFrame )
 {
-   HB_SYMBOL_UNUSED( pFrame );
+   (void)(pFrame);
 
    ReleaseCapture();
 }

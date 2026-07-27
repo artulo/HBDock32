@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void hbDockFloatingMove(
+void hbDockFloatingFrameMove(
    HB_DOCK_FLOATING_FRAME * pFrame,
    int x,
    int y );

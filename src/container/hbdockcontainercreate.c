@@ -25,7 +25,14 @@ BOOL hbDockContainerCreate(
    }
 
 
+   pContainer->pActivePanel = NULL;
+
+
    pContainer->Visible = TRUE;
+
+
+   SetRectEmpty(
+      &pContainer->Rect );
 
 
    return TRUE;

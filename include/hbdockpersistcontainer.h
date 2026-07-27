@@ -4,6 +4,8 @@
 #include <stdio.h>
 
 #include "hbdockcontainer.h"
+#include "hbdocktabgroup.h"
+#include "hbdockpanelregistry.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,7 +17,8 @@ BOOL hbDockSaveContainer(
 
 BOOL hbDockLoadContainer(
       FILE * fp,
-      HB_DOCK_CONTAINER ** ppContainer );
+      HB_DOCK_CONTAINER ** ppContainer,
+      HB_DOCK_PANEL_REGISTRY * pRegistry );
 
 #ifdef __cplusplus
 }

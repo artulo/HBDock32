@@ -2,6 +2,8 @@
 
 #include "hbdockmanager.h"
 #include "hbdockdragcontroller.h"
+#include "hbdockguidemanager.h"
+#include "hbdockhost.h"
 
 
 
@@ -41,10 +43,17 @@ BOOL hbDockManagerCreate(
     hbDockLayoutTreeInit(
         &pManager->LayoutTree);
 
-  /*  hbDockGuideManagerInit(
+    /* Nota de estabilizacion (Etapa 6): esta llamada estaba comentada
+     * y ademas usaba un nombre que nunca existio (hbDockGuideManagerInit).
+     * La funcion real es hbDockGuideManagerCreate (ver src/guides/
+     * hbdockguidemanager.c, ya estabilizada en Etapa 1) -- sin esto,
+     * pManager->GuideManager quedaba en ceros: sus ventanas de guia y
+     * su diamante nunca se creaban, y hbDockGuideManagerShow (que sí
+     * se llama de verdad al iniciar un arrastre, ver Etapa 4) hacia
+     * ShowWindow sobre HWNDs invalidos. */
+    hbDockGuideManagerCreate(
         &pManager->GuideManager,
         hWnd);
-*/
     hbDockPreviewOverlayCreate(
         &pManager->Preview,
         hWnd);
@@ -55,6 +64,21 @@ BOOL hbDockManagerCreate(
 
     hbDockAutoHideAnimationManagerInit(
         &pManager->AnimationManager);
+
+    /* Etapa 11: timer real que hace avanzar el motor de animacion de
+     * AutoHide (Etapa 5) -- antes nada lo llamaba nunca. Se arranca
+     * un solo timer por manager, sobre la ventana principal, en vez
+     * de uno por panel (el diseño original de hbDockAutoHideStartTimer
+     * usaba SetTimer sobre pPanel->hWnd, la ventana del propio
+     * control del usuario -- no es nuestra para interceptar mensajes). */
+    if( SetTimer(
+            hWnd,
+            HBDOCK_ANIMATION_TIMER_ID,
+            pManager->AnimationManager.Interval,
+            NULL ) != 0 )
+    {
+        pManager->AnimationManager.Running = TRUE;
+    }
 	
 	hbDockPanelRegistryInit(
 		&pManager->Registry );	
@@ -75,6 +99,15 @@ BOOL hbDockManagerCreate(
 void hbDockManagerDestroy(
       HB_DOCK_MANAGER * pManager )
 {
+    if( pManager->AnimationManager.Running )
+    {
+        KillTimer(
+            pManager->hMainWnd,
+            HBDOCK_ANIMATION_TIMER_ID );
+
+        pManager->AnimationManager.Running = FALSE;
+    }
+
     hbDockDiamondDestroy(
         &pManager->Diamond);
 

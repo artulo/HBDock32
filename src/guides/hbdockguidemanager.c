@@ -276,3 +276,9 @@ BOOL hbDockGuideManagerVisible(
 
    return pManager->Visible;
 }
+
+void hbDockGuideManagerPaint(
+   const HB_DOCK_GUIDE_MANAGER * pManager )
+{
+   ( void )( pManager );
+}

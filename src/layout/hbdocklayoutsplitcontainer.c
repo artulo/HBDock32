@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <windows.h>
 
 #include "hbdocklayoutsplitcontainer.h"
 #include "hbdockcontainer.h"
@@ -10,7 +10,6 @@ BOOL hbDockLayoutSplitContainer(
       BOOL Vertical )
 {
    HB_DOCK_CONTAINER * pOld;
-   HB_DOCK_CONTAINER * pFirst;
    HB_DOCK_CONTAINER * pSecond;
 
 
@@ -25,35 +24,26 @@ BOOL hbDockLayoutSplitContainer(
       return FALSE;
 
 
-   pFirst =
-      (HB_DOCK_CONTAINER *) calloc(
-         1,
-         sizeof(HB_DOCK_CONTAINER) );
-
-
-   pSecond =
-      (HB_DOCK_CONTAINER *) calloc(
-         1,
-         sizeof(HB_DOCK_CONTAINER) );
-
-
-   if( pFirst == NULL || pSecond == NULL )
-   {
-      if( pFirst != NULL )
-         free(pFirst);
-
-      if( pSecond != NULL )
-         free(pSecond);
-
-      return FALSE;
-   }
-
-
    /*
-    * Copiar contenedor original
+    * Nota de estabilizacion (Etapa 2): la version anterior reservaba
+    * pFirst con calloc()/free() (el resto del proyecto usa siempre
+    * LocalAlloc/LocalFree para HB_DOCK_CONTAINER, ver hbdockmanagerdock.c
+    * y hbdockdockoperation.c) y ademas copiaba *pFirst = *pOld, lo que
+    * dejaba a pFirst->TabGroup.Tabs apuntando a la MISMA memoria que
+    * pOld->TabGroup.Tabs (alias peligroso: liberar uno deja al otro con
+    * un puntero colgante). La solucion correcta es simplemente reusar
+    * pOld como el primer hijo -- no hace falta copiarlo ni reservarlo
+    * de nuevo.
     */
 
-   *pFirst = *pOld;
+   pSecond =
+      ( HB_DOCK_CONTAINER * )
+      LocalAlloc(
+         LPTR,
+         sizeof( HB_DOCK_CONTAINER ) );
+
+   if( pSecond == NULL )
+      return FALSE;
 
 
    /*
@@ -64,34 +54,36 @@ BOOL hbDockLayoutSplitContainer(
           pSecond,
           NULL ) )
    {
-      free(pFirst);
-      free(pSecond);
+      LocalFree( pSecond );
       return FALSE;
    }
 
 
    /*
-    * Convertir nodo hoja en split
+    * Convertir nodo hoja en split. El contenedor original (pOld) pasa
+    * a ser el primer hijo tal cual, sin copiarlo.
     */
 
    pNode->pContainer = NULL;
 
 
    pNode->First =
-      hbDockLayoutCreateLeaf(
-         pFirst );
+      hbDockLayoutNodeCreateLeaf(
+         pOld );
 
 
    pNode->Second =
-      hbDockLayoutCreateLeaf(
+      hbDockLayoutNodeCreateLeaf(
          pSecond );
 
 
    if( pNode->First == NULL ||
        pNode->Second == NULL )
    {
-      free(pFirst);
-      free(pSecond);
+      /* pOld sigue siendo propiedad del arbol (no se reservo aqui);
+       * solo liberamos lo que sí reservamos en esta funcion. */
+      hbDockContainerDestroy( pSecond );
+      LocalFree( pSecond );
       return FALSE;
    }
 

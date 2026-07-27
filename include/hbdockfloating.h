@@ -28,7 +28,8 @@ typedef struct _HB_DOCK_FLOATING
 BOOL hbDockFloatingCreate(
    HB_DOCK_FLOATING * pFloating,
    HINSTANCE hInstance,
-   HB_DOCK_PANEL * pPanel );
+   HB_DOCK_PANEL * pPanel,
+   HWND hOwnerWnd );
 
 /* Destruye la ventana flotante */
 void hbDockFloatingDestroy(

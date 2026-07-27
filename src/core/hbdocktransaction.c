@@ -5,6 +5,8 @@
 #include "hbdocklayouttree.h"
 #include "hbdocklayoutserialize.h"
 #include "hbdocklayoutdeserialize.h"
+#include "hbdocklayoutclone.h"
+#include "hbdocklayoutdestroy.h"
 
 BOOL hbDockTransactionBegin(
    HB_DOCK_TRANSACTION * pTransaction,

@@ -27,6 +27,8 @@ static BOOL ExecuteCommand(
       HB_DOCK_MANAGER * pManager,
       HB_DOCK_COMMAND * pCmd )
 {
+   ( void )( pManager );
+
    switch(pCmd->Type)
    {
 

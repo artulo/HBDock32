@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void hbDockFloatingShow(
+void hbDockFloatingFrameShow(
    HB_DOCK_FLOATING_FRAME * pFrame );
 
 void hbDockFloatingHide(

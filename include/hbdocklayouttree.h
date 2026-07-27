@@ -48,10 +48,20 @@ typedef struct _HB_DOCK_LAYOUT_NODE
 
 
    /*
-    * Panel asociado al nodo hoja
+    * Contenedor asociado al nodo hoja.
+    *
+    * NOTA DE ESTABILIZACION (Etapa 7): este campo se llamaba "pPanel"
+    * y era de tipo HB_DOCK_PANEL* -- pero las 4 funciones que crean
+    * nodos hoja (hbDockLayoutNodeCreateLeaf y sus llamadores en
+    * hbdocklayoutinsertpanel.c, hbdocklayoutcopy.c, hbdocklayoutclone.c,
+    * hbdocklayoutdeserialize.c) siempre pasan un HB_DOCK_CONTAINER*, y
+    * 126 usos en src/manager, src/host, src/dock, src/layout, etc. ya
+    * acceden a pNode->pContainer (un miembro que no existia). Sin este
+    * fix, ninguno de esos archivos podia compilar. Se corrige el campo
+    * para que coincida con el uso real y mayoritario.
     */
 
-   HB_DOCK_PANEL * pPanel;
+   HB_DOCK_CONTAINER * pContainer;
 
 
    /*
