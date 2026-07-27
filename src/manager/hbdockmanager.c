@@ -4,6 +4,7 @@
 #include "hbdockdragcontroller.h"
 #include "hbdockguidemanager.h"
 #include "hbdockhost.h"
+#include "hbdockmanagerkeepontop.h"
 
 
 
@@ -92,13 +93,30 @@ BOOL hbDockManagerCreate(
 	pManager->Dragging = FALSE;
 	pManager->UpdatingLayout = FALSE;
 	pManager->hCapturedWindow = NULL;	
-	
+
+    /*
+     * Etapa 13: paneles flotantes no deben quedar tapados detras de
+     * la ventana principal al clickearla (ver
+     * hbdockmanagerkeepontop.c para el detalle completo).
+     */
+    hbDockManagerKeepFloatingOnTopInstall(
+        pManager );
+
     return TRUE;
 }
 
 void hbDockManagerDestroy(
       HB_DOCK_MANAGER * pManager )
 {
+    /*
+     * Etapa 13: restaurar el WndProc original de la ventana
+     * principal ANTES de liberar cualquier otra cosa del manager --
+     * si algun mensaje llega mientras se esta destruyendo, no debe
+     * intentar leer un HB_DOCK_MANAGER a medio liberar.
+     */
+    hbDockManagerKeepFloatingOnTopRemove(
+        pManager );
+
     if( pManager->AnimationManager.Running )
     {
         KillTimer(

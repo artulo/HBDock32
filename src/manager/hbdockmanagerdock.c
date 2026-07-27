@@ -146,9 +146,34 @@ BOOL hbDockManagerDockPanel(
    pContainer->Type =
       HB_CONTAINER_TABS;
 
-   pContainer->TabGroup.pPanel =
-      pPanel;
-	  
+   /*
+    * Nota de estabilizacion: NO asignar pContainer->TabGroup.pPanel
+    * directo aca -- eso dejaba TabGroup.Count en 0 aunque hubiera un
+    * panel real en el contenedor (el panel vivia solo en el puntero
+    * "activo", nunca en el arreglo Tabs[]). Si mas adelante se
+    * tabifica OTRO panel sobre este mismo contenedor,
+    * hbDockTabGroupAddPanel ve Count==0, asume que el grupo esta
+    * vacio, y PISA esta referencia en vez de agregarse como segunda
+    * pestana -- el panel original (Explorer, en el caso confirmado)
+    * queda huerfano: su ventana sigue visible, congelada en su rect
+    * viejo, y nada la vuelve a mover/ocultar nunca mas. Se usa
+    * hbDockTabGroupAddPanel tambien para el dock inicial, para que
+    * el grupo quede consistente (Count=1, Tabs[0]=panel) desde el
+    * primer momento.
+    */
+   if( !hbDockTabGroupAddPanel(
+            &pContainer->TabGroup,
+            pPanel ) )
+   {
+      hbDockContainerDestroy(
+         pContainer );
+
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
 	if( Guide == HB_GUIDE_CENTER )
 	{
 	   HB_DOCK_LAYOUT_NODE * pNode;
