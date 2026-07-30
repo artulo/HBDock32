@@ -6,13 +6,13 @@
  * confirmado que funciona: primero BUTTONBAR y MENU, despues los
  * TDockPanel.
  */
-
+ 
 #include "FiveWin.ch"
 #include "hbdock.ch"
-
+static oWnd
 PROCEDURE Main()
 
-   LOCAL oWnd, oBar
+   LOCAL  oBar
    LOCAL hDock
    LOCAL oExplorer, oProps, oOutput
 
@@ -25,7 +25,16 @@ PROCEDURE Main()
 	  
    hDock := HBDockCreateManager( oWnd:hWnd )
 
-   DEFINE BUTTONBAR oBar OF oWnd SIZE 100, 20
+   DEFINE BUTTONBAR oBar OF oWnd SIZE 100, 20 3D 2015
+
+   /*
+    * Etapa 37: HBDock32 no sabe que la toolbar existe -- su propio
+    * calculo de area disponible (GetClientRect) no la excluye por
+    * su cuenta, a diferencia de FiveWin (ver ClientCoors en
+    * tsplitter.prg). Se le informa una sola vez, con la altura real
+    * de la toolbar, para que la reste siempre de ahi en adelante.
+    */
+   HBDockSetTopMargin( hDock, oBar:nHeight )
 
       DEFINE BUTTON OF oBar ;
          PROMPT "1. Dock izquierda" ;
@@ -45,7 +54,13 @@ PROCEDURE Main()
 
       DEFINE BUTTON OF oBar ;
          PROMPT "5. Flotar" ;
-         ACTION oOutput:Float()
+         ACTION (oOutput:Float()) 
+		 
+		 /*MsgInfo( "ANTES de Float() -- IsWindowEnabled = " + hb_ValToExp( IsWindowEnabled( oWnd:hWnd ) ) ), ;
+                  oOutput:Float(), ;
+                  MsgInfo( "DESPUES de Float() -- IsWindowEnabled( oWnd:hWnd ) = " + hb_ValToExp( IsWindowEnabled( oWnd:hWnd ) ) + hb_eol() + ;
+                           "GetActiveWindow()  = " + hb_ValToExp( GetActiveWindow() ) + hb_eol() + ;
+                           "oWnd:hWnd          = " + hb_ValToExp( oWnd:hWnd ) ) )*/
 
       DEFINE BUTTON OF oBar ;
          PROMPT "6. Guardar" ;
@@ -63,6 +78,14 @@ PROCEDURE Main()
                           "Props:    " + hb_ValToExp( GETWNDRECT( oProps:hWnd ) )    + hb_eol() + ;
                           "Output:   " + hb_ValToExp( GETWNDRECT( oOutput:hWnd ) )   + hb_eol() + ;
                           "Ventana:  " + hb_ValToExp( GETWNDRECT( oWnd:hWnd ) ) )
+
+      DEFINE BUTTON OF oBar ;
+         PROMPT "Check Enabled" ;
+         ACTION MsgInfo( "IsWindowEnabled( oWnd:hWnd ) = " + hb_ValToExp( IsWindowEnabled( oWnd:hWnd ) ) + hb_eol() + ;
+                          "GetActiveWindow() = " + hb_ValToExp( GetActiveWindow() ) + hb_eol() + ;
+                          "GetFocus()        = " + hb_ValToExp( GetFocus() ) + hb_eol() + ;
+                          "GetCapture()      = " + hb_ValToExp( GetCapture() ) + hb_eol() + ;
+                          "oWnd:hWnd         = " + hb_ValToExp( oWnd:hWnd ) )
 
 
    oExplorer := TDockPanel():New( 30, 0,  60, 25, oWnd, hDock, "Explorer",     "Explorador de soluciones" )

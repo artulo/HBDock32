@@ -43,7 +43,7 @@ static HB_DOCK_LAYOUT_NODE * hbDockDeserializeSplit(
 
    if( pszRatio != NULL )
       pNode->Ratio =
-         atof(
+         ( float ) atof(
             pszRatio );
 
    return pNode;

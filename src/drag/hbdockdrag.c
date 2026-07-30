@@ -14,6 +14,8 @@ void hbDockDragInit(
 
    pDrag->Dragging = FALSE;
    pDrag->Guide = HB_GUIDE_NONE;
+   pDrag->GuideSource = HB_DOCK_GUIDE_SOURCE_NONE;
+   pDrag->TargetNode = NULL;
 }
 
 void hbDockDragBegin(
@@ -32,6 +34,8 @@ void hbDockDragBegin(
    pDrag->CurrentPoint = pt;
 
    pDrag->Guide = HB_GUIDE_NONE;
+   pDrag->GuideSource = HB_DOCK_GUIDE_SOURCE_NONE;
+   pDrag->TargetNode = NULL;
 
    SetRect(
       &pDrag->DragRect,
@@ -77,6 +81,8 @@ void hbDockDragEnd(
    pDrag->hWndSource = NULL;
 
    pDrag->Guide = HB_GUIDE_NONE;
+   pDrag->GuideSource = HB_DOCK_GUIDE_SOURCE_NONE;
+   pDrag->TargetNode = NULL;
 
    SetRectEmpty(
       &pDrag->DragRect );
@@ -93,6 +99,8 @@ void hbDockDragCancel(
    pDrag->hWndSource = NULL;
 
    pDrag->Guide = HB_GUIDE_NONE;
+   pDrag->GuideSource = HB_DOCK_GUIDE_SOURCE_NONE;
+   pDrag->TargetNode = NULL;
 
    SetRectEmpty(
       &pDrag->DragRect );

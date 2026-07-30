@@ -47,6 +47,15 @@ HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
    HB_DOCK_MANAGER * pManager,
    POINT pt );
 
+/*
+ * Etapa 55: recalcula HiddenRect/VisibleRect de TODOS los paneles
+ * autohidden -- llamar en cada resize/relayout de la ventana
+ * principal (ver hbDockManagerLayout), para que las pestañas no
+ * queden "flotando" en posiciones desactualizadas.
+ */
+void hbDockManagerAutoHideRefreshRects(
+   HB_DOCK_MANAGER * pManager );
+
 #ifdef __cplusplus
 }
 #endif

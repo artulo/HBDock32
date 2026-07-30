@@ -26,6 +26,15 @@ void hbDockAutoHideManagerDestroy(
    if( pManager == NULL )
       return;
 
+   /* Etapa 58 */
+   if( pManager->hExpandCaptionWnd != NULL )
+   {
+      DestroyWindow(
+         pManager->hExpandCaptionWnd );
+
+      pManager->hExpandCaptionWnd = NULL;
+   }
+
    hbDockArrayRelease(
       &pManager->Panes );
 }

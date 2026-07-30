@@ -1,10 +1,9 @@
 #include <windows.h>
 
 #include "hbdocktreesplitfind.h"
+#include "hbdockconfig.h"
 
-#define HBDOCK_SPLITTER_SIZE   4
-
-static void hbDockNodeSplitterRect(
+void hbDockNodeSplitterRect(
    const HB_DOCK_LAYOUT_NODE * pNode,
    RECT * pRect )
 {
@@ -34,7 +33,7 @@ static void hbDockNodeSplitterRect(
 
          pRect->right =
             pRect->left +
-            HBDOCK_SPLITTER_SIZE;
+            HBDOCK_SPLITTER_WIDTH;
 
          break;
 
@@ -54,7 +53,7 @@ static void hbDockNodeSplitterRect(
 
          pRect->bottom =
             pRect->top +
-            HBDOCK_SPLITTER_SIZE;
+            HBDOCK_SPLITTER_WIDTH;
 
          break;
 

@@ -13,6 +13,16 @@ extern "C" {
 
 #define HBDOCK_AUTOHIDE_TIMER_ID   ( 0x4844 )
 #define HBDOCK_ANIMATION_TIMER_ID  ( 0x4845 )
+
+/*
+ * Etapa 30: timer de un solo disparo para forzar el repintado de
+ * captions una vez que la ventana principal ya esta completamente
+ * activada/visible -- ver hbdockmanagerkeepontop.c. Independiente
+ * de TTimer/DEFINE TIMER de FiveWin (que resulto no dispararse de
+ * forma confiable en este proyecto): usa el mismo mecanismo
+ * SetTimer/WM_TIMER ya comprobado funcionando para AutoHide/animacion.
+ */
+#define HBDOCK_FIRSTPAINT_TIMER_ID ( 0x4846 )
 #define HBDOCK_AUTOHIDE_TIMER_MS   200
 
 typedef struct _HB_DOCK_HOST
@@ -69,6 +79,44 @@ BOOL hbDockHostHandleMessage(
    UINT uMsg,
    WPARAM wParam,
    LPARAM lParam );
+
+/*
+ * Pinta el caption (franja de titulo) del panel activo de cada
+ * contenedor acoplado. Llamar desde WM_PAINT del host real, DESPUES
+ * de que el WndProc original ya termino su propio pintado (ver
+ * hbdockmanagerkeepontop.c).
+ */
+void hbDockHostPaintCaptions(
+   HB_DOCK_HOST * pHost );
+
+/*
+ * Etapa 48: pedido explicito -- los splitters no se pintaban de
+ * forma distintiva en absoluto (la unica funcion de pintado que
+ * existia, hbDockSplitterPaint, no tenia ningun llamador). Recorre
+ * el arbol y dibuja un bisel 3D "elevado" (DrawEdge/EDGE_RAISED) en
+ * el rect de cada splitter -- llamar desde WM_PAINT de la ventana
+ * principal, DESPUES de que el WndProc original ya termino su propio
+ * pintado (mismo patron que hbDockHostPaintCaptions).
+ */
+void hbDockHostPaintSplitters(
+   HB_DOCK_HOST * pHost,
+   HDC hDC );
+
+/*
+ * Etapa 53: pedido explicito -- las pestañas de AutoHide (la franja
+ * angosta que queda visible en el borde cuando un panel esta
+ * replegado) nunca se pintaban de forma real (la unica funcion de
+ * pintado del modulo de autohide, hbDockAutoHideStripPaint, no tenia
+ * ningun llamador y ni siquiera dibujaba texto). Recorre
+ * pManager->AutoHideManager.Panes y dibuja cada HiddenRect con el
+ * nombre real del panel -- texto rotado 90 grados para los lados
+ * LEFT/RIGHT (leible de abajo hacia arriba), horizontal para
+ * TOP/BOTTOM. Llamar desde WM_PAINT, junto con
+ * hbDockHostPaintSplitters/PaintCaptions.
+ */
+void hbDockHostPaintAutoHideTabs(
+   HB_DOCK_HOST * pHost,
+   HDC hDC );
 
 #ifdef __cplusplus
 }

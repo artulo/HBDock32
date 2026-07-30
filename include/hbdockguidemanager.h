@@ -74,9 +74,42 @@ void hbDockGuideManagerMove(
    HB_DOCK_GUIDE_MANAGER * pManager,
    POINT pt );
 
+/*
+ * Etapa 20: separa el movimiento en dos responsabilidades distintas
+ * (antes hbDockGuideManagerMove hacia las dos juntas, siguiendo el
+ * mouse en ambos casos -- no coincide con el diseño de referencia,
+ * donde las 4 guias externas quedan FIJAS cerca de los bordes de la
+ * ventana principal durante todo el arrastre, y solo el diamante
+ * central sigue al panel que se esta sobrevolando).
+ *
+ * hbDockGuideManagerPositionOuter: posiciona Left/Right/Top/Bottom
+ * una vez, cerca de los bordes de pClient (llamar al iniciar el
+ * arrastre, no en cada movimiento del mouse).
+ *
+ * hbDockGuideManagerMoveDiamond: mueve SOLO el diamante, centrado en
+ * ptCenter (el centro del panel bajo el mouse, no el mouse en si).
+ */
+void hbDockGuideManagerPositionOuter(
+   HB_DOCK_GUIDE_MANAGER * pManager,
+   const RECT * pClient );
+
+void hbDockGuideManagerMoveDiamond(
+   HB_DOCK_GUIDE_MANAGER * pManager,
+   POINT ptCenter );
+
 HB_DOCK_GUIDE_TYPE hbDockGuideManagerHitTest(
    const HB_DOCK_GUIDE_MANAGER * pManager,
    POINT pt );
+
+/*
+ * Etapa 20: igual que HitTest, pero ademas informa si el resultado
+ * vino del diamante (acoplar relativo a un panel puntual) o de una
+ * guia externa (acoplar relativo a toda la ventana).
+ */
+HB_DOCK_GUIDE_TYPE hbDockGuideManagerHitTestEx(
+   const HB_DOCK_GUIDE_MANAGER * pManager,
+   POINT pt,
+   BOOL * pFromDiamond );
 
 BOOL hbDockGuideManagerVisible(
    const HB_DOCK_GUIDE_MANAGER * pManager );

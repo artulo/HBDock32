@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "hbdockcontainer.h"
+#include "hbdockcaptionwindow.h"
 
 void hbDockContainerDestroy(
    HB_DOCK_CONTAINER * pContainer )
@@ -11,6 +12,9 @@ void hbDockContainerDestroy(
 
    hbDockTabGroupDone(
       &pContainer->TabGroup );
+
+   hbDockCaptionWindowDestroy(
+      pContainer->hWnd );
 
 
    ZeroMemory(

@@ -12,6 +12,8 @@
 #include "hbdockmanagerundock.h"
 #include "hbdockmanagertabify.h"
 #include "hbdockworkspace.h"
+#include "hbdockhost.h"
+#include "hbdockpaneldocksize.h"
 
 /*
  * Nota de estabilizacion (Etapa 8): hbdockapi.h declara esta capa de
@@ -159,6 +161,43 @@ BOOL hbDockFloatPanel(
       pMgr,
       pPanel,
       pt );
+
+   return TRUE;
+}
+
+/*
+ * Etapa 49: fijar el ancho/alto deseado de un panel para cuando se
+ * acople (ver hbDockLayoutInsertPanel) -- llamar ANTES de acoplarlo
+ * (por ejemplo, antes del primer Dock() en ON INIT, o antes de un
+ * Dock() posterior). cx se usa para LEFT/RIGHT, cy para TOP/BOTTOM;
+ * pasar 0 en el que no aplique (o en ambos, para volver al 50/50
+ * default).
+ */
+BOOL hbDockSetPanelSize(
+        void * pManager,
+        LPCTSTR pszPanel,
+        int cx,
+        int cy )
+{
+   HB_DOCK_MANAGER * pMgr;
+   HB_DOCK_PANEL * pPanel;
+
+   pMgr = ( HB_DOCK_MANAGER * ) pManager;
+
+   if( pMgr == NULL )
+      return FALSE;
+
+   pPanel = hbDockManagerFindPanel(
+      pMgr,
+      pszPanel );
+
+   if( pPanel == NULL )
+      return FALSE;
+
+   hbDockPanelSetDockSize(
+      pPanel,
+      cx,
+      cy );
 
    return TRUE;
 }
@@ -393,4 +432,144 @@ BOOL hbDockRefreshLayout(
 
    return hbDockManagerLayout(
       ( HB_DOCK_MANAGER * ) pManager );
+}
+
+/*
+ * Etapa 28: ver nota en hbdockhost.c (hbDockHostPaintCaptions) --
+ * version acotada, solo toca las ventanas de caption puntuales.
+ */
+void hbDockRepaintCaptions(
+        void * pManager )
+{
+   HB_DOCK_MANAGER * p;
+
+   if( pManager == NULL )
+      return;
+
+   p = ( HB_DOCK_MANAGER * ) pManager;
+
+   if( p->pHost == NULL )
+      return;
+
+   hbDockHostPaintCaptions(
+      p->pHost );
+}
+
+/*
+ * Etapa 29: diagnostico -- recorre el arbol y arma un texto con el
+ * estado REAL (no supuesto) de cada ventana de caption: si el
+ * puntero de contenedor existe, si su hWnd es una ventana Win32
+ * valida, si esta visible, y su rect actual. Buffer estatico (uso
+ * de diagnostico puntual, no pensado para produccion).
+ */
+static char s_szDebugBuffer[ 4096 ];
+
+static void hbDockDebugCaptionsNode(
+   HB_DOCK_LAYOUT_NODE * pNode,
+   char * pBuffer,
+   int nBufferSize )
+{
+   char szLine[ 256 ];
+   int nLen;
+
+   if( pNode == NULL )
+      return;
+
+   if( pNode->Type == HB_LAYOUT_LEAF )
+   {
+      HB_DOCK_CONTAINER * pContainer;
+      HB_DOCK_PANEL * pPanel;
+
+      pContainer = pNode->pContainer;
+
+      if( pContainer == NULL )
+      {
+         wsprintf(
+            szLine,
+            "leaf sin contenedor\r\n" );
+      }
+      else
+      {
+         pPanel = pContainer->TabGroup.pPanel;
+
+         wsprintf(
+            szLine,
+            "cont=%p hWnd=%p IsWindow=%d IsVisible=%d rect={%d,%d,%d,%d} panel=%s\r\n",
+            ( void * ) pContainer,
+            ( void * ) pContainer->hWnd,
+            pContainer->hWnd != NULL ?
+               IsWindow( pContainer->hWnd ) : -1,
+            pContainer->hWnd != NULL ?
+               IsWindowVisible( pContainer->hWnd ) : -1,
+            pContainer->Rect.left,
+            pContainer->Rect.top,
+            pContainer->Rect.right,
+            pContainer->Rect.bottom,
+            ( pPanel != NULL && pPanel->Caption[ 0 ] != '\0' ) ?
+               pPanel->Caption : "(sin panel)" );
+      }
+
+      nLen = lstrlen( pBuffer );
+
+      if( nLen + ( int ) lstrlen( szLine ) < nBufferSize - 1 )
+         lstrcat(
+            pBuffer,
+            szLine );
+
+      return;
+   }
+
+   hbDockDebugCaptionsNode(
+      pNode->First,
+      pBuffer,
+      nBufferSize );
+
+   hbDockDebugCaptionsNode(
+      pNode->Second,
+      pBuffer,
+      nBufferSize );
+}
+
+const char * hbDockDebugCaptions(
+        void * pManager )
+{
+   HB_DOCK_MANAGER * p;
+
+   s_szDebugBuffer[ 0 ] = '\0';
+
+   if( pManager == NULL )
+      return s_szDebugBuffer;
+
+   p = ( HB_DOCK_MANAGER * ) pManager;
+
+   hbDockDebugCaptionsNode(
+      p->LayoutTree.Root,
+      s_szDebugBuffer,
+      sizeof( s_szDebugBuffer ) );
+
+   return s_szDebugBuffer;
+}
+
+/*
+ * Etapa 37: ver nota en hbdockmanager.h -- reserva nMargin pixeles
+ * arriba, restados SIEMPRE de GetClientRect antes de calcular el
+ * area disponible para acoplar paneles (hbDockManagerLayout,
+ * hbDockManagerRefreshLayout). Llamar UNA vez, justo despues de
+ * crear la toolbar, con su altura real (ej. oBar:nHeight).
+ */
+void hbDockSetTopMargin(
+        void * pManager,
+        int nMargin )
+{
+   HB_DOCK_MANAGER * p;
+
+   if( pManager == NULL )
+      return;
+
+   p = ( HB_DOCK_MANAGER * ) pManager;
+
+   if( nMargin < 0 )
+      nMargin = 0;
+
+   p->TopMargin = nMargin;
 }

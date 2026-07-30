@@ -49,22 +49,22 @@ static void hbDockLayoutBalanceNode(
       nFirst + nSecond;
 
    if( nTotal == 0 )
-      pNode->Ratio = 0.5;
+      pNode->Ratio = 0.5f;
    else
       pNode->Ratio =
-         ( double ) nFirst /
-         ( double ) nTotal;
+         ( float ) nFirst /
+         ( float ) nTotal;
 
    /*
     * Evita extremos que producen
     * layouts degenerados.
     */
 
-   if( pNode->Ratio < 0.10 )
-      pNode->Ratio = 0.10;
+   if( pNode->Ratio < 0.10f )
+      pNode->Ratio = 0.10f;
 
-   if( pNode->Ratio > 0.90 )
-      pNode->Ratio = 0.90;
+   if( pNode->Ratio > 0.90f )
+      pNode->Ratio = 0.90f;
 }
 
 void hbDockLayoutBalance(

@@ -92,7 +92,51 @@ BOOL hbDockManagerCreate(
 		
 	pManager->Dragging = FALSE;
 	pManager->UpdatingLayout = FALSE;
-	pManager->hCapturedWindow = NULL;	
+	pManager->hCapturedWindow = NULL;
+
+    /* Etapa 37 */
+    pManager->TopMargin = 0;
+
+    /* Etapa 42 */
+    pManager->FloatingCount = 0;
+
+    /*
+     * Etapa 15: HB_DOCK_HOST es quien de verdad procesa mouse/timer
+     * para drag de paneles, splitters y hover de autohide (ver
+     * hbdockhost.c) -- toda esa logica existia pero nada la conectaba
+     * a mensajes reales hasta ahora (ver el hook en
+     * hbdockmanagerkeepontop.c). Se allocca aca (puntero, no struct
+     * embebido -- ver nota en hbdockmanager.h) y se destruye en
+     * hbDockManagerDestroy.
+     */
+    pManager->pHost =
+        ( HB_DOCK_HOST * )
+        LocalAlloc(
+            LPTR,
+            sizeof( HB_DOCK_HOST ) );
+
+    if( pManager->pHost != NULL )
+    {
+        hbDockHostAttach(
+            pManager->pHost,
+            hWnd,
+            pManager );
+    }
+
+    /*
+     * Etapa 30: timer de un solo disparo (300ms) para forzar el
+     * repintado de captions una vez que la ventana principal ya
+     * esta completamente activada/visible -- ver el manejo de
+     * WM_TIMER en hbdockmanagerkeepontop.c. Usa SetTimer/WM_TIMER
+     * puro (mismo mecanismo ya comprobado con AutoHide/animacion en
+     * vez de TTimer/DEFINE TIMER de FiveWin, que resulto no
+     * dispararse de forma confiable en este proyecto).
+     */
+    SetTimer(
+        hWnd,
+        HBDOCK_FIRSTPAINT_TIMER_ID,
+        300,
+        NULL );
 
     /*
      * Etapa 13: paneles flotantes no deben quedar tapados detras de
@@ -109,6 +153,14 @@ void hbDockManagerDestroy(
       HB_DOCK_MANAGER * pManager )
 {
     /*
+     * Etapa 30: por si la ventana se cierra antes de los 300ms.
+     */
+    if( pManager->hMainWnd != NULL )
+        KillTimer(
+            pManager->hMainWnd,
+            HBDOCK_FIRSTPAINT_TIMER_ID );
+
+    /*
      * Etapa 13: restaurar el WndProc original de la ventana
      * principal ANTES de liberar cualquier otra cosa del manager --
      * si algun mensaje llega mientras se esta destruyendo, no debe
@@ -116,6 +168,17 @@ void hbDockManagerDestroy(
      */
     hbDockManagerKeepFloatingOnTopRemove(
         pManager );
+
+    if( pManager->pHost != NULL )
+    {
+        hbDockHostDetach(
+            pManager->pHost );
+
+        LocalFree(
+            pManager->pHost );
+
+        pManager->pHost = NULL;
+    }
 
     if( pManager->AnimationManager.Running )
     {

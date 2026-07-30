@@ -1,6 +1,7 @@
 #include <windows.h>
 
 #include "hbdockcaption.h"
+#include "hbdockpanel.h"
 
 void hbDockCaptionInit(
    HB_DOCK_CAPTION * pCaption,
@@ -43,34 +44,143 @@ void hbDockCaptionLayout(
       pRect->top + 20 );
 }
 
+/*
+ * Nota de estabilizacion (Etapa 18): esta funcion existia pero solo
+ * dibujaba 3 rectangulos vacios con la pluma/pincel por default
+ * (negro sobre blanco) -- ni color, ni texto, ni iconos. Sin ningun
+ * indicio visual de donde esta el caption, era imposible saber donde
+ * hacer click para arrastrar un panel (aunque el hit-test ya
+ * funcionara bien). Se completa: relleno azul (mismo tono que las
+ * guias/diamante, para consistencia visual), texto del panel en
+ * blanco, y una "x"/pin simples para cerrar/autohide.
+ */
 void hbDockCaptionDraw(
    HDC hDC,
    HB_DOCK_CAPTION * pCaption )
 {
+   HBRUSH hBrush;
+   HBRUSH hOldBrush;
+   HPEN hPen;
+   HPEN hOldPen;
+   COLORREF OldTextColor;
+   int OldBkMode;
+
    if( hDC == NULL )
       return;
 
    if( pCaption == NULL )
       return;
 
-   Rectangle(
-      hDC,
-      pCaption->Rect.left,
-      pCaption->Rect.top,
-      pCaption->Rect.right,
-      pCaption->Rect.bottom );
+   /* Fondo del caption. */
+   hBrush =
+      CreateSolidBrush(
+         RGB( 0, 120, 215 ) );
 
-   Rectangle(
+   FillRect(
       hDC,
-      pCaption->CloseRect.left,
-      pCaption->CloseRect.top,
-      pCaption->CloseRect.right,
-      pCaption->CloseRect.bottom );
+      &pCaption->Rect,
+      hBrush );
 
-   Rectangle(
+   DeleteObject(
+      hBrush );
+
+   /* Texto del panel, si hay uno registrado. */
+   if( pCaption->Panel != NULL &&
+       pCaption->Panel->Caption[ 0 ] != '\0' )
+   {
+      RECT rcText;
+
+      rcText = pCaption->Rect;
+      rcText.left += 6;
+      rcText.right = pCaption->PinRect.left - 4;
+
+      if( rcText.right < rcText.left )
+         rcText.right = rcText.left;
+
+      OldTextColor =
+         SetTextColor(
+            hDC,
+            RGB( 255, 255, 255 ) );
+
+      OldBkMode =
+         SetBkMode(
+            hDC,
+            TRANSPARENT );
+
+      DrawText(
+         hDC,
+         pCaption->Panel->Caption,
+         -1,
+         &rcText,
+         DT_LEFT |
+         DT_VCENTER |
+         DT_SINGLELINE |
+         DT_END_ELLIPSIS );
+
+      SetBkMode(
+         hDC,
+         OldBkMode );
+
+      SetTextColor(
+         hDC,
+         OldTextColor );
+   }
+
+   /* Boton de cierre: una "x" simple. */
+   hPen =
+      CreatePen(
+         PS_SOLID,
+         1,
+         RGB( 255, 255, 255 ) );
+
+   hOldPen =
+      ( HPEN ) SelectObject(
+         hDC,
+         hPen );
+
+   MoveToEx(
       hDC,
-      pCaption->PinRect.left,
-      pCaption->PinRect.top,
-      pCaption->PinRect.right,
-      pCaption->PinRect.bottom );
+      pCaption->CloseRect.left + 4,
+      pCaption->CloseRect.top + 4,
+      NULL );
+
+   LineTo(
+      hDC,
+      pCaption->CloseRect.right - 4,
+      pCaption->CloseRect.bottom - 4 );
+
+   MoveToEx(
+      hDC,
+      pCaption->CloseRect.right - 4,
+      pCaption->CloseRect.top + 4,
+      NULL );
+
+   LineTo(
+      hDC,
+      pCaption->CloseRect.left + 4,
+      pCaption->CloseRect.bottom - 4 );
+
+   /* Boton de autohide: un pequeño pin (circulo). */
+   hOldBrush =
+      ( HBRUSH ) SelectObject(
+         hDC,
+         GetStockObject( NULL_BRUSH ) );
+
+   Ellipse(
+      hDC,
+      pCaption->PinRect.left + 4,
+      pCaption->PinRect.top + 4,
+      pCaption->PinRect.right - 4,
+      pCaption->PinRect.bottom - 4 );
+
+   SelectObject(
+      hDC,
+      hOldBrush );
+
+   SelectObject(
+      hDC,
+      hOldPen );
+
+   DeleteObject(
+      hPen );
 }

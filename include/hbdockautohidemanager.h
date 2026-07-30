@@ -17,6 +17,15 @@ typedef struct
 
    HB_DOCK_ARRAY Panes;
 
+   /*
+    * Etapa 58: pedido explicito -- cuando un panel autohide se
+    * expande (al pasar el mouse), debe mostrar su caption real (con
+    * pin funcional para reactivarlo de forma permanente). Ventana
+    * unica y reutilizable (solo un panel puede estar expandido a la
+    * vez) -- ver hbdockautohideexpandcaption.c.
+    */
+   HWND hExpandCaptionWnd;
+
 } HB_DOCK_AUTOHIDE_MANAGER;
 
 void hbDockAutoHideManagerInit(

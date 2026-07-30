@@ -4,8 +4,8 @@
 #include "hbdocklayouttree.h"
 #include "hbdockcontainer.h"
 #include "hbdockcaption.h"
-
-#define HBDOCK_SPLITTER_SIZE 4
+#include "hbdockcaptionwindow.h"
+#include "hbdockconfig.h"
 
 /*
  * Nota de estabilizacion (Etapa 9): esta funcion ya calculaba
@@ -74,6 +74,31 @@ static void hbDockLayoutApplyContainer(
    if( rc.top > rc.bottom )
       rc.top = rc.bottom;
 
+   /*
+    * Etapa 24: la franja de caption ahora es una ventana hija propia
+    * (ver hbdockcaptionwindow.c) en vez de pintarse "por encima"
+    * desde la ventana principal via GetDC -- eso quedaba
+    * intermitentemente recortado por el clipping automatico de
+    * ventanas hijas de GetDC. Se reposiciona con el rect EXACTO de
+    * la franja (desde pContainer->Rect.top, sin el offset de
+    * HBDOCK_CAPTION_HEIGHT que ya se le sumo a "rc" para el panel).
+    */
+   if( pContainer->hWnd != NULL )
+   {
+      RECT rcCaption;
+
+      rcCaption = pContainer->Rect;
+      rcCaption.bottom = rcCaption.top + HBDOCK_CAPTION_HEIGHT;
+
+      if( rcCaption.bottom > pContainer->Rect.bottom )
+         rcCaption.bottom = pContainer->Rect.bottom;
+
+      hbDockCaptionWindowUpdate(
+         pContainer->hWnd,
+         &rcCaption,
+         pPanel );
+   }
+
    pPanel->Rect = rc;
 
    if( pPanel->hWnd != NULL )
@@ -139,7 +164,7 @@ static void hbDockLayoutRecalcNode(
 
       rcSecond.left =
          rcFirst.right +
-         HBDOCK_SPLITTER_SIZE;
+         HBDOCK_SPLITTER_WIDTH;
    }
    else
    {
@@ -157,7 +182,7 @@ static void hbDockLayoutRecalcNode(
 
       rcSecond.top =
          rcFirst.bottom +
-         HBDOCK_SPLITTER_SIZE;
+         HBDOCK_SPLITTER_WIDTH;
    }
 
    hbDockLayoutRecalcNode(

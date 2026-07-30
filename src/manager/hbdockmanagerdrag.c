@@ -2,6 +2,7 @@
 
 #include "hbdockdragcontroller.h"
 #include "hbdockmanagerdock.h"
+#include "hbdockmanagertabify.h"
 #include "hbdockmanagerlayout.h"
 #include "hbdockmanagerfloat.h"
 #include "hbdockdragpreview.h"
@@ -78,6 +79,8 @@ void hbDockManagerEndDrag(
 {
    HB_DOCK_PANEL * pPanel;
    HB_DOCK_GUIDE_TYPE Guide;
+   HB_DOCK_GUIDE_SOURCE GuideSource;
+   HB_DOCK_LAYOUT_NODE * pTargetNode;
 
 
    if( pManager == NULL )
@@ -96,6 +99,20 @@ void hbDockManagerEndDrag(
 
    Guide =
       hbDockDragHitTest(
+         pManager->pDragController );
+
+   /*
+    * Etapa 20: hay que leer esto ANTES de hbDockDragControllerEnd --
+    * esa funcion llama a hbDockDragEnd, que resetea TargetNode a
+    * NULL y GuideSource a NONE como parte de la limpieza normal del
+    * drag.
+    */
+   GuideSource =
+      hbDockDragGetGuideSource(
+         pManager->pDragController );
+
+   pTargetNode =
+      hbDockDragGetTargetNode(
          pManager->pDragController );
 
 
@@ -128,10 +145,41 @@ void hbDockManagerEndDrag(
    }
 
 
-   hbDockManagerDockPanel(
-      pManager,
-      pPanel,
-      Guide );
+   /*
+    * Etapa 20: hit del DIAMANTE (relativo a un panel puntual) versus
+    * hit de una guia EXTERNA (relativo a toda la ventana principal).
+    * CENTER tabifica sobre el panel destino real bajo el mouse (no
+    * sobre el primer leaf del arbol, que es lo que hace
+    * hbDockManagerDockPanel para CENTER cuando no hay un target
+    * especifico).
+    */
+   if( GuideSource == HB_DOCK_GUIDE_SOURCE_DIAMOND &&
+       pTargetNode != NULL &&
+       pTargetNode->pContainer != NULL )
+   {
+      if( Guide == HB_GUIDE_CENTER )
+      {
+         hbDockManagerTabifyPanel(
+            pManager,
+            pTargetNode->pContainer,
+            pPanel );
+      }
+      else
+      {
+         hbDockManagerDockRelative(
+            pManager,
+            pPanel,
+            pTargetNode,
+            Guide );
+      }
+   }
+   else
+   {
+      hbDockManagerDockPanel(
+         pManager,
+         pPanel,
+         Guide );
+   }
 
 
    hbDockManagerLayout(

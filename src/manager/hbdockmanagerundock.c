@@ -8,6 +8,7 @@
 #include "hbdocklayoutrecalc.h"
 #include "hbdockmanagerrefreshlayout.h"
 #include "hbdocktabgroup.h"
+#include "hbdockcontainer.h"
 
 BOOL hbDockManagerUndock(
    HB_DOCK_MANAGER * pManager,
@@ -23,6 +24,26 @@ BOOL hbDockManagerUndock(
             &pManager->LayoutTree,
             pContainer ) )
       return FALSE;
+
+   /*
+    * Etapa 25: pContainer ya salio del arbol de layout (el nodo que
+    * lo referenciaba fue liberado por hbDockLayoutRemovePanel) --
+    * pero el struct HB_DOCK_CONTAINER en si (alocado con LocalAlloc
+    * en hbDockManagerDockPanel/TabifyPanel/DockRelative) nunca se
+    * liberaba. Era una fuga de memoria silenciosa desde siempre;
+    * ahora tambien fuga una ventana real de Windows (la de caption,
+    * ver hbdockcaptionwindow.c) cada vez que un panel se
+    * desacopla/flota/autohide desde un contenedor solitario --
+    * mucho mas visible que una fuga de heap. Esta funcion es hoy el
+    * unico lugar de todo el proyecto donde un contenedor sale del
+    * arbol por completo, asi que es el lugar correcto para
+    * destruirlo.
+    */
+   hbDockContainerDestroy(
+      pContainer );
+
+   LocalFree(
+      pContainer );
 
    return hbDockManagerRefreshLayout(
       pManager );

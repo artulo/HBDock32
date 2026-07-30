@@ -13,6 +13,8 @@
 #include "hbdockconfig.h"
 #include "hbdockautohideslideengine.h"
 #include "hbdockautohideanimationadd.h"
+#include "hbdockautohideexpandcaption.h"
+#include "hbdockcaption.h"
 
 static HB_DOCK_AUTOHIDE * hbDockManagerFindAutoHide(
    HB_DOCK_MANAGER * pManager,
@@ -34,20 +36,69 @@ static HB_DOCK_AUTOHIDE * hbDockManagerFindAutoHide(
    return NULL;
 }
 
+/*
+ * Etapa 53: pedido explicito -- dos o mas paneles autohidden en el
+ * MISMO lado quedaban con el HiddenRect exactamente superpuesto (la
+ * funcion de abajo siempre calculaba la misma posicion fija, sin
+ * saber cuantos otros ya habia ahi) -- el segundo tapaba
+ * completamente al primero, imposible de distinguir o clickear por
+ * separado. Se cuenta cuantos paneles YA estan autohidden en el
+ * mismo Site (excluyendo al propio pPanel, por si ya estuviera en
+ * la lista) para calcular un indice de apilamiento, y se offsetea
+ * cada uno HBDOCK_AUTOHIDE_TAB_LENGTH pixeles a lo largo del borde.
+ */
+#define HBDOCK_AUTOHIDE_TAB_LENGTH   130
+
+static int hbDockManagerCountAutoHideOnSite(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_SITE Site,
+   HB_DOCK_PANEL * pExclude )
+{
+   int i;
+   int n;
+
+   n = 0;
+
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
+   {
+      HB_DOCK_AUTOHIDE * pAH =
+         ( HB_DOCK_AUTOHIDE * )
+         hbDockArrayGet(
+            &pManager->AutoHideManager.Panes,
+            i );
+
+      if( pAH != NULL &&
+          pAH->Panel != pExclude &&
+          pAH->Panel != NULL &&
+          hbDockPanelGetDockSite( pAH->Panel ) == Site )
+         n++;
+   }
+
+   return n;
+}
+
 static void hbDockManagerCalcAutoHideRects(
    HB_DOCK_MANAGER * pManager,
    HB_DOCK_PANEL * pPanel,
    HB_DOCK_SITE Site,
+   int nStackIndex,
    RECT * pHidden,
    RECT * pVisible )
 {
    RECT rc;
    int cx;
    int cy;
+   int nOffset;
 
    GetClientRect(
       pManager->hMainWnd,
       &rc );
+
+   /* Etapa 37: ver nota en hbdockmanager.h. */
+   rc.top += pManager->TopMargin;
+
+   if( rc.top > rc.bottom )
+      rc.top = rc.bottom;
 
    cx = pPanel->DockSize.cx > 0 ?
         pPanel->DockSize.cx :
@@ -57,6 +108,10 @@ static void hbDockManagerCalcAutoHideRects(
         pPanel->DockSize.cy :
         pPanel->MinHeight;;
 
+   nOffset =
+      nStackIndex *
+      HBDOCK_AUTOHIDE_TAB_LENGTH;
+
    switch( Site )
    {
       case HB_DOCKSITE_RIGHT:
@@ -64,9 +119,9 @@ static void hbDockManagerCalcAutoHideRects(
          SetRect(
             pHidden,
             rc.right - HBDOCK_AUTOHIDE_STRIP,
-            rc.top,
+            rc.top + nOffset,
             rc.right,
-            rc.bottom );
+            min( rc.top + nOffset + HBDOCK_AUTOHIDE_TAB_LENGTH, rc.bottom ) );
 
          SetRect(
             pVisible,
@@ -80,9 +135,9 @@ static void hbDockManagerCalcAutoHideRects(
 
          SetRect(
             pHidden,
-            rc.left,
+            rc.left + nOffset,
             rc.top,
-            rc.right,
+            min( rc.left + nOffset + HBDOCK_AUTOHIDE_TAB_LENGTH, rc.right ),
             rc.top + HBDOCK_AUTOHIDE_STRIP );
 
          SetRect(
@@ -97,9 +152,9 @@ static void hbDockManagerCalcAutoHideRects(
 
          SetRect(
             pHidden,
-            rc.left,
+            rc.left + nOffset,
             rc.bottom - HBDOCK_AUTOHIDE_STRIP,
-            rc.right,
+            min( rc.left + nOffset + HBDOCK_AUTOHIDE_TAB_LENGTH, rc.right ),
             rc.bottom );
 
          SetRect(
@@ -116,9 +171,9 @@ static void hbDockManagerCalcAutoHideRects(
          SetRect(
             pHidden,
             rc.left,
-            rc.top,
+            rc.top + nOffset,
             rc.left + HBDOCK_AUTOHIDE_STRIP,
-            rc.bottom );
+            min( rc.top + nOffset + HBDOCK_AUTOHIDE_TAB_LENGTH, rc.bottom ) );
 
          SetRect(
             pVisible,
@@ -181,6 +236,10 @@ void hbDockManagerAutoHidePanel(
       pManager,
       pPanel,
       Site,
+      hbDockManagerCountAutoHideOnSite(
+         pManager,
+         Site,
+         pPanel ),
       &pAutoHide->HiddenRect,
       &pAutoHide->VisibleRect );
 
@@ -313,13 +372,36 @@ void hbDockManagerAutoHideExpand(
 
       if( pPanel->hWnd != NULL )
       {
+         RECT rcCaption;
+         RECT rcContent;
+
+         /*
+          * Etapa 58: reservar HBDOCK_CAPTION_HEIGHT arriba del rect
+          * expandido para el caption (con su pin funcional) -- antes
+          * el contenido del panel ocupaba TODO pPanel->Rect (==
+          * VisibleRect), sin dejar ningun lugar para mostrarlo.
+          */
+         rcCaption = pPanel->Rect;
+         rcCaption.bottom = rcCaption.top + HBDOCK_CAPTION_HEIGHT;
+
+         rcContent = pPanel->Rect;
+         rcContent.top += HBDOCK_CAPTION_HEIGHT;
+
+         if( rcContent.top > rcContent.bottom )
+            rcContent.top = rcContent.bottom;
+
          MoveWindow(
             pPanel->hWnd,
-            pPanel->Rect.left,
-            pPanel->Rect.top,
-            pPanel->Rect.right  - pPanel->Rect.left,
-            pPanel->Rect.bottom - pPanel->Rect.top,
+            rcContent.left,
+            rcContent.top,
+            rcContent.right  - rcContent.left,
+            rcContent.bottom - rcContent.top,
             TRUE );
+
+         hbDockAutoHideExpandCaptionShow(
+            pManager,
+            pPanel,
+            &rcCaption );
       }
    }
 }
@@ -364,6 +446,10 @@ void hbDockManagerAutoHideCollapse(
    {
       hbDockAutoHideCollapse( pAutoHide );
 
+      /* Etapa 58 */
+      hbDockAutoHideExpandCaptionHide(
+         pManager );
+
       if( pPanel->hWnd != NULL )
          ShowWindow(
             pPanel->hWnd,
@@ -393,4 +479,72 @@ HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
    }
 
    return NULL;
+}
+
+/*
+ * Etapa 55: pedido explicito -- al redimensionar la ventana
+ * principal, HiddenRect/VisibleRect de cada panel autohidden
+ * quedaban con los valores calculados en el momento en que se
+ * repliego (una sola vez, dentro de hbDockManagerAutoHidePanel) --
+ * nunca se volvian a calcular con las nuevas dimensiones, dejando
+ * las pestañas "flotando" en posiciones que ya no correspondian al
+ * tamaño actual de la ventana. Recorre todos los paneles autohidden
+ * y recalcula sus rects -- llamar desde hbDockManagerLayout (que ya
+ * corre en cada resize via ON RESIZE HBDockRefreshLayout).
+ */
+void hbDockManagerAutoHideRefreshRects(
+   HB_DOCK_MANAGER * pManager )
+{
+   int i;
+
+   if( pManager == NULL )
+      return;
+
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
+   {
+      HB_DOCK_AUTOHIDE * pAutoHide =
+         ( HB_DOCK_AUTOHIDE * ) hbDockArrayGet(
+            &pManager->AutoHideManager.Panes,
+            i );
+
+      HB_DOCK_SITE Site;
+      int j;
+      int nRankBefore;
+
+      if( pAutoHide == NULL || pAutoHide->Panel == NULL )
+         continue;
+
+      Site = hbDockPanelGetDockSite( pAutoHide->Panel );
+
+      /*
+       * Etapa 55 (fix): rango de posicion entre los del MISMO lado
+       * (cuantos ya aparecen ANTES que este en el array), no
+       * "cuantos otros hay en total" (hbDockManagerCountAutoHideOnSite)
+       * -- eso le daria el mismo numero a TODOS los del mismo lado
+       * cuando ya estan todos presentes en el array (como aca), en
+       * vez de un indice distinto y estable para cada uno.
+       */
+      nRankBefore = 0;
+
+      for( j = 0; j < i; ++j )
+      {
+         HB_DOCK_AUTOHIDE * pOther =
+            ( HB_DOCK_AUTOHIDE * ) hbDockArrayGet(
+               &pManager->AutoHideManager.Panes,
+               j );
+
+         if( pOther != NULL &&
+             pOther->Panel != NULL &&
+             hbDockPanelGetDockSite( pOther->Panel ) == Site )
+            nRankBefore++;
+      }
+
+      hbDockManagerCalcAutoHideRects(
+         pManager,
+         pAutoHide->Panel,
+         Site,
+         nRankBefore,
+         &pAutoHide->HiddenRect,
+         &pAutoHide->VisibleRect );
+   }
 }

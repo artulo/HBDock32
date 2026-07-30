@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "hbdocktabgroup.h"
+#include "hbdockpanel.h"
 
 static BOOL hbDockTabGroupGrow(
    HB_DOCK_TAB_GROUP * pGroup )
@@ -76,21 +77,18 @@ BOOL hbDockTabGroupAddPanel(
 
    pTab->pPanel = pPanel;
 
-#ifdef UNICODE
-
+   /*
+    * Etapa 51 (fix): esto copiaba siempre el texto literal fijo
+    * "Panel", nunca el caption real del panel -- inofensivo mientras
+    * nada leia Tabs[i].Caption (confirmado: la unica pintura de tabs
+    * real, hbDockCaptionDraw, usa pPanel->Caption directo, no esto),
+    * pero se vuelve visible ahora que la tira de pestañas nueva
+    * (hbdocktabstrip.c) SI necesita este campo.
+    */
    lstrcpyn(
       pTab->Caption,
-      TEXT("Panel"),
+      pPanel->Caption,
       127 );
-
-#else
-
-   lstrcpyn(
-      pTab->Caption,
-      "Panel",
-      127 );
-
-#endif
 
    pTab->UserData = 0;
 

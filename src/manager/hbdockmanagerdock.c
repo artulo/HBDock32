@@ -8,6 +8,7 @@
 #include "hbdockmanagerrefreshlayout.h"
 #include "hbdockmanagerundock.h"
 #include "hbdockpaneldock.h"
+#include "hbdockpanelparent.h"
 
 static HB_DOCK_SITE hbDockGuideToSite(
    HB_DOCK_GUIDE_TYPE Guide )
@@ -117,11 +118,25 @@ BOOL hbDockManagerDockPanel(
 
    if( pPanel->pContainer != NULL )
    {
-      hbDockManagerUndock(
+      /*
+       * Etapa 14: esto llamaba a hbDockManagerUndock directo sobre
+       * pPanel->pContainer -- la version a nivel CONTENEDOR, que
+       * saca el contenedor ENTERO del arbol. Si el panel estaba
+       * tabificado junto con otro (por ejemplo Explorer+Props
+       * despues de "Tab al centro"), el companero de pestaña se iba
+       * de arrastre: quedaba huerfano, con su pContainer apuntando
+       * a un contenedor ya desconectado del arbol (nunca se libera,
+       * pero tampoco se vuelve a recorrer -- ni acoplado, ni oculto,
+       * ni flotando). Es la misma clase de bug que ya se habia
+       * corregido para AutoHide (ver hbDockManagerUndockPanel, que
+       * SI distingue "sacar solo este panel de la pestaña" de
+       * "sacar el contenedor entero") -- pero ese fix nunca se
+       * aplico aca, en el camino de volver a acoplar un panel que
+       * ya estaba acoplado en otro lado.
+       */
+      hbDockManagerUndockPanel(
          pManager,
-         pPanel->pContainer );
-
-      pPanel->pContainer = NULL;
+         pPanel );
    }
 
    pContainer =
@@ -220,6 +235,133 @@ BOOL hbDockManagerDockPanel(
    }
 
    pPanel->pContainer = pContainer;
+
+   /*
+    * Etapa 13: si el panel venia de flotar, su ventana real seguia
+    * siendo hija del popup flotante (SetParent en hbDockFloatingCreate,
+    * ver hbdockfloating.c) -- sin este reparent, quedaba "acoplado"
+    * en el arbol de layout pero invisible en pantalla, porque
+    * MoveWindow/ShowWindow lo mueven relativo al padre equivocado
+    * (el popup, ahora oculto). Para un panel que nunca floto, esto
+    * es un no-op (ya es hijo de la ventana principal desde que se
+    * creo, via TPanel:New en TDockPanel.prg).
+    */
+   hbDockPanelSetParent(
+      pPanel,
+      pManager->hMainWnd );
+
+   hbDockPanelSetDockSite(
+      pPanel,
+      Site );
+
+   hbDockManagerRefreshLayout(
+      pManager );
+
+   return TRUE;
+}
+
+/*
+ * Etapa 20: acopla pPanel relativo a un nodo ESPECIFICO del arbol
+ * (pTargetNode), no a la raiz/ventana completa -- usado por el
+ * diamante durante el arrastre (a diferencia de las guias externas,
+ * que siguen usando hbDockManagerDockPanel de arriba). Depende del
+ * fix de hbDockLayoutInsertPanel que reconecta correctamente el
+ * padre viejo de un target no-raiz.
+ */
+BOOL hbDockManagerDockRelative(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_PANEL * pPanel,
+   HB_DOCK_LAYOUT_NODE * pTargetNode,
+   HB_DOCK_GUIDE_TYPE Guide )
+{
+   HB_DOCK_CONTAINER * pContainer;
+   HB_DOCK_SITE Site;
+
+   if( pManager == NULL )
+      return FALSE;
+
+   if( pPanel == NULL )
+      return FALSE;
+
+   if( pTargetNode == NULL )
+      return FALSE;
+
+   Site =
+      hbDockGuideToSite(
+         Guide );
+
+   if( Site == HB_DOCKSITE_NONE || Site == HB_DOCKSITE_CENTER )
+      return FALSE;
+
+   if( pPanel->pContainer != NULL )
+      hbDockManagerUndockPanel(
+         pManager,
+         pPanel );
+
+   /*
+    * hbDockManagerUndockPanel (arriba) puede haber podado nodos del
+    * arbol (RemoveEmpty/Optimize, via hbDockManagerUndock) si el
+    * panel arrastrado compartia contenedor con otros -- eso no toca
+    * a pTargetNode en si (sigue siendo un nodo valido del mismo
+    * arbol, no fue el que se removio), asi que es seguro seguir
+    * usandolo tal cual.
+    */
+
+   pContainer =
+      ( HB_DOCK_CONTAINER * )
+      LocalAlloc(
+         LPTR,
+         sizeof( HB_DOCK_CONTAINER ) );
+
+   if( pContainer == NULL )
+      return FALSE;
+
+   if( !hbDockContainerCreate(
+            pContainer,
+            pManager->hMainWnd ) )
+   {
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
+   pContainer->Type =
+      HB_CONTAINER_TABS;
+
+   if( !hbDockTabGroupAddPanel(
+            &pContainer->TabGroup,
+            pPanel ) )
+   {
+      hbDockContainerDestroy(
+         pContainer );
+
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
+   if( !hbDockLayoutInsertPanel(
+            &pManager->LayoutTree,
+            pTargetNode,
+            pContainer,
+            Site ) )
+   {
+      hbDockContainerDestroy(
+         pContainer );
+
+      LocalFree(
+         pContainer );
+
+      return FALSE;
+   }
+
+   pPanel->pContainer = pContainer;
+
+   hbDockPanelSetParent(
+      pPanel,
+      pManager->hMainWnd );
 
    hbDockPanelSetDockSite(
       pPanel,

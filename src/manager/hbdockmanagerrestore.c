@@ -4,6 +4,7 @@
 
 #include "hbdockmanagerdock.h"
 #include "hbdockfloating.h"
+#include "hbdockmanagerfloat.h"
 
 static HB_DOCK_GUIDE_TYPE hbDockRestoreGuideFromSite(
    HB_DOCK_SITE Site )
@@ -60,6 +61,12 @@ BOOL hbDockManagerRestore(
       hbDockFloatingShow(
          pPanel->pFloating,
          SW_HIDE );
+
+      /* Etapa 42: "Restaurar" tambien cuenta como cerrar el
+       * flotante, aunque no pase por WM_DESTROY (esta funcion no lo
+       * destruye, solo lo oculta y redockea el panel). */
+      hbDockManagerFloatClosed(
+         pManager );
    }
 
 

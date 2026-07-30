@@ -1,5 +1,4 @@
 #include "hbdocksplittertracker.h"
-#include "hbdocktree.h"
 
 void hbDockSplitterTrackerInit(
    HB_DOCK_SPLITTER_TRACKER * pTracker )
@@ -16,8 +15,8 @@ void hbDockSplitterTrackerBegin(
 {
    pTracker->Split = pSplit;
    pTracker->StartPoint = pt;
-   pTracker->OriginalPos =
-      pSplit->Node->SplitPos;
+   pTracker->OriginalRatio =
+      pSplit->Node->Ratio;
    pTracker->Tracking = 1;
 }
 
@@ -31,7 +30,7 @@ void hbDockSplitterTrackerMove(
       return;
 
    if( pTracker->Split->Node->Type ==
-       HB_DOCK_NODE_SPLIT_H )
+       HB_LAYOUT_HORIZONTAL )
       Delta = pt.x -
          pTracker->StartPoint.x;
    else
@@ -40,6 +39,7 @@ void hbDockSplitterTrackerMove(
 
    hbDockSplitNodeMove(
       pTracker->Split,
+      pTracker->OriginalRatio,
       Delta );
 }
 

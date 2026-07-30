@@ -1,5 +1,5 @@
 #include <windows.h>
-
+ 
 #include "hbdockmanagertabify.h"
 #include "hbdockcontainer.h"
 #include "hbdocktabgroup.h"
@@ -76,9 +76,15 @@ BOOL hbDockManagerTabifyPanel(
 
    if( pPanel->pContainer != NULL )
    {
-      hbDockManagerUndock(
+      /*
+       * Etapa 14: mismo motivo que en hbDockManagerDockPanel -- usar
+       * la version panel-aware (hbDockManagerUndockPanel) para no
+       * arrastrar de paso a los companeros de pestaña de pPanel si
+       * ya estaba tabificado en otro contenedor con mas de un panel.
+       */
+      hbDockManagerUndockPanel(
          pManager,
-         pPanel->pContainer );
+         pPanel );
    }
 
    if( !hbDockTabGroupAddPanel(

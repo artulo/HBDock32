@@ -5,6 +5,7 @@
 #include "hbdocklayoutrecalc.h"
 #include "hbdocklayoutoptimizer.h"
 #include "hbdocklayoutremoveempty.h"
+#include "hbdockmanagerautohide.h"
 
 
 BOOL hbDockManagerLayout(
@@ -23,6 +24,16 @@ BOOL hbDockManagerLayout(
    GetClientRect(
       pManager->hMainWnd,
       &rcClient );
+
+   /*
+    * Etapa 37: reservar el espacio de la toolbar (u otra barra),
+    * que GetClientRect no excluye por su cuenta -- ver nota en
+    * hbdockmanager.h.
+    */
+   rcClient.top += pManager->TopMargin;
+
+   if( rcClient.top > rcClient.bottom )
+      rcClient.top = rcClient.bottom;
 
 
    /*
@@ -47,6 +58,14 @@ BOOL hbDockManagerLayout(
       &pManager->LayoutTree,
       &rcClient );
 
+   /*
+    * Etapa 55: sin esto, las pestañas de AutoHide quedaban
+    * "flotando" en las posiciones calculadas antes del resize --
+    * nunca se actualizaban con las nuevas dimensiones de la
+    * ventana.
+    */
+   hbDockManagerAutoHideRefreshRects(
+      pManager );
 
    return TRUE;
 }

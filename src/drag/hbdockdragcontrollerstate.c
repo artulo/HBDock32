@@ -56,3 +56,21 @@ HWND hbDockDragGetSourceWindow(
 
    return pController->Drag.hWndSource;
 }
+
+HB_DOCK_LAYOUT_NODE * hbDockDragGetTargetNode(
+   const HB_DOCK_DRAG_CONTROLLER * pController )
+{
+   if( pController == NULL )
+      return NULL;
+
+   return pController->Drag.TargetNode;
+}
+
+HB_DOCK_GUIDE_SOURCE hbDockDragGetGuideSource(
+   const HB_DOCK_DRAG_CONTROLLER * pController )
+{
+   if( pController == NULL )
+      return HB_DOCK_GUIDE_SOURCE_NONE;
+
+   return pController->Drag.GuideSource;
+}

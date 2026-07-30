@@ -1,8 +1,7 @@
 #include <windows.h>
 
 #include "hbdocksplitnode.h"
-
-#define HBDOCK_SPLITTER_SIZE 4
+#include "hbdockconfig.h"
 
 void hbDockSplitNodeInit(
    HB_DOCK_SPLIT_NODE * pSplit,
@@ -49,7 +48,7 @@ void hbDockSplitNodeUpdate(
                        pSplit->Node->Ratio );
 
       rc.left  += Pos;
-      rc.right  = rc.left + HBDOCK_SPLITTER_SIZE;
+      rc.right  = rc.left + HBDOCK_SPLITTER_WIDTH;
    }
    else
    {
@@ -59,7 +58,7 @@ void hbDockSplitNodeUpdate(
                        pSplit->Node->Ratio );
 
       rc.top    += Pos;
-      rc.bottom  = rc.top + HBDOCK_SPLITTER_SIZE;
+      rc.bottom  = rc.top + HBDOCK_SPLITTER_WIDTH;
    }
 
    pSplit->SplitterRect = rc;
@@ -79,6 +78,7 @@ int hbDockSplitNodeHitTest(
 
 void hbDockSplitNodeMove(
    HB_DOCK_SPLIT_NODE * pSplit,
+   float BaseRatio,
    int Delta )
 {
    LONG Size;
@@ -100,8 +100,30 @@ void hbDockSplitNodeMove(
    if( Size <= 0 )
       return;
 
+   /*
+    * Etapa 50: cuantizar el delta a multiplos de
+    * HBDOCK_SPLITTER_STEP -- con el valor default (1) esto no cambia
+    * nada (todo entero ya es multiplo de 1).
+    */
+#if HBDOCK_SPLITTER_STEP > 1
+   Delta =
+      ( Delta / HBDOCK_SPLITTER_STEP ) *
+      HBDOCK_SPLITTER_STEP;
+#endif
+
+   /*
+    * Etapa 50 (fix): usar el ratio BASE recibido (capturado por el
+    * tracker al EMPEZAR el arrastre -- ver hbDockSplitterTrackerBegin
+    * en hbdocksplittertracker.c), no pSplit->Node->Ratio (el valor
+    * YA MODIFICADO por la llamada anterior). El tracker manda Delta
+    * como el desplazamiento ACUMULADO desde el inicio del drag, no
+    * incremental desde el ultimo tick -- sumarlo sobre el ratio ya
+    * mutado componia el desplazamiento sobre si mismo en cada
+    * WM_MOUSEMOVE, haciendo que el splitter se moviera muchisimo mas
+    * de lo que el mouse realmente se movio.
+    */
    Ratio =
-      pSplit->Node->Ratio +
+      ( double ) BaseRatio +
       ( ( double ) Delta / ( double ) Size );
 
    if( Ratio < 0.10 )

@@ -115,6 +115,16 @@ RECT hbDockDragGetRect(
 HWND hbDockDragGetSourceWindow(
    const HB_DOCK_DRAG_CONTROLLER * pController );
 
+/*--------------------------------------------------------------------*/
+/* Etapa 20: panel destino (bajo el mouse) y origen del ultimo hit    */
+/*--------------------------------------------------------------------*/
+
+HB_DOCK_LAYOUT_NODE * hbDockDragGetTargetNode(
+   const HB_DOCK_DRAG_CONTROLLER * pController );
+
+HB_DOCK_GUIDE_SOURCE hbDockDragGetGuideSource(
+   const HB_DOCK_DRAG_CONTROLLER * pController );
+
 #ifdef __cplusplus
 }
 #endif

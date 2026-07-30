@@ -42,6 +42,16 @@ BOOL hbDockManagerRefreshLayout(
       pManager->hMainWnd,
       &rcClient );
 
+   /*
+    * Etapa 37: reservar el espacio de la toolbar (u otra barra),
+    * que GetClientRect no excluye por su cuenta -- ver nota en
+    * hbdockmanager.h.
+    */
+   rcClient.top += pManager->TopMargin;
+
+   if( rcClient.top > rcClient.bottom )
+      rcClient.top = rcClient.bottom;
+
 
    /*
     * Recalcular el layout.

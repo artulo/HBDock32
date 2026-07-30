@@ -13,7 +13,18 @@ typedef struct
 
    POINT StartPoint;
 
-   int OriginalPos;
+   /*
+    * Etapa 50 (fix): reemplaza al viejo "int OriginalPos" -- ese
+    * campo leia pSplit->Node->SplitPos, un valor de un sistema de
+    * arbol paralelo/legacy (ver hbdocktree.c, hbdocktreeinsert.c)
+    * que nunca se mantiene sincronizado con el Ratio real que usa el
+    * layout activo, y ademas nunca se usaba despues de asignarse.
+    * OriginalRatio en cambio SI se usa: es el ratio real al momento
+    * de EMPEZAR el arrastre, necesario para no componer el
+    * desplazamiento sobre si mismo en cada WM_MOUSEMOVE (ver
+    * hbDockSplitNodeMove).
+    */
+   float OriginalRatio;
 
    int Tracking;
 

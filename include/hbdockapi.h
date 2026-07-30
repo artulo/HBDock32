@@ -62,6 +62,27 @@ BOOL hbDockLoadWorkspace(
 BOOL hbDockRefreshLayout(
         void * pManager );
 
+/*
+ * Etapa 28: version acotada de refresh -- solo muestra/repinta las
+ * ventanas de caption puntuales, sin recalcular geometria ni tocar
+ * nada fuera del arbol de HBDock32 (ver hbDockHostPaintCaptions).
+ */
+void hbDockRepaintCaptions(
+        void * pManager );
+
+/*
+ * Etapa 29: diagnostico -- ver src/core/hbdockapi.c.
+ */
+const char * hbDockDebugCaptions(
+        void * pManager );
+
+/*
+ * Etapa 37: ver src/core/hbdockapi.c.
+ */
+void hbDockSetTopMargin(
+        void * pManager,
+        int nMargin );
+
 #ifdef __cplusplus
 }
 #endif

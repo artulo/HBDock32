@@ -36,6 +36,7 @@ int hbDockSplitNodeHitTest(
 
 void hbDockSplitNodeMove(
    HB_DOCK_SPLIT_NODE * pSplit,
+   float BaseRatio,
    int Delta );
 
 #ifdef __cplusplus

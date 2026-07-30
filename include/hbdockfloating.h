@@ -21,6 +21,15 @@ typedef struct _HB_DOCK_FLOATING
 
    int Active;
 
+   /*
+    * Etapa 42: puntero opaco (no HB_DOCK_MANAGER* directo, para
+    * evitar include circular: hbdockmanager.h -> hbdockpanel.h ->
+    * hbdockfloating.h) -- necesario para poder avisarle al manager,
+    * desde WM_DESTROY, que este flotante se cerro (ver
+    * hbDockManagerFloatClosed en hbdockmanagerfloat.c).
+    */
+   void * pManager;
+
 } HB_DOCK_FLOATING;
 
 
