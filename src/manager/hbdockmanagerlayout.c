@@ -35,6 +35,31 @@ BOOL hbDockManagerLayout(
    if( rcClient.top > rcClient.bottom )
       rcClient.top = rcClient.bottom;
 
+   /*
+    * Etapa 65: reservar margen para la tira de pestañas de AutoHide
+    * en los lados que tengan al menos un panel autohidden -- sin
+    * esto, un panel acoplado normal podia terminar ocupando el
+    * mismo borde donde se pinta la pestaña, tapandola por completo.
+    */
+   {
+      int nAHLeft, nAHTop, nAHRight, nAHBottom;
+
+      hbDockManagerGetAutoHideMargins(
+         pManager,
+         &nAHLeft, &nAHTop, &nAHRight, &nAHBottom );
+
+      rcClient.left   += nAHLeft;
+      rcClient.top    += nAHTop;
+      rcClient.right  -= nAHRight;
+      rcClient.bottom -= nAHBottom;
+
+      if( rcClient.left > rcClient.right )
+         rcClient.right = rcClient.left;
+
+      if( rcClient.top > rcClient.bottom )
+         rcClient.bottom = rcClient.top;
+   }
+
 
    /*
     * Compactar el árbol.
@@ -56,7 +81,8 @@ BOOL hbDockManagerLayout(
     */
    hbDockLayoutRecalc(
       &pManager->LayoutTree,
-      &rcClient );
+      &rcClient,
+      ( void * ) pManager );
 
    /*
     * Etapa 55: sin esto, las pestañas de AutoHide quedaban
@@ -94,7 +120,8 @@ BOOL hbDockManagerLayoutRect(
 
    hbDockLayoutRecalc(
       &pManager->LayoutTree,
-      pRect );
+      pRect,
+      ( void * ) pManager );
 
 
    return TRUE;

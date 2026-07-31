@@ -1,6 +1,8 @@
 #include <windows.h>
 
 #include "hbdocktabstrip.h"
+#include "hbdocktheme.h"
+#include "hbdockgradientfill.h"
 
 void hbDockTabStripSegmentRect(
    const RECT * pCaptionRect,
@@ -140,17 +142,20 @@ void hbDockTabStripDraw(
    RECT rcSeg;
    RECT rcClose;
    RECT rcText;
-   HBRUSH hBrush;
    HPEN hPen;
    HPEN hOldPen;
    COLORREF OldTextColor;
    int OldBkMode;
+   const HB_DOCK_THEME * pTheme;
 
    if( hDC == NULL || pGroup == NULL || pCaptionRect == NULL )
       return;
 
    if( pGroup->Count == 0 )
       return;
+
+   pTheme =
+      hbDockThemeGetCurrent();
 
    SetBkMode(
       hDC,
@@ -164,22 +169,23 @@ void hbDockTabStripDraw(
          i,
          &rcSeg );
 
-      /* Fondo del segmento: activo en azul, inactivos en gris
-       * oscuro -- mismo criterio de color que el caption simple de
-       * siempre (hbDockCaptionDraw), para consistencia visual. */
-      hBrush =
-         CreateSolidBrush(
-            i == pGroup->ActiveIndex ?
-               RGB( 0, 120, 215 ) :
-               RGB( 90, 90, 90 ) );
-
-      FillRect(
-         hDC,
-         &rcSeg,
-         hBrush );
-
-      DeleteObject(
-         hBrush );
+      /* Etapa 80/81: fondo del segmento -- activo con el degradado
+       * completo del tema (posiblemente 2 segmentos), inactivo con
+       * el degradado de pestañas inactivas del tema. */
+      if( i == pGroup->ActiveIndex )
+      {
+         hbDockGradientFillMulti(
+            hDC,
+            &rcSeg,
+            &pTheme->CaptionGrad );
+      }
+      else
+      {
+         hbDockGradientFillMulti(
+            hDC,
+            &rcSeg,
+            &pTheme->TabInactiveGrad );
+      }
 
       /* Separador vertical entre tabs (no antes del primero). */
       if( i > 0 )
@@ -188,7 +194,7 @@ void hbDockTabStripDraw(
             CreatePen(
                PS_SOLID,
                1,
-               RGB( 255, 255, 255 ) );
+               pTheme->TabSeparator );
 
          hOldPen =
             ( HPEN ) SelectObject(
@@ -231,7 +237,9 @@ void hbDockTabStripDraw(
          OldTextColor =
             SetTextColor(
                hDC,
-               RGB( 255, 255, 255 ) );
+               i == pGroup->ActiveIndex ?
+                  pTheme->CaptionText :
+                  pTheme->TabInactiveText );
 
          OldBkMode =
             SetBkMode(
@@ -264,7 +272,9 @@ void hbDockTabStripDraw(
          CreatePen(
             PS_SOLID,
             1,
-            RGB( 255, 255, 255 ) );
+            i == pGroup->ActiveIndex ?
+               pTheme->CaptionText :
+               pTheme->TabInactiveText );
 
       hOldPen =
          ( HPEN ) SelectObject(

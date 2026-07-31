@@ -26,6 +26,24 @@ BOOL hbDockFloatPanel(
         void * pManager,
         LPCTSTR pszPanel );
 
+/*
+ * Etapa 49: fijar el ancho/alto deseado de un panel para cuando se
+ * acople -- ver src/core/hbdockapi.c.
+ */
+BOOL hbDockSetPanelSize(
+        void * pManager,
+        LPCTSTR pszPanel,
+        int cx,
+        int cy );
+
+/*
+ * Etapa 64: ver src/core/hbdockapi.c.
+ */
+BOOL hbDockSetPanelNoCaption(
+        void * pManager,
+        LPCTSTR pszPanel,
+        BOOL bNoCaption );
+
 BOOL hbDockAutoHidePanel(
         void * pManager,
         LPCTSTR pszPanel );
@@ -82,6 +100,15 @@ const char * hbDockDebugCaptions(
 void hbDockSetTopMargin(
         void * pManager,
         int nMargin );
+
+/*
+ * Etapa 80: ver src/core/hbdockapi.c. nTheme: 0=Office2007,
+ * 1=Office2010, 2=Office2015 (ver HB_DOCK_THEME_ID en
+ * hbdocktheme.h).
+ */
+BOOL hbDockSetTheme(
+        void * pManager,
+        int nTheme );
 
 #ifdef __cplusplus
 }

@@ -5,6 +5,7 @@
 #include "hbdocklayoutremoveempty.h"
 #include "hbdocklayoutoptimizer.h"
 #include "hbdocklayoutrecalc.h"
+#include "hbdockmanagerautohide.h"
 
 
 BOOL hbDockManagerRefreshLayout(
@@ -52,13 +53,36 @@ BOOL hbDockManagerRefreshLayout(
    if( rcClient.top > rcClient.bottom )
       rcClient.top = rcClient.bottom;
 
+   /*
+    * Etapa 65: ver nota identica en hbdockmanagerlayout.c.
+    */
+   {
+      int nAHLeft, nAHTop, nAHRight, nAHBottom;
+
+      hbDockManagerGetAutoHideMargins(
+         pManager,
+         &nAHLeft, &nAHTop, &nAHRight, &nAHBottom );
+
+      rcClient.left   += nAHLeft;
+      rcClient.top    += nAHTop;
+      rcClient.right  -= nAHRight;
+      rcClient.bottom -= nAHBottom;
+
+      if( rcClient.left > rcClient.right )
+         rcClient.right = rcClient.left;
+
+      if( rcClient.top > rcClient.bottom )
+         rcClient.bottom = rcClient.top;
+   }
+
 
    /*
     * Recalcular el layout.
     */
    hbDockLayoutRecalc(
       &pManager->LayoutTree,
-      &rcClient );
+      &rcClient,
+      ( void * ) pManager );
 
 
    /*

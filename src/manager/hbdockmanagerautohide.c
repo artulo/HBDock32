@@ -108,6 +108,21 @@ static void hbDockManagerCalcAutoHideRects(
         pPanel->DockSize.cy :
         pPanel->MinHeight;;
 
+   /*
+    * Etapa 62: piso minimo -- sin esto, un DockSize/MinWidth/
+    * MinHeight en 0 (por el motivo que sea -- confirmado un caso
+    * real: SetDockSize llamado con el parametro equivocado para el
+    * sitio, ej. SetDockSize(260) en un panel de TOP le da el 260 al
+    * ANCHO, dejando el ALTO en 0) terminaba calculando un
+    * VisibleRect de alto/ancho CERO -- el panel "se expandia" sin
+    * ocupar ningun espacio visible.
+    */
+   if( cx < 60 )
+      cx = 60;
+
+   if( cy < 60 )
+      cy = 60;
+
    nOffset =
       nStackIndex *
       HBDOCK_AUTOHIDE_TAB_LENGTH;
@@ -123,11 +138,17 @@ static void hbDockManagerCalcAutoHideRects(
             rc.right,
             min( rc.top + nOffset + HBDOCK_AUTOHIDE_TAB_LENGTH, rc.bottom ) );
 
+         /*
+          * Etapa 74: pedido explicito -- el panel expandido arranca
+          * DESPUES de la franja del tab (no desde el borde de la
+          * ventana), para que el tab quede siempre visible/clickeable
+          * y no tapado por el propio panel que representa.
+          */
          SetRect(
             pVisible,
-            rc.right - cx,
+            rc.right - HBDOCK_AUTOHIDE_STRIP - cx,
             rc.top,
-            rc.right,
+            rc.right - HBDOCK_AUTOHIDE_STRIP,
             rc.bottom );
          break;
 
@@ -143,9 +164,9 @@ static void hbDockManagerCalcAutoHideRects(
          SetRect(
             pVisible,
             rc.left,
-            rc.top,
+            rc.top + HBDOCK_AUTOHIDE_STRIP,
             rc.right,
-            rc.top + cy );
+            rc.top + HBDOCK_AUTOHIDE_STRIP + cy );
          break;
 
       case HB_DOCKSITE_BOTTOM:
@@ -160,9 +181,9 @@ static void hbDockManagerCalcAutoHideRects(
          SetRect(
             pVisible,
             rc.left,
-            rc.bottom - cy,
+            rc.bottom - HBDOCK_AUTOHIDE_STRIP - cy,
             rc.right,
-            rc.bottom );
+            rc.bottom - HBDOCK_AUTOHIDE_STRIP );
          break;
 
       case HB_DOCKSITE_LEFT:
@@ -177,9 +198,9 @@ static void hbDockManagerCalcAutoHideRects(
 
          SetRect(
             pVisible,
-            rc.left,
+            rc.left + HBDOCK_AUTOHIDE_STRIP,
             rc.top,
-            rc.left + cx,
+            rc.left + HBDOCK_AUTOHIDE_STRIP + cx,
             rc.bottom );
          break;
    }
@@ -251,11 +272,28 @@ void hbDockManagerAutoHidePanel(
       pAutoHide );
 
    if( pPanel->hWnd != NULL )
+   {
+      /*
+       * Etapa 71: pedido explicito -- artefacto visual confirmado
+       * (resto de color del panel autohidden quedando pintado en la
+       * zona que dejo vacante -- literalmente el fondo VIEJO del
+       * panel sin borrar). Con WS_CLIPCHILDREN (Etapa 69) la
+       * ventana principal ya NO pinta por encima de sus hijos por
+       * defecto -- si un panel se oculta SIN invalidar
+       * explicitamente el rect que ocupaba, esa zona puede quedar
+       * con los pixeles viejos hasta que algo mas la toque. Se
+       * invalida el ULTIMO rect conocido del panel (coordenadas de
+       * la ventana principal) antes de ocultarlo.
+       */
+      InvalidateRect(
+         pManager->hMainWnd,
+         &pPanel->Rect,
+         TRUE );
+
       ShowWindow(
          pPanel->hWnd,
          SW_HIDE );
-
-   pPanel->Visible = 0;
+   }
 
    hbDockArrayAdd(
       &pManager->AutoHideManager.Panes,
@@ -326,6 +364,8 @@ void hbDockManagerAutoHideExpand(
    HB_DOCK_PANEL * pPanel )
 {
    HB_DOCK_AUTOHIDE * pAutoHide;
+   RECT rcStart;
+   RECT rcScreen;
 
    if( pManager == NULL || pPanel == NULL )
       return;
@@ -337,15 +377,35 @@ void hbDockManagerAutoHideExpand(
 
    pAutoHide->Expanded = 1;
 
-   if( pPanel->hWnd != NULL )
-   {
-      ShowWindow(
-         pPanel->hWnd,
-         SW_SHOW );
+   /*
+    * Etapa 79: rediseno -- en vez de mover pPanel->hWnd directo
+    * (compitiendo por z-order contra sus hermanos acoplados), se
+    * muestra/reparenta el overlay popup (ver
+    * hbdockautohideexpandcaption.c) YA ACA, al EMPEZAR a expandir --
+    * con el rect INICIAL (HiddenRect si va a animarse, VisibleRect
+    * si es el salto instantaneo). Los ticks de la animacion
+    * (hbDockAutoHideApplySlide) despues solo REPOSICIONAN ese mismo
+    * overlay ya reparentado, sin volver a tocar el z-order.
+    */
+   rcStart =
+      pAutoHide->Animation ?
+         pAutoHide->HiddenRect :
+         pAutoHide->VisibleRect;
 
-      BringWindowToTop(
-         pPanel->hWnd );
-   }
+   pAutoHide->Panel->Rect = rcStart;
+
+   rcScreen = rcStart;
+
+   MapWindowPoints(
+      pManager->hMainWnd,
+      NULL,
+      ( POINT * ) &rcScreen,
+      2 );
+
+   hbDockAutoHideExpandCaptionShow(
+      pManager,
+      pPanel,
+      &rcScreen );
 
    /* Etapa 11: si el panel tiene animacion habilitada, no saltamos
     * directo a VisibleRect -- arrancamos el deslizamiento y lo
@@ -370,39 +430,23 @@ void hbDockManagerAutoHideExpand(
    {
       hbDockAutoHideExpand( pAutoHide );
 
-      if( pPanel->hWnd != NULL )
-      {
-         RECT rcCaption;
-         RECT rcContent;
+      /*
+       * Etapa 79: salto instantaneo -- llamar Show de nuevo con el
+       * rect FINAL (VisibleRect), ahora que ya esta reparentado, para
+       * que quede posicionado ahi directamente (sin animacion).
+       */
+      rcScreen = pAutoHide->VisibleRect;
 
-         /*
-          * Etapa 58: reservar HBDOCK_CAPTION_HEIGHT arriba del rect
-          * expandido para el caption (con su pin funcional) -- antes
-          * el contenido del panel ocupaba TODO pPanel->Rect (==
-          * VisibleRect), sin dejar ningun lugar para mostrarlo.
-          */
-         rcCaption = pPanel->Rect;
-         rcCaption.bottom = rcCaption.top + HBDOCK_CAPTION_HEIGHT;
+      MapWindowPoints(
+         pManager->hMainWnd,
+         NULL,
+         ( POINT * ) &rcScreen,
+         2 );
 
-         rcContent = pPanel->Rect;
-         rcContent.top += HBDOCK_CAPTION_HEIGHT;
-
-         if( rcContent.top > rcContent.bottom )
-            rcContent.top = rcContent.bottom;
-
-         MoveWindow(
-            pPanel->hWnd,
-            rcContent.left,
-            rcContent.top,
-            rcContent.right  - rcContent.left,
-            rcContent.bottom - rcContent.top,
-            TRUE );
-
-         hbDockAutoHideExpandCaptionShow(
-            pManager,
-            pPanel,
-            &rcCaption );
-      }
+      hbDockAutoHideExpandCaptionShow(
+         pManager,
+         pPanel,
+         &rcScreen );
    }
 }
 
@@ -446,15 +490,118 @@ void hbDockManagerAutoHideCollapse(
    {
       hbDockAutoHideCollapse( pAutoHide );
 
-      /* Etapa 58 */
+      /* Etapa 79: hbDockAutoHideExpandCaptionHide ya oculta y
+       * reparenta pPanel->hWnd de vuelta a la ventana principal --
+       * no hace falta tocarlo aca aparte. */
       hbDockAutoHideExpandCaptionHide(
          pManager );
-
-      if( pPanel->hWnd != NULL )
-         ShowWindow(
-            pPanel->hWnd,
-            SW_HIDE );
    }
+}
+
+/*
+ * Etapa 70: pedido explicito -- al pasar el mouse de una pestaña de
+ * AutoHide DIRECTO a otra (sin que la primera llegue a colapsar del
+ * todo), hbDockHostUpdateAutoHideHover llamaba al Collapse NORMAL
+ * (animado, si Animation esta prendido -- el default) para la
+ * anterior, mientras la nueva arrancaba su propio Expand (tambien
+ * animado) -- durante los pocos frames que dura la transicion, AMBAS
+ * quedaban parcialmente visibles a la vez, y como los paneles del
+ * mismo lado (ej. dos LEFT) arrancan su VisibleRect desde el MISMO
+ * borde (x=0), se veian superpuestas/mezcladas -- confirmado con
+ * captura real. Esta version salta directo al colapso instantaneo
+ * (sin animar), sin importar la configuracion de Animation de ESE
+ * panel -- pensada especificamente para el momento de cambiar de
+ * pestaña, no para un colapso "normal" (que si debe poder animarse).
+ */
+void hbDockManagerAutoHideCollapseImmediate(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_PANEL * pPanel )
+{
+   HB_DOCK_AUTOHIDE * pAutoHide;
+
+   if( pManager == NULL || pPanel == NULL )
+      return;
+
+   pAutoHide = hbDockManagerFindAutoHide( pManager, pPanel );
+
+   if( pAutoHide == NULL || !pAutoHide->Expanded )
+      return;
+
+   pAutoHide->Expanded = 0;
+
+   hbDockAutoHideStopSlide(
+      pAutoHide );
+
+   hbDockAutoHideCollapse(
+      pAutoHide );
+
+   /* Etapa 79: hbDockAutoHideExpandCaptionHide ya oculta y reparenta
+    * pPanel->hWnd de vuelta a la ventana principal. */
+   hbDockAutoHideExpandCaptionHide(
+      pManager );
+}
+
+/*
+ * Etapa 65: pedido explicito -- la tira de pestañas de AutoHide se
+ * pinta directo sobre la ventana principal (no es una ventana real
+ * con su propio espacio protegido -- ver hbDockHostPaintAutoHideTabs
+ * en hbdockhost.c), y hasta ahora nada le reservaba margen a los
+ * paneles ACOPLADOS. Confirmado con caso real: al autohide-ar
+ * "Explorador", el arbol se recalcula sin el, y "Archivos" (que
+ * pasa a ocupar el borde izquierdo) es una ventana real que
+ * TAPA la pestaña pintada ahi -- inaccesible, sin forma de volver a
+ * mostrar el panel. Recorre los paneles autohidden y devuelve
+ * cuanto margen reservar en cada lado (HBDOCK_AUTOHIDE_STRIP si hay
+ * AL MENOS uno en ese lado, 0 si no hay ninguno).
+ */
+void hbDockManagerGetAutoHideMargins(
+   HB_DOCK_MANAGER * pManager,
+   int * pLeft,
+   int * pTop,
+   int * pRight,
+   int * pBottom )
+{
+   int i;
+   BOOL bLeft, bTop, bRight, bBottom;
+
+   bLeft = bTop = bRight = bBottom = FALSE;
+
+   if( pLeft != NULL )   *pLeft = 0;
+   if( pTop != NULL )    *pTop = 0;
+   if( pRight != NULL )  *pRight = 0;
+   if( pBottom != NULL ) *pBottom = 0;
+
+   if( pManager == NULL )
+      return;
+
+   for( i = 0; i < pManager->AutoHideManager.Panes.Count; ++i )
+   {
+      HB_DOCK_AUTOHIDE * pAH =
+         ( HB_DOCK_AUTOHIDE * ) hbDockArrayGet(
+            &pManager->AutoHideManager.Panes,
+            i );
+
+      HB_DOCK_SITE Site;
+
+      if( pAH == NULL || pAH->Panel == NULL )
+         continue;
+
+      Site = hbDockPanelGetDockSite( pAH->Panel );
+
+      switch( Site )
+      {
+         case HB_DOCKSITE_LEFT:   bLeft   = TRUE; break;
+         case HB_DOCKSITE_RIGHT:  bRight  = TRUE; break;
+         case HB_DOCKSITE_TOP:    bTop    = TRUE; break;
+         case HB_DOCKSITE_BOTTOM: bBottom = TRUE; break;
+         default: break;
+      }
+   }
+
+   if( bLeft   && pLeft   != NULL ) *pLeft   = HBDOCK_AUTOHIDE_STRIP;
+   if( bTop    && pTop    != NULL ) *pTop    = HBDOCK_AUTOHIDE_STRIP;
+   if( bRight  && pRight  != NULL ) *pRight  = HBDOCK_AUTOHIDE_STRIP;
+   if( bBottom && pBottom != NULL ) *pBottom = HBDOCK_AUTOHIDE_STRIP;
 }
 
 HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
@@ -479,6 +626,42 @@ HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
    }
 
    return NULL;
+}
+
+/*
+ * Etapa 76: pedido explicito -- el chequeo periodico de "el mouse
+ * se fue del panel autohide expandido" (ver hbDockHostCheckAutoHideLeave
+ * en hbdockhost.c) comparaba contra pPanel->Rect -- el rect ACTUAL,
+ * que DURANTE la animacion de expansion es mas CHICO que el final
+ * (va creciendo de a poco). Ese chequeo corre en un timer totalmente
+ * INDEPENDIENTE del timer de la animacion -- si el chequeo corria en
+ * medio de la animacion (mouse ya posicionado donde el panel va a
+ * terminar, pero el panel todavia no crecio hasta ahi), el chequeo
+ * concluia erroneamente "el mouse esta afuera" y colapsaba el panel
+ * a mitad de camino -- confirmado con captura real: se ve expandirse
+ * bien, y "se estabiliza" (colapsa) despues, con el mouse quieto.
+ * Esta funcion expone el tamaño FINAL (VisibleRect) para comparar
+ * contra ESE en vez del rect actual, sin importar en que punto de la
+ * animacion este.
+ */
+BOOL hbDockManagerAutoHideGetVisibleRect(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_PANEL * pPanel,
+   RECT * pRect )
+{
+   HB_DOCK_AUTOHIDE * pAutoHide;
+
+   if( pManager == NULL || pPanel == NULL || pRect == NULL )
+      return FALSE;
+
+   pAutoHide = hbDockManagerFindAutoHide( pManager, pPanel );
+
+   if( pAutoHide == NULL )
+      return FALSE;
+
+   *pRect = pAutoHide->VisibleRect;
+
+   return TRUE;
 }
 
 /*

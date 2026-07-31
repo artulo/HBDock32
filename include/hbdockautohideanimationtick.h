@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 void hbDockAutoHideAnimationTick(
-   HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager );
+   HB_DOCK_AUTOHIDE_ANIMATION_MANAGER * pManager,
+   void * pDockManagerVoid );
 
 #ifdef __cplusplus
 }

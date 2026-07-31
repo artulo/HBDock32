@@ -13,6 +13,7 @@
 #include "hbdockmanagertabify.h"
 #include "hbdockworkspace.h"
 #include "hbdockhost.h"
+#include "hbdocktheme.h"
 #include "hbdockpaneldocksize.h"
 
 /*
@@ -198,6 +199,70 @@ BOOL hbDockSetPanelSize(
       pPanel,
       cx,
       cy );
+
+   return TRUE;
+}
+
+/*
+ * Etapa 64: pedido explicito -- acoplar un panel sin caption y sin
+ * los botones de pin/cerrar, para usarlo como area central de
+ * trabajo (tipo MDI) sin la barra de titulo de los demas paneles.
+ */
+BOOL hbDockSetPanelNoCaption(
+        void * pManager,
+        LPCTSTR pszPanel,
+        BOOL bNoCaption )
+{
+   HB_DOCK_MANAGER * pMgr;
+   HB_DOCK_PANEL * pPanel;
+
+   pMgr = ( HB_DOCK_MANAGER * ) pManager;
+
+   if( pMgr == NULL )
+      return FALSE;
+
+   pPanel = hbDockManagerFindPanel(
+      pMgr,
+      pszPanel );
+
+   if( pPanel == NULL )
+      return FALSE;
+
+   pPanel->NoCaption = bNoCaption ? 1 : 0;
+
+   return TRUE;
+}
+
+/*
+ * Etapa 80: pedido explicito -- temas visuales (Office 2007/2010/
+ * 2015). Cambia el tema actual y fuerza un repintado completo de la
+ * ventana principal (captions/tabs/autohide leen del tema en cada
+ * pasada de pintado, asi que alcanza con invalidar todo).
+ */
+BOOL hbDockSetTheme(
+        void * pManager,
+        int nTheme )
+{
+   HB_DOCK_MANAGER * pMgr;
+
+   pMgr = ( HB_DOCK_MANAGER * ) pManager;
+
+   if( pMgr == NULL )
+      return FALSE;
+
+   if( nTheme < HBDOCK_THEME_OFFICE2007 ||
+       nTheme > HBDOCK_THEME_OFFICE2015 )
+      return FALSE;
+
+   hbDockThemeSetCurrent(
+      ( HB_DOCK_THEME_ID ) nTheme );
+
+   if( pMgr->hMainWnd != NULL )
+      RedrawWindow(
+         pMgr->hMainWnd,
+         NULL,
+         NULL,
+         RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_UPDATENOW | RDW_ERASE );
 
    return TRUE;
 }

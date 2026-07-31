@@ -18,6 +18,8 @@
 #include "hbdockmanagerclosetab.h"
 #include "hbdockpaneldock.h"
 #include "hbdockarray.h"
+#include "hbdocktheme.h"
+#include "hbdockgradientfill.h"
 
 #define HBDOCK_DRAG_THRESHOLD_CX   4
 #define HBDOCK_DRAG_THRESHOLD_CY   4
@@ -37,6 +39,11 @@ static HB_DOCK_LAYOUT_NODE * hbDockHostFindCaptionAt(
       &Hit );
 
    if( Hit.Hit != HB_DOCK_HIT_PANEL || Hit.pNode == NULL )
+		return NULL;
+
+	if( Hit.pNode->pContainer != NULL &&
+	    Hit.pNode->pContainer->TabGroup.pPanel != NULL &&
+	    Hit.pNode->pContainer->TabGroup.pPanel->NoCaption )
 		return NULL;
 
 	rc = Hit.pNode->Rect;
@@ -61,7 +68,7 @@ static void hbDockHostUpdateAutoHideHover(
    if( pHit != NULL && pHit != pHost->HoverAutoHide )
    {
       if( pHost->HoverAutoHide != NULL )
-         hbDockManagerAutoHideCollapse(
+         hbDockManagerAutoHideCollapseImmediate(
             pHost->pManager,
             pHost->HoverAutoHide );
 
@@ -93,9 +100,25 @@ static void hbDockHostCheckAutoHideLeave(
    GetCursorPos( &pt );
    ScreenToClient( pHost->hWnd, &pt );
 
-   /* El panel expandido ocupa su Rect actual mientras
-    * esta desplegado (ver hbDockAutoHideExpand). */
-   rc = pHost->HoverAutoHide->Rect;
+   /*
+    * Etapa 76 (fix): antes esto usaba pHost->HoverAutoHide->Rect (el
+    * rect ACTUAL del panel) -- durante la animacion de expansion ese
+    * rect es mas CHICO que el final (va creciendo de a poco), y este
+    * chequeo corre en un timer INDEPENDIENTE del de la animacion. Si
+    * el chequeo corria justo en medio de la animacion, con el mouse
+    * ya sobre donde el panel VA a terminar (pero el panel todavia no
+    * crecio hasta ahi), concluia erroneamente que el mouse estaba
+    * afuera y colapsaba el panel a mitad de camino -- confirmado con
+    * captura real (se ve expandirse bien, "se estabiliza" -- en
+    * realidad colapsa -- despues, con el mouse quieto). Se usa el
+    * tamaño FINAL (VisibleRect) para este chequeo, sin importar en
+    * que punto de la animacion este el panel.
+    */
+   if( !hbDockManagerAutoHideGetVisibleRect(
+           pHost->pManager,
+           pHost->HoverAutoHide,
+           &rc ) )
+      rc = pHost->HoverAutoHide->Rect;
 
    if( !PtInRect( &rc, pt ) &&
        hbDockManagerAutoHideHitTest(
@@ -461,6 +484,26 @@ BOOL hbDockHostHandleMessage(
             hbDockHostCheckAutoHideLeave(
                pHost );
 
+            /*
+             * Etapa 79: con el overlay popup real, el contenido ya
+             * no es hijo directo de la ventana principal mientras
+             * esta expandido (esta reparentado adentro de la popup)
+             * -- no hace falta tocar pAH->Panel->hWnd aca. Se
+             * refuerza solo la popup misma (HWND_TOP alcanza; las
+             * popup mantienen su z-order de forma nativa y confiable,
+             * a diferencia de una ventana hija).
+             */
+            if( pHost->pManager != NULL &&
+                pHost->pManager->AutoHideManager.hExpandCaptionWnd != NULL &&
+                IsWindowVisible( pHost->pManager->AutoHideManager.hExpandCaptionWnd ) )
+            {
+               SetWindowPos(
+                  pHost->pManager->AutoHideManager.hExpandCaptionWnd,
+                  HWND_TOP,
+                  0, 0, 0, 0,
+                  SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
+            }
+
             return TRUE;
          }
 
@@ -626,7 +669,6 @@ void hbDockHostPaintAutoHideTabs(
       HB_DOCK_AUTOHIDE * pAH;
       HB_DOCK_SITE Site;
       BOOL bVertical;
-      HBRUSH hBrush;
       LOGFONT lf;
       HFONT hFont;
       HFONT hOldFont;
@@ -682,17 +724,10 @@ void hbDockHostPaintAutoHideTabs(
       DeleteObject(
          hClipRgn );
 
-      hBrush =
-         CreateSolidBrush(
-            RGB( 90, 90, 90 ) );
-
-      FillRect(
+      hbDockGradientFillMulti(
          hDC,
          &pAH->HiddenRect,
-         hBrush );
-
-      DeleteObject(
-         hBrush );
+         &hbDockThemeGetCurrent()->TabInactiveGrad );
 
       /*
        * Etapa 56: separador entre pestañas apiladas -- una linea
@@ -707,7 +742,7 @@ void hbDockHostPaintAutoHideTabs(
             CreatePen(
                PS_SOLID,
                1,
-               RGB( 200, 200, 200 ) );
+               hbDockThemeGetCurrent()->TabSeparator );
 
          hOldSepPen =
             ( HPEN ) SelectObject(
@@ -776,7 +811,7 @@ void hbDockHostPaintAutoHideTabs(
       OldTextColor =
          SetTextColor(
             hDC,
-            RGB( 255, 255, 255 ) );
+            hbDockThemeGetCurrent()->TabInactiveText );
 
       OldBkMode =
          SetBkMode(

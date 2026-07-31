@@ -2,6 +2,8 @@
 
 #include "hbdockautohideslideapply.h"
 #include "hbdockpaneldock.h"
+#include "hbdockmanager.h"
+#include "hbdockautohideexpandcaption.h"
 
 /*
  * Nota de estabilizacion (Etapa 11): esta funcion siempre movia el
@@ -19,20 +21,32 @@
  * lado, HiddenRect y VisibleRect difieren tambien en la dimension
  * A LO LARGO DEL BORDE (no solo en profundidad), y interpolar esa
  * dimension tambien hacia que el panel se "desdoblara" en dos
- * direcciones a la vez en vez de deslizar limpio -- confirmado con
- * captura real, mas notorio en TOP pero el mismo bug afecta a
- * cualquier lado. Ahora solo se interpola la coordenada de
- * PROFUNDIDAD (perpendicular al borde, la que realmente crece al
- * expandirse); las otras 3 quedan fijas en los valores de
- * VisibleRect desde el primer frame de la animacion.
+ * direcciones a la vez en vez de deslizar limpio. Ahora solo se
+ * interpola la coordenada de PROFUNDIDAD (perpendicular al borde);
+ * las otras 3 quedan fijas en los valores de VisibleRect desde el
+ * primer frame de la animacion.
+ *
+ * Etapa 79: rediseno -- en vez de mover pAutoHide->Panel->hWnd
+ * directo (compitiendo por z-order contra sus hermanos acoplados,
+ * via BringWindowToTop/HWND_TOPMOST -- ninguno confiable del todo),
+ * ahora se convierte el rect a coordenadas de PANTALLA y se
+ * reposiciona la popup de overlay (ver hbdockautohideexpandcaption.c)
+ * -- la popup, al ser una ventana de nivel superior genuina, tiene
+ * z-order confiable de forma nativa por encima de TODAS las
+ * ventanas hijas de la principal, sin necesidad de "pelear" el
+ * orden. El contenido real (reparentado adentro de la popup) se
+ * reposiciona solo, como parte de ese reposicionamiento.
  */
 
 void hbDockAutoHideApplySlide(
-   HB_DOCK_AUTOHIDE * pAutoHide )
+   HB_DOCK_AUTOHIDE * pAutoHide,
+   void * pManagerVoid )
 {
    RECT rc;
+   RECT rcScreen;
    double t;
    HB_DOCK_SITE Site;
+   HB_DOCK_MANAGER * pManager;
 
    if( pAutoHide == NULL )
       return;
@@ -41,6 +55,11 @@ void hbDockAutoHideApplySlide(
       return;
 
    if( pAutoHide->Panel->hWnd == NULL )
+      return;
+
+   pManager = ( HB_DOCK_MANAGER * ) pManagerVoid;
+
+   if( pManager == NULL )
       return;
 
    if( pAutoHide->SlideSize <= 0 )
@@ -115,13 +134,45 @@ void hbDockAutoHideApplySlide(
          break;
    }
 
+   /*
+    * Etapa 77: piso minimo -- sin esto, el primer cuadro de la
+    * animacion (t=0) podia calcular un ancho/alto de exactamente
+    * CERO (con el offset de la Etapa 74), lo que corrompia el
+    * estado interno de controles embebidos (ej. un TWBrowse).
+    */
+   if( rc.right - rc.left < 10 )
+   {
+      if( Site == HB_DOCKSITE_LEFT )
+         rc.right = rc.left + 10;
+      else if( Site == HB_DOCKSITE_RIGHT )
+         rc.left = rc.right - 10;
+   }
+
+   if( rc.bottom - rc.top < 10 )
+   {
+      if( Site == HB_DOCKSITE_TOP )
+         rc.bottom = rc.top + 10;
+      else if( Site == HB_DOCKSITE_BOTTOM )
+         rc.top = rc.bottom - 10;
+   }
+
    pAutoHide->Panel->Rect = rc;
 
-   MoveWindow(
-      pAutoHide->Panel->hWnd,
-      rc.left,
-      rc.top,
-      rc.right - rc.left,
-      rc.bottom - rc.top,
-      TRUE );
+   /*
+    * Etapa 79: convertir a coordenadas de PANTALLA (la popup se
+    * posiciona en pantalla, no relativo a un padre) y reposicionar
+    * el overlay -- esto tambien reposiciona el contenido reparentado
+    * adentro, automaticamente.
+    */
+   rcScreen = rc;
+
+   MapWindowPoints(
+      pManager->hMainWnd,
+      NULL,
+      ( POINT * ) &rcScreen,
+      2 );
+
+   hbDockAutoHideOverlayReposition(
+      pManager,
+      &rcScreen );
 }

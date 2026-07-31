@@ -78,6 +78,15 @@ struct _HB_DOCK_PANEL
 
    SIZE DockSize;
 
+   /*
+    * Etapa 64: pedido explicito -- poder acoplar un panel SIN
+    * caption y sin los botones de pin/cerrar, para usarlo como area
+    * central de trabajo (tipo MDI) sin la barra de titulo que
+    * tienen los demas paneles. Default 0 (con caption, como
+    * siempre) -- ver hbDockPanelSetNoCaption.
+    */
+   int NoCaption;
+
 
 
    int PreferredSize;

@@ -2,6 +2,8 @@
 
 #include "hbdockcaption.h"
 #include "hbdockpanel.h"
+#include "hbdocktheme.h"
+#include "hbdockgradientfill.h"
 
 void hbDockCaptionInit(
    HB_DOCK_CAPTION * pCaption,
@@ -58,7 +60,6 @@ void hbDockCaptionDraw(
    HDC hDC,
    HB_DOCK_CAPTION * pCaption )
 {
-   HBRUSH hBrush;
    HBRUSH hOldBrush;
    HPEN hPen;
    HPEN hOldPen;
@@ -71,18 +72,19 @@ void hbDockCaptionDraw(
    if( pCaption == NULL )
       return;
 
-   /* Fondo del caption. */
-   hBrush =
-      CreateSolidBrush(
-         RGB( 0, 120, 215 ) );
+   /*
+    * Etapa 80/81: fondo del caption -- degradado del tema actual
+    * (hasta 2 segmentos, paleta real de FiveWin/Gradient2000).
+    */
+   {
+      const HB_DOCK_THEME * pTheme =
+         hbDockThemeGetCurrent();
 
-   FillRect(
-      hDC,
-      &pCaption->Rect,
-      hBrush );
-
-   DeleteObject(
-      hBrush );
+      hbDockGradientFillMulti(
+         hDC,
+         &pCaption->Rect,
+         &pTheme->CaptionGrad );
+   }
 
    /* Texto del panel, si hay uno registrado. */
    if( pCaption->Panel != NULL &&
@@ -100,7 +102,7 @@ void hbDockCaptionDraw(
       OldTextColor =
          SetTextColor(
             hDC,
-            RGB( 255, 255, 255 ) );
+            hbDockThemeGetCurrent()->CaptionText );
 
       OldBkMode =
          SetBkMode(
@@ -131,7 +133,7 @@ void hbDockCaptionDraw(
       CreatePen(
          PS_SOLID,
          1,
-         RGB( 255, 255, 255 ) );
+         hbDockThemeGetCurrent()->CaptionText );
 
    hOldPen =
       ( HPEN ) SelectObject(

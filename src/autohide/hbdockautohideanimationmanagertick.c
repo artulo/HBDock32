@@ -8,6 +8,7 @@
 #include "hbdockautohideexpandcaption.h"
 #include "hbdockcaption.h"
 #include "hbdockmanager.h"
+#include "hbdockmanagerlayout.h"
 
 /*
  * Etapa 11: punto de entrada real para el timer del manager. Antes
@@ -16,6 +17,15 @@
  * que ya habian terminado de deslizar, y nada llamaba a
  * hbDockAutoHideAnimationTick desde ningun timer real -- todo el
  * motor quedaba girando en el vacio.
+ *
+ * Etapa 79: rediseno del overlay de AutoHide expandido (ver
+ * hbdockautohideexpandcaption.c) -- el reposicionamiento durante la
+ * animacion (incluyendo el cuadro final) ahora pasa siempre por
+ * hbDockAutoHideOverlayReposition (llamada desde
+ * hbDockAutoHideApplySlide, en cada tick), asi que este archivo ya
+ * no necesita calcular rcCaption/rcContent ni mover la ventana del
+ * panel a mano -- solo maneja el show/hide de la popup al empezar y
+ * terminar.
  */
 
 void hbDockAutoHideAnimationManagerTick(
@@ -36,7 +46,8 @@ void hbDockAutoHideAnimationManagerTick(
     * lugar del que se acaba de quitar. */
 
    hbDockAutoHideAnimationTick(
-      pManager );
+      pManager,
+      pDockManagerVoid );
 
    for( i = pManager->Count - 1; i >= 0; --i )
    {
@@ -48,67 +59,18 @@ void hbDockAutoHideAnimationManagerTick(
           !hbDockAutoHideSlideRunning( pAutoHide ) )
       {
          /* Si termino de colapsar (deslizarse hacia HiddenRect), hay
-          * que ocultar la ventana ahora -- ApplySlide solo la mueve,
-          * nunca la esconde. Si termino de expandirse, ya estaba
-          * visible desde que arranco el deslizamiento (Etapa 11,
-          * hbDockManagerAutoHideExpand). */
+          * que ocultar la ventana ahora y reparentar el contenido de
+          * vuelta a la ventana principal (hbDockAutoHideExpandCaptionHide
+          * hace ambas cosas). Si termino de expandirse, ya estaba
+          * visible/reparentada desde que arranco el deslizamiento
+          * (ver hbDockManagerAutoHideExpand) -- no hace falta nada
+          * mas aca, hbDockAutoHideApplySlide ya la dejo en la
+          * posicion final en el ultimo tick. */
          if( pAutoHide->SlideDirection < 0 &&
-             pAutoHide->Panel != NULL &&
-             pAutoHide->Panel->hWnd != NULL )
+             pDockManager != NULL )
          {
-            ShowWindow(
-               pAutoHide->Panel->hWnd,
-               SW_HIDE );
-
-            /*
-             * Etapa 60: sin esto, la ventana de caption mostrada al
-             * expandir (Etapa 59) quedaba visible para siempre --
-             * solo se ocultaba en el camino NO animado de colapsar y
-             * en los clicks de pin/"x" del caption mismo, nunca aca
-             * (el colapso automatico animado, al sacar el mouse, que
-             * es el camino que realmente se usa con Animation=TRUE,
-             * el default).
-             */
-            if( pDockManager != NULL )
-               hbDockAutoHideExpandCaptionHide(
-                  pDockManager );
-         }
-         else if( pAutoHide->SlideDirection >= 0 &&
-                  pAutoHide->Panel != NULL &&
-                  pAutoHide->Panel->hWnd != NULL &&
-                  pDockManager != NULL )
-         {
-            /*
-             * Etapa 59: termino de EXPANDIRSE (camino animado) --
-             * reservar HBDOCK_CAPTION_HEIGHT arriba para el caption
-             * y mostrarlo, mismo tratamiento que ya tenia el camino
-             * NO animado (Etapa 58) -- sin esto, con Animation=TRUE
-             * (el default), el caption nunca aparecia.
-             */
-            RECT rcCaption;
-            RECT rcContent;
-
-            rcCaption = pAutoHide->Panel->Rect;
-            rcCaption.bottom = rcCaption.top + HBDOCK_CAPTION_HEIGHT;
-
-            rcContent = pAutoHide->Panel->Rect;
-            rcContent.top += HBDOCK_CAPTION_HEIGHT;
-
-            if( rcContent.top > rcContent.bottom )
-               rcContent.top = rcContent.bottom;
-
-            MoveWindow(
-               pAutoHide->Panel->hWnd,
-               rcContent.left,
-               rcContent.top,
-               rcContent.right  - rcContent.left,
-               rcContent.bottom - rcContent.top,
-               TRUE );
-
-            hbDockAutoHideExpandCaptionShow(
-               pDockManager,
-               pAutoHide->Panel,
-               &rcCaption );
+            hbDockAutoHideExpandCaptionHide(
+               pDockManager );
          }
 
          hbDockAutoHideAnimationRemovePane(

@@ -8,7 +8,8 @@
 
 
 void hbDockAutoHideUpdateSlide(
-   HB_DOCK_AUTOHIDE * pAutoHide )
+   HB_DOCK_AUTOHIDE * pAutoHide,
+   void * pManagerVoid )
 {
    if( pAutoHide == NULL )
       return;
@@ -26,7 +27,8 @@ void hbDockAutoHideUpdateSlide(
 
 
    hbDockAutoHideApplySlide(
-      pAutoHide );
+      pAutoHide,
+      pManagerVoid );
 
 
    if( hbDockAutoHideSlideFinished(

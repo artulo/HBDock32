@@ -41,6 +41,27 @@ BOOL hbDockManagerCreate(
 
     pManager->hMainWnd = hWnd;
 
+    /*
+     * Etapa 69: pedido explicito -- un panel autohide expandido
+     * podia aparecer "tapado" por partes de OTRO panel (ej. una
+     * pestaña de autohide todavia replegada, geometricamente adentro
+     * del area que ahora ocupa el panel expandido) sin que fuera
+     * realmente un problema de z-order -- confirmado via
+     * BringWindowToTop reforzado en multiples puntos sin efecto. La
+     * causa real: sin WS_CLIPCHILDREN, el pintado propio de
+     * HBDock32 sobre la ventana principal (splitters, pestañas de
+     * autohide -- ver hbDockHostPaintSplitters/PaintAutoHideTabs,
+     * llamadas via GetDC directo en cada WM_PAINT) no se recorta
+     * automaticamente alrededor de las ventanas hijas (los paneles);
+     * ese repintado puede dibujarse ENCIMA de ellas en las zonas
+     * donde se superponen, dando la apariencia de "panel detras"
+     * aunque el z-order real este correcto.
+     */
+    SetWindowLong(
+        hWnd,
+        GWL_STYLE,
+        GetWindowLong( hWnd, GWL_STYLE ) | WS_CLIPCHILDREN );
+
     hbDockLayoutTreeInit(
         &pManager->LayoutTree);
 

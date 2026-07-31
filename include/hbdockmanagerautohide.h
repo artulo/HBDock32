@@ -56,6 +56,31 @@ HB_DOCK_PANEL * hbDockManagerAutoHideHitTest(
 void hbDockManagerAutoHideRefreshRects(
    HB_DOCK_MANAGER * pManager );
 
+/*
+ * Etapa 70: ver src/manager/hbdockmanagerautohide.c.
+ */
+void hbDockManagerAutoHideCollapseImmediate(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_PANEL * pPanel );
+
+/*
+ * Etapa 65: ver src/manager/hbdockmanagerautohide.c.
+ */
+void hbDockManagerGetAutoHideMargins(
+   HB_DOCK_MANAGER * pManager,
+   int * pLeft,
+   int * pTop,
+   int * pRight,
+   int * pBottom );
+
+/*
+ * Etapa 76: ver src/manager/hbdockmanagerautohide.c.
+ */
+BOOL hbDockManagerAutoHideGetVisibleRect(
+   HB_DOCK_MANAGER * pManager,
+   HB_DOCK_PANEL * pPanel,
+   RECT * pRect );
+
 #ifdef __cplusplus
 }
 #endif

@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 void hbDockAutoHideApplySlide(
-   HB_DOCK_AUTOHIDE * pAutoHide );
+   HB_DOCK_AUTOHIDE * pAutoHide,
+   void * pManagerVoid );
 
 #ifdef __cplusplus
 }

@@ -14,11 +14,19 @@ BOOL hbDockManagerUndock(
    HB_DOCK_MANAGER * pManager,
    HB_DOCK_CONTAINER * pContainer )
 {
+   RECT rcOld;
+
    if( pManager == NULL )
       return FALSE;
 
    if( pContainer == NULL )
       return FALSE;
+
+   /*
+    * Etapa 71: capturar el rect ANTES de sacarlo del arbol/destruirlo,
+    * para poder invalidar esa zona despues -- ver nota mas abajo.
+    */
+   rcOld = pContainer->Rect;
 
    if( !hbDockLayoutRemovePanel(
             &pManager->LayoutTree,
@@ -44,6 +52,20 @@ BOOL hbDockManagerUndock(
 
    LocalFree(
       pContainer );
+
+   /*
+    * Etapa 71: pedido explicito -- artefacto visual confirmado (el
+    * color de fondo VIEJO del panel/contenedor que se acaba de sacar
+    * del arbol quedaba pintado en pantalla hasta que algo mas
+    * repintara esa zona). Con WS_CLIPCHILDREN (Etapa 69), la ventana
+    * principal ya no pinta por encima de sus hijos por defecto, asi
+    * que la zona que un contenedor deja vacante necesita quedar
+    * marcada sucia explicitamente para que se borre y repinte bien.
+    */
+   InvalidateRect(
+      pManager->hMainWnd,
+      &rcOld,
+      TRUE );
 
    return hbDockManagerRefreshLayout(
       pManager );

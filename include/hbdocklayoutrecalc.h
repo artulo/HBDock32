@@ -9,7 +9,8 @@ extern "C" {
 
 void hbDockLayoutRecalc(
    HB_DOCK_LAYOUT_TREE * pTree,
-   const RECT * pRect );
+   const RECT * pRect,
+   void * pManagerVoid );
 
 #ifdef __cplusplus
 }

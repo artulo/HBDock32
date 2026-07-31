@@ -31,6 +31,13 @@ CLASS TDockPanel FROM TPanel
    METHOD Dock( nSide )            INLINE HBDockPanel( ::hDock, ::cDockName, nSide )
    METHOD TabifyOn( cTargetName )  INLINE HBDockTabifyPanel( ::hDock, ::cDockName, cTargetName )
    METHOD Float()                  INLINE HBDockFloat( ::hDock, ::cDockName )
+   METHOD SetDockSize( nWidth, nHeight ) ;
+                                    INLINE HBDockSetPanelSize( ::hDock, ::cDockName, ;
+                                       hb_defaultValue( nWidth, 0 ), ;
+                                       hb_defaultValue( nHeight, 0 ) )
+   METHOD SetNoCaption( lNoCaption ) ;
+                                    INLINE HBDockSetNoCaption( ::hDock, ::cDockName, ;
+                                       hb_defaultValue( lNoCaption, .t. ) )
    METHOD Undock()                 INLINE HBDockUndockPanel( ::hDock, ::cDockName )
    METHOD AutoHide()                INLINE HBDockAutoHide( ::hDock, ::cDockName )
    METHOD RestoreAutoHide()         INLINE HBDockAutoHideRestore( ::hDock, ::cDockName )
